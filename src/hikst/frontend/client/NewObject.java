@@ -290,7 +290,7 @@ public class NewObject extends Composite implements HasText {
 		return returnPath;
 	}
 	
-	private class SimulatorObjectTree
+	private class SimulatorObjectTree 
 	{
 		public boolean isEmpty = true;
 		public SimObject rootObject = new SimObject();
@@ -304,9 +304,12 @@ public class NewObject extends Composite implements HasText {
 			}
 			else
 			{
+				SimObject parent = simObject.Parent;
 				
+				parent.simulatorObjects.remove(parent);
 			}
 		}	
+		
 		
 		public void clear()
 		{
@@ -325,7 +328,9 @@ public class NewObject extends Composite implements HasText {
 		public int latitude = 1;
 		public int usagePattern = 1;
 		
-		ArrayList<SimObject> simulatorObjects = new ArrayList<SimObject>();
+		public SimObject Parent = null;
+		
+		private ArrayList<SimObject> simulatorObjects = new ArrayList<SimObject>();
 		
 		public boolean hasChildren()
 		{
@@ -342,32 +347,30 @@ public class NewObject extends Composite implements HasText {
 			latitude = 0;
 			usagePattern = 0;
 			
+			
 			simulatorObjects.clear();
+		}
+		
+		public void addChild(SimObject simObject)
+		{
+			simObject.Parent = this;
+			
+			simulatorObjects.add(simObject);
+		}
+		
+		public SimObject getChild(int index)
+		{
+			return simulatorObjects.get(index);
 		}
 	}
 
 	
 	@UiHandler("slettObjektButton")
 	void onSlettObjektButtonClick(ClickEvent event) {
-		
-		//is root?
-		if(selectedSimObject == simulatorObject.rootObject)
-		{
-			Window.alert("Cant Delete root");
-		}
-		else
-		{
-			if(selectedSimObject.hasChildren())
-			{
-				
-			}
-			else
-			{
-				
-			}
-		}
-		
-		
-		
+			
+		simulatorObject.delete(selectedSimObject);
+		updateTree();
+		selectedSimObject = simulatorObject.rootObject;
+		updateMenu();
 	}
 }
