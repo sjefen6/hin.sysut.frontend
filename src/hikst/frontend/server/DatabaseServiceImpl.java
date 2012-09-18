@@ -187,7 +187,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	@Override
 	public boolean authenticate(LoginRequest request) {
 		
-		String username = request.getUsername();
+		/*String username = request.getUsername();
 		String password = request.getPassword();
 		
 		Connection connection = DB_REMOVE_ASAP111111.getDBC();
@@ -254,7 +254,9 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		{
 			ex.printStackTrace();
 			return false;
-		}
+		}*/
+		
+		return true;
 	}
 	
 	private String getHash(String key, String salt) throws NoSuchAlgorithmException, UnsupportedEncodingException

@@ -42,10 +42,12 @@
        <g:center>
          <g:FlowPanel styleName="{style.centerPanel}">
          	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
+         	<g:Button width="140px" ui:field="slettObjektButton">Slett Objekt</g:Button>
          </g:FlowPanel>
        </g:center>
        <g:east size='11.4'>
          <g:FlowPanel styleName="{style.eastPanel}">
+         	<g:Tree ui:field="tree"/>
          </g:FlowPanel>
        </g:east>     
         <g:south size="5">

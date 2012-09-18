@@ -1,6 +1,7 @@
 package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
+import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import com.google.gwt.core.client.GWT;
@@ -8,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -18,12 +20,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class Login extends Composite implements HasText {
 
+	private final String COOKIE_NAME = "HIKST";
+
 	private String user1 = "Navn";
 	private String userpass = "Passord";
 	Simulation simulation;
-	
+
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-	
+
 	private static LoginUiBinder uiBinder = GWT.create(LoginUiBinder.class);
 	MainPage panel;
 	interface LoginUiBinder extends UiBinder<Widget, Login> {
@@ -35,7 +39,7 @@ public class Login extends Composite implements HasText {
 
 	@UiField Button button;
 	@UiField TextBox user;
-	
+
 	@UiHandler("user")
 	void onClick1(ClickEvent event){
 		user.setText("");
@@ -50,6 +54,16 @@ public class Login extends Composite implements HasText {
 	void onClick(ClickEvent e) {
 		RootLayoutPanel.get().add(new MainPage());
 		panel = new MainPage();
+
+		LoginRequest request = new LoginRequest(user1, userpass);
+
+		databaseService.authenticate(request, new LoginCallback(this));
+
+
+	}
+
+	public void GoToMainPage()
+	{
 		RootLayoutPanel.get().add(panel);
 	}
 
@@ -67,5 +81,5 @@ public class Login extends Composite implements HasText {
     	Graph powerGraph = simulation.getEffectGraph();
 		powerGraph.update();
     }
-	
+
 }
