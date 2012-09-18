@@ -1,6 +1,11 @@
 *.class
 
+# We are commiting lib/
+#*.jar
+
 # Package Files #
-*.jar
 *.war
 *.ear
+gwt-unitCache
+war
+.settings

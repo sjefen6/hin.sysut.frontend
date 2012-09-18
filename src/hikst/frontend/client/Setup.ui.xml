@@ -1,0 +1,54 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>        
+        .eastPanel {
+            background-color: grey;
+        }
+        .westPanel {
+            background-color: grey;
+        }
+        .northPanel {
+            background-color: grey;
+        }
+        .southPanel {
+            background-color: grey;
+        }
+        .centerPanel {
+            background-color: grey;
+        }       
+    </ui:style>
+     <g:DockLayoutPanel unit='EM'>
+       <g:north size='5'>
+         <g:FlowPanel styleName="{style.northPanel}">
+         </g:FlowPanel>
+       </g:north>
+       <g:west size='9.2'>
+         <g:FlowPanel styleName="{style.westPanel}"/>
+       </g:west>
+       <g:center>
+         <g:FlowPanel styleName="{style.centerPanel}">
+         	<g:Label text="Database settings" />
+         	<g:InlineLabel text="Hostname"/>
+         	<g:TextBox text="localhost" name="db_hostname" ui:field="db_hostname"/>
+         	<g:InlineLabel text="Port"/>
+         	<g:TextBox name="db_port" text="5432" ui:field="db_port"/>
+         	<g:InlineLabel text="Name"/>
+         	<g:TextBox name="db_name" text="db" ui:field="db_name" />
+         	<g:InlineLabel text="Username"/>
+         	<g:TextBox name="db_user" text="user" ui:field="db_user"/>
+         	<g:InlineLabel text="Password"/>
+         	<g:TextBox name="db_pw" text="****" ui:field="db_password"/>
+         	<g:Button ui:field="install">Install</g:Button>
+         </g:FlowPanel>
+       </g:center>
+       <g:east size='9.3'>
+         <g:FlowPanel styleName="{style.eastPanel}">
+         </g:FlowPanel>
+       </g:east>     
+        <g:south size="5">
+         <g:FlowPanel styleName="{style.southPanel}">
+         </g:FlowPanel>
+        </g:south>       
+     </g:DockLayoutPanel>
+</ui:UiBinder> 

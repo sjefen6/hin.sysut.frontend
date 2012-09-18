@@ -1,0 +1,60 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+    <ui:style>
+        .eastPanel {
+            background-color: Gray;
+        }
+        .westPanel {
+        	background-color: Gray;
+        }
+        .northPanel {
+        	background-color: Gray;
+        }
+        .southPanel {
+            background-color: Gray;
+        }
+        .centerPanel {
+        	background-color: White;
+        }
+    </ui:style>
+     <g:DockLayoutPanel unit='EM' height="600">
+       <g:north size='3.0'>
+         <g:FlowPanel styleName="{style.northPanel}">
+         	<g:Label text="Velkommen til Hikst Simulator" horizontalAlignment="ALIGN_CENTER"/>
+         	<g:Button width="132px" height="27px" text="Legg til simulering" ui:field="Test1">TEST</g:Button>
+         	<g:Button ui:field="databaseCall" height="27px">Tegn graf</g:Button>
+         </g:FlowPanel>
+       </g:north>
+       <g:west size='16.1'>
+         <g:FlowPanel styleName="{style.westPanel}">
+         	<g:TextBox text="Navn" width="172px" ui:field="user" name="user"/>
+           <g:TextBox text="Passord" width="172px" ui:field="pass" name="pass"/>
+           <g:Button ui:field="login">Logg Inn</g:Button>
+           <g:Button ui:field="update" text="Legg til objekt">Oppdatere innput</g:Button>
+           <g:TextBox text="Object name" ui:field="nameField" name="housesize"/>
+           <g:TextBox ui:field="wattField" text="Watt"/>
+           <g:TextBox ui:field="voltField" name="Volt" text="Volt"/>
+           <g:TextBox text="Interval(Milliseconds)" ui:field="intervalField"/>
+           <g:Label text="From date:"/>
+           <p1:DateBox ui:field="fromDateField"/>
+           <g:Label text="To date:"/>
+           <p1:DateBox ui:field="toDateField"/>
+           <g:Label text="New Label" ui:field="aa" width="160px"/>
+           <g:Tree ui:field="tree" animationEnabled="true"></g:Tree>
+           <g:Button text="Sjekk status" ui:field="remHouses">Fjern hus</g:Button>
+         </g:FlowPanel>
+       </g:west>
+       <g:center>
+         <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel"/>
+       </g:center>
+       <g:east size='6.8'>
+         <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanell"/>
+       </g:east>
+        <g:south size="1.4">
+         <g:FlowPanel styleName="{style.southPanel}">
+         	<g:TextArea width="510px" height="57px" ui:field="statusField" enabled="false"/>
+         </g:FlowPanel>
+        </g:south>
+     </g:DockLayoutPanel>
+</ui:UiBinder>

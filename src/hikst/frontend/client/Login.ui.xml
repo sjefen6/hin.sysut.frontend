@@ -1,0 +1,48 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.eastPanel {
+			background-color: grey;
+		}
+		
+		.westPanel {
+			background-color: grey;
+		}
+		
+		.northPanel {
+			background-color: grey;
+		}
+		
+		.southPanel {
+			background-color: grey;
+		}
+		
+		.centerPanel {
+			background-color: grey;
+		}
+	</ui:style>
+	<g:DockLayoutPanel unit='EM'>
+		<g:north size='3.0'>
+			<g:FlowPanel styleName="{style.northPanel}">
+				<g:TextBox text="Username" name="user" ui:field="user" width="150px" />
+				<g:TextBox text="Password" name="pass" ui:field="pass" width="150px" />
+				<g:Button width="150px" ui:field="button">Login</g:Button>
+			</g:FlowPanel>
+		</g:north>
+		<g:west size='11.5'>
+			<g:FlowPanel styleName="{style.westPanel}">
+			</g:FlowPanel>
+		</g:west>
+		<g:center>
+			<g:FlowPanel styleName="{style.centerPanel}"/>
+		</g:center>
+		<g:east size='4.0'>
+			<g:FlowPanel styleName="{style.eastPanel}" />
+		</g:east>
+		<g:south size="5">
+			<g:FlowPanel styleName="{style.southPanel}">
+			</g:FlowPanel>
+		</g:south>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 
