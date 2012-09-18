@@ -296,9 +296,22 @@ public class NewObject extends Composite implements HasText {
 		public SimObject rootObject = new SimObject();
 		//public SimObject currentSelectedObject = rootObject;
 		
-		public SimObject getParent(SimObject simObject)
+		public void delete(SimObject simObject)
 		{
-			return null;
+			if(simObject == rootObject)
+			{
+				clear();
+			}
+			else
+			{
+				
+			}
+		}	
+		
+		public void clear()
+		{
+			isEmpty = true;
+			rootObject.clear();
 		}
 	}
 	
@@ -318,6 +331,19 @@ public class NewObject extends Composite implements HasText {
 		{
 			return simulatorObjects.isEmpty();
 		}
+		
+		public void clear()
+		{
+			name = "Empty";
+			impactDegree = 0;
+			effect = 0;
+			volt = 0;
+			longitude = 0;
+			latitude = 0;
+			usagePattern = 0;
+			
+			simulatorObjects.clear();
+		}
 	}
 
 	
@@ -327,14 +353,7 @@ public class NewObject extends Composite implements HasText {
 		//is root?
 		if(selectedSimObject == simulatorObject.rootObject)
 		{
-			if(selectedSimObject.hasChildren())
-			{
-				
-			}
-			else
-			{
-				
-			}
+			Window.alert("Cant Delete root");
 		}
 		else
 		{
