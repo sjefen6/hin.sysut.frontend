@@ -2,9 +2,11 @@ package hikst.frontend.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -27,7 +29,9 @@ public class Frontend implements EntryPoint {
 	
 	private String message = "";
 	MyDockLayoutPanel panel;
-	
+	Login panel2;
+	Setup panelSetup;
+	Widget maps;
 	
 	/**
 	 * This is the entry point method.
