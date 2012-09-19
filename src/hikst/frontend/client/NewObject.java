@@ -49,6 +49,14 @@ public class NewObject extends Composite implements HasText {
 	@UiField Button saveObject;
 	@UiField Tree tree;
 	@UiField Button slettObjektButton;
+	@UiField Button oppdaterObjekt;
+	@UiField TextBox updateUsagePatternButton;
+	@UiField TextBox updateNameTextButton;
+	@UiField TextBox updateImpactDegreeButton;
+	@UiField TextBox updateEffectTextButton;
+	@UiField TextBox updateVoltTextButton;
+	@UiField TextBox updateLongitudeTextButton;
+	@UiField TextBox updateLatitudeButton;
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 	
@@ -372,5 +380,50 @@ public class NewObject extends Composite implements HasText {
 		updateTree();
 		selectedSimObject = simulatorObject.rootObject;
 		updateMenu();
+	}
+	@UiHandler("oppdaterObjekt")
+	void onOppdaterObjektClick(ClickEvent event) {
+		
+		if(selectedSimObject != null){
+		
+			String objectName = updateNameTextButton.getText();
+			String impactDegree = updateImpactDegreeButton.getText();
+			String objectEffect = updateEffectTextButton.getText();
+			String objectVolt = updateVoltTextButton.getText();
+			String objectLongitude = updateLongitudeTextButton.getText();
+			String objectLatitude = updateLatitudeButton.getText();
+			String objectUsagePattern = updateUsagePatternButton.getText();
+			
+			try
+			{
+				float floatEffect = Float.parseFloat(objectEffect);
+				float floatVolt = Float.parseFloat(objectVolt);
+				int intLongitude = Integer.parseInt(objectLongitude);
+				int intLatitude = Integer.parseInt(objectLatitude);
+				int intUsagePattern = Integer.parseInt(objectUsagePattern);
+				float intImpactDegree = Float.parseFloat(impactDegree);
+				
+				selectedSimObject.name = objectName;
+				selectedSimObject.impactDegree = intImpactDegree;
+				selectedSimObject.effect = floatEffect;
+				selectedSimObject.volt = floatVolt;
+				selectedSimObject.longitude = intLongitude;
+				selectedSimObject.latitude = intLatitude;
+				selectedSimObject.usagePattern = intUsagePattern;
+				newObject.effect = floatEffect;
+				newObject.volt = floatVolt;
+				newObject.longitude = intLongitude;
+				//newObject.latitude = intLatitude;
+				newObject.usagePattern = intUsagePattern;
+				newObject.impactDegree = intImpactDegree;
+			}catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		else
+		{
+			Window.alert("You must select an object");
+		}
 	}
 }

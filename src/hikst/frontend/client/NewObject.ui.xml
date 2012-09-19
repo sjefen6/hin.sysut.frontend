@@ -42,15 +42,20 @@
        </g:west>
        <g:center>
          <g:FlowPanel styleName="{style.centerPanel}">
-         	<g:Tree ui:field="tree"/>
+         	<g:Tree ui:field="tree" styleName="h1"/>
          </g:FlowPanel>
        </g:center>
        <g:east size='11.4'>
          <g:FlowPanel styleName="{style.eastPanel}">
          	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
-         	<g:TextBox/>
-         	<g:TextBox/>
-         	<g:TextBox text="Navn" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateNameTextButton" text="Name" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox ui:field="updateImpactDegreeButton" text="Påvirkningsgrad" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateEffectTextButton" text="Effekt" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateVoltTextButton" alignment="CENTER" text="Volt"/>
+         	<g:TextBox ui:field="updateLongitudeTextButton" text="Lengdegrader" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateLatitudeButton" text="Breddegrader" alignment="CENTER"/>
+         	<g:TextBox text="Forbrukermønster" alignment="CENTER" ui:field="updateUsagePatternButton"/>
+         	<g:Button width="151px" ui:field="oppdaterObjekt" text="Oppdater Objekt"/>
          	<g:Button width="157px" ui:field="slettObjektButton">Slett Objekt</g:Button>
          </g:FlowPanel>
        </g:east>     
