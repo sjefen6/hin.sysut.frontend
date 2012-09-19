@@ -49,4 +49,7 @@ public interface DatabaseServiceAsync {
 	throws IllegalArgumentException;
 	void getSimulationStatus(SimulationTicket ticket,
 			AsyncCallback<Integer> callback);
+	void setUp(String hostname, String port, String name, String user,
+			String password, AsyncCallback<Boolean> callback);
+	void settingsLoadable(AsyncCallback<Boolean> callback);
 }

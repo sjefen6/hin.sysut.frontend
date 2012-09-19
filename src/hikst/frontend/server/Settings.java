@@ -1,4 +1,4 @@
-package hikst.frontend.client;
+package hikst.frontend.server;
 
 import java.io.File;
 import java.io.FileReader;
@@ -18,12 +18,12 @@ public class Settings {
 	private static Connection dbc;
 	
 	
-	public Settings() throws SettingsDotPrefNotFoundException {
-		if (loadable()){
-			load();
-		} else {
-			throw new SettingsDotPrefNotFoundException();
-		}
+	public Settings() /*throws SettingsDotPrefNotFoundException */{
+//		if (loadable()){
+//			load();
+//		} else {
+//		//	throw new SettingsDotPrefNotFoundException();
+//		}
 	}
 	
 	public static boolean writeConfig(String hostname, String port, String db, String user, String password){
