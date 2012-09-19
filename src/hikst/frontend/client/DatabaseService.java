@@ -23,6 +23,10 @@ public interface DatabaseService extends RemoteService
 	Description getSimulation(int sim_description_id) throws IllegalArgumentException;
 	List<Description> getSimulations() throws IllegalArgumentException;
 	
+	//db setup
+	boolean setUp(String hostname, String port, String name, String user, String password);
+	boolean settingsLoadable();
+	
 	//User authentication management
 	boolean authenticate(LoginRequest request);
 	boolean logOff();
