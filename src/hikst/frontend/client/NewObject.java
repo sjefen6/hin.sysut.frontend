@@ -15,14 +15,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.maps.client.InfoWindowContent;
-import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.Maps;
-import com.google.gwt.maps.client.control.LargeMapControl;
-import com.google.gwt.maps.client.event.MapClickHandler;
-import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.Overlay;
+import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -91,7 +84,7 @@ public class NewObject extends Composite implements HasText {
 		latitude.setText("1");
 		usagePattern.setText("1");
 	}
-	@UiHandler("latitude")
+	/*@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event){
 
 		Maps.loadMapsApi("", "2", false, new Runnable() {
@@ -100,7 +93,7 @@ public class NewObject extends Composite implements HasText {
 		      }
 		});
 		
-	}
+	}*/
 	
 	
 	
@@ -245,7 +238,7 @@ public class NewObject extends Composite implements HasText {
     	//initWidget(tree);
 	}
 	
-	private void buildUi() {
+	/*private void buildUi() {
 //		 DockLayoutPanel pan = new DockLayoutPanel(Unit.PX);
 //		 pan.addNorth(new HTML("north"), 2);
 //		 pan.addNorth(new HTML("north"), 2); 
@@ -278,7 +271,7 @@ public class NewObject extends Composite implements HasText {
 	    //map.addMapClickHandler(mapClick);
 	    
 
-	  }
+	  }*/
 	
 	@SuppressWarnings("deprecation")
 	private TreeItem addChildren(SimObject simObject)
@@ -462,12 +455,12 @@ public class NewObject extends Composite implements HasText {
 				selectedSimObject.longitude = intLongitude;
 				selectedSimObject.latitude = intLatitude;
 				selectedSimObject.usagePattern = intUsagePattern;
-				newObject.effect = floatEffect;
-				newObject.volt = floatVolt;
-				newObject.longitude = intLongitude;
+				//newObject.effect = floatEffect;
+				//newObject.volt = floatVolt;
+				//newObject.longitude = intLongitude;
 				//newObject.latitude = intLatitude;
-				newObject.usagePattern = intUsagePattern;
-				newObject.impactDegree = intImpactDegree;
+				//newObject.usagePattern = intUsagePattern;
+				//newObject.impactDegree = intImpactDegree;
 			}catch(Exception ex)
 			{
 				ex.printStackTrace();
