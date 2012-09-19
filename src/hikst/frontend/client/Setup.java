@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.TextBox;
 public class Setup extends Composite implements HasText {
 
 	private static SetupUiBinder uiBinder = GWT.create(SetupUiBinder.class);
+	
+	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
 	interface SetupUiBinder extends UiBinder<Widget, Setup> {
 	}
@@ -34,12 +36,8 @@ public class Setup extends Composite implements HasText {
 	@UiHandler("install")
 	void onButtonClick(ClickEvent e){
 		Window.alert("Click!");
-		if (Settings.writeConfig(db_hostname.getText(), db_port.getText(), db_name.getText(), db_user.getText(), db_password.getText())){
-			Window.alert("Installen var en stor suksess, vennligst reload(F5)!");
-		}
-		else{
-			Window.alert("Dette var en stor katastrofe! kontakt support snarest");
-		}	
+		databaseService.setUp(db_hostname.getText(), db_port.getText(), db_name.getText(), db_user.getText(), db_password.getText(),new SetupCallback());
+	
 	}
 
 	@Override

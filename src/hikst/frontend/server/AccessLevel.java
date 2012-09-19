@@ -21,7 +21,7 @@ public class AccessLevel
 	
 	private AccessLevel()
 	{
-		Connection connection = DB_REMOVE_ASAP111111.getDBC();
+		Connection connection = Settings.getDBC();
 		
 		try
 		{

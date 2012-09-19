@@ -1,4 +1,4 @@
-package hikst.frontend.client;
+package hikst.frontend.server;
 
 public class SettingsDotPrefNotFoundException extends Exception {
 

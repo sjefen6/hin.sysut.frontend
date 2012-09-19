@@ -27,7 +27,6 @@ public class ObjectMenu extends Composite implements HasText {
 	@UiField Button addObject;
 	@UiField DateBox fromDate;
 	@UiField DateBox toDate;
-	@UiField Tree ObjectMainTree;
 
 	interface ObjectMenuUiBinder extends UiBinder<Widget, ObjectMenu> {
 	}
@@ -35,8 +34,6 @@ public class ObjectMenu extends Composite implements HasText {
 	public ObjectMenu() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
-	
 
 	@UiHandler("addObject")
 	void onAddObjectClick(ClickEvent event) {
@@ -54,7 +51,7 @@ public class ObjectMenu extends Composite implements HasText {
 	@Override
 	public void setText(String text) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
@@ -62,4 +59,6 @@ public class ObjectMenu extends Composite implements HasText {
 		panelBack = new MainPage();
 		RootLayoutPanel.get().add(panelBack);
 	}
+
+
 }

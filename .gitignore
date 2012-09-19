@@ -8,4 +8,5 @@
 *.ear
 gwt-unitCache
 war
+.gwt
 .settings
