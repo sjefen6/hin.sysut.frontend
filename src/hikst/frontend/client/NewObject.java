@@ -95,7 +95,7 @@ public class NewObject extends Composite implements HasText {
 	    // Add some controls for the zoom level
 	    map.addControl(new LargeMapControl());
 	    
-
+	
 	    MarkerOptions opt = MarkerOptions.newInstance();
 	    opt.setDraggable(true);
 	   
@@ -104,10 +104,10 @@ public class NewObject extends Composite implements HasText {
 	    // Add an info window to highlight a point of interest
 	    map.getInfoWindow().open(map.getCenter(),
 	        new InfoWindowContent("Selve byen!"));
-
+	
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
-	  }
+	}
 	
 	@Override
 	public String getText() {
@@ -120,15 +120,14 @@ public class NewObject extends Composite implements HasText {
 		// TODO Auto-generated method stub
 		
 	}
-@UiHandler("latitude")
-void onlatitudeClick(ClickEvent event){
-
+	@UiHandler("latitude")
+	void onlatitudeClick(ClickEvent event){
 	   Maps.loadMapsApi("", "2", false, new Runnable() {
 		      public void run() {
 		        buildUi();
 		      }
 		    });
-}
+	}
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
@@ -173,8 +172,6 @@ void onlatitudeClick(ClickEvent event){
 			newObject.latitude = intLatitude;
 			newObject.usagePattern = intUsagePattern;
 			newObject.impactDegree = intImpactDegree;
-			
-			
 			
 			if(simulatorObject.isEmpty)
 			{
