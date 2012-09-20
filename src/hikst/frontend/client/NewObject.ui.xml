@@ -45,13 +45,14 @@
          	<g:Tree ui:field="tree"/>
          </g:FlowPanel>
        </g:center>
-       <g:east size='11.4'>
+       <g:east size='38.1'>
          <g:FlowPanel styleName="{style.eastPanel}">
          	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
          	<g:TextBox/>
          	<g:TextBox/>
          	<g:TextBox text="Navn" alignment="CENTER"/>
          	<g:Button width="157px" ui:field="slettObjektButton">Slett Objekt</g:Button>
+         	<g:AbsolutePanel height="479px" ui:field="mapsPanel" width="492px"/>
          </g:FlowPanel>
        </g:east>     
         <g:south size="5">

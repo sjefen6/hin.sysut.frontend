@@ -10,9 +10,19 @@ import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.maps.client.InfoWindowContent;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.Maps;
+import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.maps.client.event.MarkerDragEndHandler;
+import com.google.gwt.maps.client.event.MarkerDragStartHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -21,12 +31,16 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public class NewObject extends Composite implements HasText {
 
@@ -49,6 +63,7 @@ public class NewObject extends Composite implements HasText {
 	@UiField Button saveObject;
 	@UiField Tree tree;
 	@UiField Button slettObjektButton;
+	@UiField AbsolutePanel mapsPanel;
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 	
@@ -71,7 +86,28 @@ public class NewObject extends Composite implements HasText {
 		usagePattern.setText("1");
 	}
 	
-	
+	private void buildUi() {
+	    // Open a map centered on Cawker City, KS USA
+	    LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
+	    
+	    final MapWidget map = new MapWidget(startPos, 2);
+	    map.setSize("100%", "100%");
+	    // Add some controls for the zoom level
+	    map.addControl(new LargeMapControl());
+	    
+
+	    MarkerOptions opt = MarkerOptions.newInstance();
+	    opt.setDraggable(true);
+	   
+	    // Add a marker
+	    map.addOverlay(new Marker(startPos, opt));
+	    // Add an info window to highlight a point of interest
+	    map.getInfoWindow().open(map.getCenter(),
+	        new InfoWindowContent("Selve byen!"));
+
+	    mapsPanel.add(map);
+	    // Add the map to the HTML host page
+	  }
 	
 	@Override
 	public String getText() {
@@ -84,6 +120,15 @@ public class NewObject extends Composite implements HasText {
 		// TODO Auto-generated method stub
 		
 	}
+@UiHandler("latitude")
+void onlatitudeClick(ClickEvent event){
+
+	   Maps.loadMapsApi("", "2", false, new Runnable() {
+		      public void run() {
+		        buildUi();
+		      }
+		    });
+}
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
