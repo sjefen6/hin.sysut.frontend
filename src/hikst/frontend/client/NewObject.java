@@ -323,11 +323,9 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
     	cb.setValue(true);
     	cb.addClickListener(new ClickListener()
     	{
-
 			@Override
 			public void onClick(Widget sender) {
 				
-		
 			}
     		
     	});
@@ -397,7 +395,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 			}
 		}	
 		
-		
 		public void clear()
 		{
 			isEmpty = true;
@@ -451,7 +448,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		}
 	}
 
-	
 	@UiHandler("slettObjektButton")
 	void onSlettObjektButtonClick(ClickEvent event) {
 			
@@ -460,106 +456,4 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		selectedSimObject = simulatorObject.rootObject;
 		updateMenu();
 	}
-	/*
-	 class ConsumeResult implements LocationCallback {
-         private String address;
-         public ConsumeResult(String add) {
-                 address = add;
-         }
-         @Override
-         public void onFailure(int statusCode) {
-                 final DialogBox dbg = new DialogBox();
-            /*     dbg.add(mMsgOK);
-                 mMsgOK.addClickHandler(new ClickHandler() {
-                         @Override
-                         public void onClick(ClickEvent event) {
-                                 dbg.hide();
-                         }
-                 });
-                 dbg.setText("Could not find address: " + address);
-                 dbg.setPopupPosition(100, 100);
-                 dbg.show();
-         }
-
-         @Override
-         public void onSuccess(JsArray<Placemark> locations) {
-                 // TODO Auto-generated method stub
-             for (int i = 0; i < locations.length(); i++) {
-                 Placemark pm = locations.get(i);
-                 LatLng ll = pm.getPoint();
-                 double longi = ll.getLongitude();
-                 double lati = ll.getLatitude();
-                         final String msg = new String(Double.toString(longi) + ", " + Double.toString(lati));
-                         //make a mapEntry to mapData
-                         MapEntry me = new MapEntry(address, lati, longi, pm.getAccuracy());
-                         mMapData.add(me);
-                         //Add a bubble to mapWidget with click handler to display coords
-                         Marker mm = new Marker(ll);
-                         mm.addMarkerClickHandler(new MarkerClickHandler(){
-                                 @Override
-                                 public void onClick(MarkerClickEvent event) {
-                                         // TODO Auto-generated method stub                              
-                                         mMapWidget.getInfoWindow().open(((Marker)event.getSource()).getLatLng(),
-                                         new InfoWindowContent(msg));            
-                                 }                                      
-                         });
-                         mMapWidget.addOverlay(mm);
-                         mMapWidget.getInfoWindow().open(ll, new InfoWindowContent(msg));                                                
-             }
-             //Should have been called using DeferedCommand but that didn't work
-             refreshMaps();
-         }
-		@Override
-		public void onSuccess(JsArray<Placemark> locations) {
-			// TODO Auto-generated method stub
-			
-		}
- }
-*/
-
-
-
-/*	@Override
-	public void onFailure(int statusCode) {
-		// TODO Auto-generated method stub
-		Window.alert("onFailure fucked up!");
-	}
-
-
-
-	@Override
-	public void onSuccess(JsArray<Placemark> locations) {
-		for (int i = 0; i < locations.length(); i++) {
-            Placemark pm = locations.get(i);
-            LatLng ll = pm.getPoint();
-            double longi = ll.getLongitude();
-            double lati = ll.getLatitude();
-            lon  = String.valueOf(longi);
-            lat = String.valueOf(lati);
-            
-            final String msg = new String(Double.toString(longi) + ", " + Double.toString(lati));
-            
-            Marker mm = new Marker(ll);
-            mm.addMarkerClickHandler(new MarkerClickHandler()
-            {
-
-				@Override
-				public void onClick(MarkerClickEvent event) {
-					// TODO Auto-generated method stub
-					
-					 map.getInfoWindow().open(((Marker)event.getSource()).getLatLng(),
-                             new InfoWindowContent(msg));   
-				
-                    longtitude.setText(msg);
-                    latitude.setText(lat);
-                    		
-				}
-            	
-            });
-            map.addOverlay(mm);
-            
-           
-		}
-		
-	}*/
 }
