@@ -2,7 +2,6 @@ package hikst.frontend.client;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class SettingsLoadableCallback implements AsyncCallback<Boolean>{
 	

@@ -2,15 +2,11 @@ package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.LoginRequest;
-import hikst.frontend.shared.SimulationRequest;
-import hikst.frontend.shared.SimulationTicket;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
@@ -81,5 +77,4 @@ public class Login extends Composite implements HasText {
     	Graph powerGraph = simulation.getEffectGraph();
 		powerGraph.update();
     }
-
 }

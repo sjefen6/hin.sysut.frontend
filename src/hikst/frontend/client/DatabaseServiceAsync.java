@@ -4,6 +4,7 @@ import hikst.frontend.shared.Description;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
+import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
@@ -35,7 +36,7 @@ public interface DatabaseServiceAsync {
 	throws IllegalArgumentException;
 	void exists(String username, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
-	void saveObject(SimulatorObject object, AsyncCallback<Integer> callback);
+	void saveObject(SimObjectTree simobject, AsyncCallback<Integer> callback);
 	void requestSimulation(SimulationRequest request,
 			AsyncCallback<SimulationTicket> callback);
 	void deleteObject(int object_id, AsyncCallback<Boolean> callback)

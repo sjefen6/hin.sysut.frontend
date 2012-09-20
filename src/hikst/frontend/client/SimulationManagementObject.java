@@ -192,7 +192,7 @@ public class SimulationManagementObject
 		}
 	}
 	
-	public void save(MyDockLayoutPanel panel)
+	/*public void save(MyDockLayoutPanel panel)
 	{	
 		if(this.isNotInDatabase)
 		{
@@ -203,7 +203,7 @@ public class SimulationManagementObject
 			connection.updateObject(id, this.getSimulatorObject(), new UpdateCallback());
 		}
 		
-	}
+	}*/
 	
 	public void clear()
 	{

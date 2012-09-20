@@ -7,7 +7,7 @@
 		}
 	</ui:style>
 	<g:HTMLPanel>
-		Hello,
+		Hi, are you there?
 		
 	</g:HTMLPanel>
 </ui:UiBinder> 

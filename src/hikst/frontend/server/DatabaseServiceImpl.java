@@ -10,29 +10,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.mortbay.jetty.servlet.AbstractSessionManager.Session;
-
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.shared.Description;
-import hikst.frontend.shared.ImpactDegree;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
+import hikst.frontend.shared.SimObject;
+import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
 public class DatabaseServiceImpl extends RemoteServiceServlet implements DatabaseService
 {	
-	private static final String USER_KEY = "USER";
 	private static final int SALT_LENGTH = 20;
 	private static final SecureRandom randomizer = new SecureRandom();
 	
@@ -351,104 +349,142 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		}
 	}
 
-	private Integer saveImpactDegree(ImpactDegree impactDegree)
+//	private Integer saveImpactDegree(ImpactDegree impactDegree)
+//	{
+//		if(impactDegree == null)
+//			return null;
+//		
+//		try
+//		{
+//			Connection connection = Settings.getDBC();
+//			
+//			String query = "INSERT INTO Impact_Degrees(Percent, Type_ID) VALUES(?,?);";
+//			PreparedStatement statement = connection.prepareStatement(query);
+//			statement.setDouble(1, impactDegree.getPercent());
+//			statement.setInt(2, impactDegree.getTypeID());
+//			
+//			return statement.executeUpdate();
+//		}
+//		catch(SQLException ex)
+//		{
+//			ex.printStackTrace();
+//			return null;
+//		}
+//	}
+	
+	private int saveSimObject(SimObject simObject) throws SQLException
 	{
-		if(impactDegree == null)
-			return null;
+		Connection connection = Settings.getDBC();
+		String query = "INSERT INTO Objects(Name,Effect,Voltage,Current,Impact_Degree_ID) VALUES(?,?,?,?,?) RETURNING ID";
+		PreparedStatement statement;
 		
-		try
+		statement = connection.prepareStatement(query);
+		
+		statement.setString(1, simObject.name);
+		statement.setDouble(2, simObject.effect);
+		statement.setDouble(3, simObject.volt);
+		statement.setDouble(4, simObject.volt);
+		statement.setFloat(5, simObject.impactDegree);
+		ResultSet set = statement.executeQuery();
+		
+		int object_id = set.getInt(1);
+		
+		Iterator<SimObject> children = simObject.getChildIterator();
+		
+		while(children.hasNext())
 		{
-			Connection connection = Settings.getDBC();
+			SimObject child = children.next();
+			int child_id = child.getID();
 			
-			String query = "INSERT INTO Impact_Degrees(Percent, Type_ID) VALUES(?,?);";
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setDouble(1, impactDegree.getPercent());
-			statement.setInt(2, impactDegree.getTypeID());
+			if(child.isFromDatabase())
+			{
+				updateSimObject(child);
+			}
+			else
+			{
+				saveSimObject(child);
+			}
 			
-			return statement.executeUpdate();
+			saveChildLink(object_id,child_id);
 		}
-		catch(SQLException ex)
+		
+		return object_id;
+	}
+	
+	private void updateSimObject(SimObject simObject) throws SQLException
+	{
+		Connection connection = Settings.getDBC();
+		String query = "UPDATE INTO Objects(Name,Effect,Voltage,Current,Impact_Degree_ID) VALUES(?,?,?,?,?) where ID=?";
+		PreparedStatement statement;
+		
+		statement = connection.prepareStatement(query);
+		
+		int objectID = simObject.getID();
+		statement.setString(1, simObject.name);
+		statement.setDouble(2, simObject.effect);
+		statement.setDouble(3, simObject.volt);
+		statement.setDouble(4, simObject.volt);
+		statement.setFloat(5, simObject.impactDegree);
+		statement.setInt(6, objectID);
+		statement.executeUpdate();
+		
+		Iterator<SimObject> children = simObject.getChildIterator();
+		
+		while(children.hasNext())
 		{
-			ex.printStackTrace();
-			return null;
+			SimObject child = children.next();
+			int child_id = child.getID();
+			
+			if(child.isFromDatabase())
+			{
+				updateSimObject(child);
+			}
+			else
+			{
+				child_id = saveSimObject(child);
+			}
+			
+
+			saveChildLink(objectID,child_id);
 		}
+	}
+	
+	private void saveChildLink(int object_id, int child_id)throws SQLException
+	{
+		Connection connection = Settings.getDBC();
+		
+		String anotherQuery = "INSERT INTO Part_Objects(Father_ID,Son_ID) VALUES(?,?)";
+		PreparedStatement anotherStatement = connection.prepareStatement(anotherQuery);
+		anotherStatement.setInt(1, object_id);
+		anotherStatement.setInt(2, child_id);
+		anotherStatement.executeUpdate();
 	}
 	
 	//saves the simulator object in the database and returns the ID in the database
 	@Override
-	public int saveObject(SimulatorObject simulatorObject) {
+	public int saveObject(SimObjectTree simulatorObject) {
 		
-		Connection connection = Settings.getDBC();
-		int object_id = 0;
 		try
 		{
-			Integer impact_degree_id = saveImpactDegree(simulatorObject.getImpact_degree());
-		
-			if(impact_degree_id != null)
-			{	
-				String query = "INSERT INTO Objects(Name,Effect,Voltage,Current,Impact_Degree_ID) VALUES(?,?,?,?,?) RETURNING ID";
-				PreparedStatement statement = connection.prepareStatement(query);
-				statement.setString(1, simulatorObject.getName());
-				statement.setDouble(2, simulatorObject.getEffect());
-				statement.setDouble(3, simulatorObject.getVoltage());
-				statement.setDouble(4, simulatorObject.getCurrent());
-				statement.setInt(5, impact_degree_id);
-				ResultSet set = statement.executeQuery();
-				
-				
-				if(set.next())
-				{
-					object_id = set.getInt(1);
-				}
-				else
-				{
-					return 0;
-				}
+			if(simulatorObject.rootObject.isFromDatabase()){
+				//returns the id of the object if object saved
+				return saveSimObject(simulatorObject.rootObject);
 			}
 			else
 			{
-				String query = "INSERT INTO Objects(Name,Effect,Voltage,Current,Impact_Degree_ID) VALUES(?,?,?,?,null) RETURNING ID";
-				PreparedStatement statement = connection.prepareStatement(query);
-				statement.setString(1, simulatorObject.getName());
-				statement.setDouble(2, simulatorObject.getEffect());
-				statement.setDouble(3, simulatorObject.getVoltage());
-				statement.setDouble(4, simulatorObject.getCurrent());
-				ResultSet set = statement.executeQuery();
-				
-				if(set.next())
-				{
-					object_id = set.getInt(1);
-				}
-				else
-				{
-					return 0;
-				}
+				updateSimObject(simulatorObject.rootObject);
 			}
-			
-			List<SimulatorObject> sons = simulatorObject.getSons();
-			ArrayList<Integer> sonIDs = new ArrayList<Integer>();
-			
-			for(int i = 0; i<sons.size(); i++)
-			{
-				sonIDs.add(saveObject(sons.get(i)));
-			}
-			
-			for(int i = 0; i<sonIDs.size(); i++)
-			{
-				String anotherQuery = "INSERT INTO Part_Objects(Father_ID,Son_ID) VALUES(?,?)";
-				PreparedStatement anotherStatement = connection.prepareStatement(anotherQuery);
-				anotherStatement.setInt(1, object_id);
-				anotherStatement.setInt(2, sonIDs.get(i));
-				anotherStatement.executeUpdate();
-			}
-			
-			return object_id;
+
+			//returns -1 if just updating
+			return -1;
 		}
 		catch(SQLException ex)
 		{
+			//returns -2 for sql-exception
 			ex.printStackTrace();
-			return 0;
+			return -2;
 		}
+		
 	}
 
 	@Override
