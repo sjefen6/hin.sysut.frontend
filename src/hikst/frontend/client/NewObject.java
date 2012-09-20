@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
+import hikst.frontend.client.ObjectMenu;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
@@ -22,6 +23,11 @@ import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.maps.client.event.MarkerDragEndHandler;
+import com.google.gwt.maps.client.event.MarkerDragStartHandler;
+import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -40,6 +46,9 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public class NewObject extends Composite implements HasText {
 
@@ -78,7 +87,8 @@ public class NewObject extends Composite implements HasText {
 	//@UiField TextBox updateVoltTextButton;
 	//@UiField TextBox updateLongitudeTextButton;
 	//@UiField TextBox updateLatitudeButton;
-	
+	@UiField AbsolutePanel mapsPanel;
+
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
@@ -112,25 +122,25 @@ public class NewObject extends Composite implements HasText {
 	
 	private void buildUi() {
 	    // Open a map centered on Cawker City, KS USA
-	    LatLng cawkerCity = LatLng.newInstance(39.509, -98.434);
-
-	    final MapWidget map = new MapWidget(cawkerCity, 2);
-	    map.setSize("100%", "100%");
-	    // Add some controls for the zoom level
-	    map.addControl(new LargeMapControl());
-
-	    // Add a marker
-	    map.addOverlay(new Marker(cawkerCity));
-
-	    // Add an info window to highlight a point of interest
-	    map.getInfoWindow().open(map.getCenter(),
-	        new InfoWindowContent("World's Largest Ball of Sisal Twine"));
-
-	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-	    dock.addNorth(map, 500);
-
-	    // Add the map to the HTML host page
-	    RootLayoutPanel.get().add(dock);
+		LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
+		
+		final MapWidget map = new MapWidget(startPos, 2);
+		map.setSize("100%", "100%");
+		// Add some controls for the zoom level
+		map.addControl(new LargeMapControl());
+		
+		
+		MarkerOptions opt = MarkerOptions.newInstance();
+		opt.setDraggable(true);
+		
+		// Add a marker
+		map.addOverlay(new Marker(startPos, opt));
+		// Add an info window to highlight a point of interest
+		map.getInfoWindow().open(map.getCenter(),
+		    new InfoWindowContent("Selve byen!"));
+		
+		mapsPanel.add(map);
+		// Add the map to the HTML host page
 	    
 	    tree.addSelectionHandler(new SelectionHandler<TreeItem>()
 				{
@@ -156,6 +166,7 @@ public class NewObject extends Composite implements HasText {
 			
 				});
 	  }
+
 	
 	@Override
 	public String getText() {
@@ -167,6 +178,14 @@ public class NewObject extends Composite implements HasText {
 	public void setText(String text) {
 		// TODO Auto-generated method stub
 		
+	}
+	@UiHandler("latitude")
+	void onlatitudeClick(ClickEvent event){
+	   Maps.loadMapsApi("", "2", false, new Runnable() {
+		      public void run() {
+		        buildUi();
+		      }
+		    });
 	}
 
 	@UiHandler("back")
@@ -260,7 +279,7 @@ public class NewObject extends Composite implements HasText {
     	
     	
     	
-    	//hø hø
+    	//hÂ¯ hÂ¯
     	Iterator<SimObject> iterator = simulatorObject.rootObject.simulatorObjects.iterator();
     	
     	while(iterator.hasNext())
@@ -275,8 +294,7 @@ public class NewObject extends Composite implements HasText {
     	//initWidget(tree);
 	}
 	
-	
-	
+
 	@SuppressWarnings("deprecation")
 	private TreeItem addChildren(SimObject simObject)
 	{
@@ -301,7 +319,7 @@ public class NewObject extends Composite implements HasText {
     		
     	});
     	
-    	//hø hø
+    	//hÂ¯ hÂ¯
     	Iterator<SimObject> iterator = simObject.simulatorObjects.iterator();
     	
     	if(iterator.hasNext())
