@@ -86,6 +86,29 @@ public class NewObject extends Composite implements HasText {
 
 	public NewObject() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		tree.addSelectionHandler(new SelectionHandler<TreeItem>()
+				{
+
+					@Override
+					public void onSelection(SelectionEvent<TreeItem> event) {
+						
+						TreeItem treeItem = tree.getSelectedItem();
+						
+						Integer[] path = getPath(treeItem);
+						
+						SimObject selectedObject = simulatorObject.rootObject;
+						
+						for(int depth = path.length - 1; depth>= 0; depth--)
+						{
+							selectedObject = selectedObject.simulatorObjects.get(path[depth]);
+						}
+						
+						selectedSimObject = selectedObject;
+						updateMenu();
+					}
+			
+				});
 	}
 	
 	
@@ -132,29 +155,7 @@ public class NewObject extends Composite implements HasText {
 	    // Add the map to the HTML host page
 	    RootLayoutPanel.get().add(dock);
 	    
-	    tree.addSelectionHandler(new SelectionHandler<TreeItem>()
-				{
-
-					@Override
-					public void onSelection(SelectionEvent<TreeItem> event) {
-						
-						TreeItem treeItem = tree.getSelectedItem();
-						
-						Integer[] path = getPath(treeItem);
-						
-						SimObject selectedObject = simulatorObject.rootObject;
-						
-						for(int depth = path.length - 1; depth>= 0; depth--)
-						{
-							selectedObject = selectedObject.simulatorObjects.get(path[depth]);
-						}
-						
-						selectedSimObject = selectedObject;
-						
-						updateMenu();
-					}
-			
-				});
+	   
 	  }
 	
 	@Override
@@ -186,7 +187,7 @@ public class NewObject extends Composite implements HasText {
 	@SuppressWarnings("deprecation")
 	@UiHandler("addObject")
 	void onAddObject(ClickEvent event){
-	
+		
 		String objectName = name.getText();
 		String impactDegree = impactFactor.getText();
 		String objectEffect = effect.getText();
@@ -220,7 +221,7 @@ public class NewObject extends Composite implements HasText {
 			}
 			else
 			{
-				selectedSimObject.simulatorObjects.add(newObject);
+				selectedSimObject.addChild(newObject);
 			}
 			
 			simulatorObject.isEmpty = false;
@@ -321,6 +322,7 @@ public class NewObject extends Composite implements HasText {
 		updateEffectButton.setText(String.valueOf(selectedSimObject.effect));
 		updateVoltButton.setText(String.valueOf(selectedSimObject.volt));
 		updateLongitudeButton.setText(String.valueOf(selectedSimObject.longitude));
+		updateLatitudeButton.setText(String.valueOf(selectedSimObject.latitude));
 		updateUsagePatternButton.setText(String.valueOf(selectedSimObject.usagePattern));
 	}
 	
@@ -342,7 +344,7 @@ public class NewObject extends Composite implements HasText {
 		
 		Integer[] returnPath = new Integer[path.size()];
 		path.toArray(returnPath);
-		Window.alert(path.toString());
+		//Window.alert(path.toString());
 		return returnPath;
 	}
 	
