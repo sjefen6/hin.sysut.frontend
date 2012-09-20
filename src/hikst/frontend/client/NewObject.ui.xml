@@ -15,7 +15,7 @@
             background-color: grey;
         }
         .centerPanel {
-            background-color: grey;
+            background-color: white;
         }       
     </ui:style>
      <g:DockLayoutPanel unit='EM' width="800" height="600">
@@ -26,7 +26,7 @@
          	<g:Button ui:field="buttonLogout" width="150px">Logg Ut</g:Button>
          </g:FlowPanel>
        </g:north>
-       <g:west size='12.1'>
+       <g:west size='13.5'>
          <g:FlowPanel styleName="{style.westPanel}">
          	<g:Label/>
          	<g:Label text="Create New Object" horizontalAlignment="ALIGN_CENTER"/>
@@ -45,7 +45,7 @@
          	<g:Tree ui:field="tree"/>
          </g:FlowPanel>
        </g:center>
-       <g:east size='11.4'>
+       <g:east size='25.5'>
          <g:FlowPanel styleName="{style.eastPanel}">
          	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
          	<g:TextBox ui:field="updateNameButton" text="Navn" alignment="CENTER"/>
@@ -57,10 +57,11 @@
          	<g:TextBox text="Forbrukermønster" alignment="CENTER" ui:field="updateUsagePatternButton"/>
          	<g:Button width="149px" ui:field="updateObjectButton" text="Oppdater Objekt"/>
          	<g:Button width="157px" ui:field="slettObjektButton">Slett Objekt</g:Button>
-         	<g:AbsolutePanel height="479px" ui:field="mapsPanel" width="492px"/>
+         	<g:Button width="137px" text="Vis Kart" ui:field="showMap"/>
+         	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="328px"/>
          </g:FlowPanel>
        </g:east>     
-        <g:south size="5">
+        <g:south size="12.6">
          <g:FlowPanel styleName="{style.southPanel}">
          	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
          	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
