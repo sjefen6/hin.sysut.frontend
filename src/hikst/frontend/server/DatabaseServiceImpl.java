@@ -26,6 +26,7 @@ import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
@@ -375,7 +376,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	private int saveSimObject(SimObject simObject) throws SQLException
 	{
 		Connection connection = Settings.getDBC();
-		String query = "INSERT INTO Objects(Name,Effect,Voltage,Current,Impact_Degree_ID) VALUES(?,?,?,?,?) RETURNING ID";
+		String query = "INSERT INTO Objects(Name,Effect,Voltage,Current, Longitude, Latitude) VALUES(?,?,?,?,?,?) RETURNING ID";
 		PreparedStatement statement;
 		
 		statement = connection.prepareStatement(query);
@@ -384,9 +385,11 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		statement.setDouble(2, simObject.effect);
 		statement.setDouble(3, simObject.volt);
 		statement.setDouble(4, simObject.volt);
-		statement.setFloat(5, simObject.impactDegree);
+		statement.setInt(5, simObject.longitude);
+		statement.setInt(6, simObject.latitude);
+		//statement.setFloat(5, simObject.impactDegree);
 		ResultSet set = statement.executeQuery();
-		
+		set.next();
 		int object_id = set.getInt(1);
 		
 		Iterator<SimObject> children = simObject.getChildIterator();
@@ -414,7 +417,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	private void updateSimObject(SimObject simObject) throws SQLException
 	{
 		Connection connection = Settings.getDBC();
-		String query = "UPDATE INTO Objects(Name,Effect,Voltage,Current,Impact_Degree_ID) VALUES(?,?,?,?,?) where ID=?";
+		String query = "UPDATE Objects SET Name=?,Effect=?,Voltage=?,Current=?, Longitude=?, Latitude=? WHERE ID=?";
 		PreparedStatement statement;
 		
 		statement = connection.prepareStatement(query);
@@ -424,9 +427,11 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		statement.setDouble(2, simObject.effect);
 		statement.setDouble(3, simObject.volt);
 		statement.setDouble(4, simObject.volt);
-		statement.setFloat(5, simObject.impactDegree);
-		statement.setInt(6, objectID);
-		statement.executeUpdate();
+		//statement.setFloat(5, simObject.impactDegree);
+		statement.setInt(5, objectID);
+		statement.setInt(6, simObject.longitude);
+		statement.setInt(7, simObject.latitude);
+		statement.executeUpdate();// TODO: PÅL!
 		
 		Iterator<SimObject> children = simObject.getChildIterator();
 		
@@ -468,11 +473,12 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		{
 			if(simulatorObject.rootObject.isFromDatabase()){
 				//returns the id of the object if object saved
-				return saveSimObject(simulatorObject.rootObject);
+				updateSimObject(simulatorObject.rootObject);
 			}
 			else
 			{
-				updateSimObject(simulatorObject.rootObject);
+				
+				return saveSimObject(simulatorObject.rootObject);
 			}
 
 			//returns -1 if just updating
@@ -487,7 +493,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		
 	}
 
-	@Override
+	/*@Override
 	public boolean updateObject(int id,SimulatorObject object) {
 		
 		Connection connection = Settings.getDBC();
@@ -501,7 +507,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			statement.setDouble(3, object.getVoltage());
 			statement.setDouble(4, object.getCurrent());
 			//use impact id in the simulator-object-class instead
-			//statement.setInt(5, object.get)
+			statement.setInt(5, object.get)
 			statement.setInt(6, id);
 			
 			List<SimulatorObject> sons = object.getSons();
@@ -521,7 +527,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		return false;
 	//TODO
 		
-	}
+	}*/
 
 	//only delete objects that hasnt been used in a simulation!
 	//will throw SQLException if it has been used in a simulation!

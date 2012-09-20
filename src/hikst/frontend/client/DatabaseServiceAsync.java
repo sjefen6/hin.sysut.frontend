@@ -43,8 +43,8 @@ public interface DatabaseServiceAsync {
 	throws IllegalArgumentException;
 	void deleteSimulations(int id, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
-	void updateObject(int id ,SimulatorObject object, AsyncCallback<Boolean> callback)
-	throws IllegalArgumentException;
+	//void updateObject(int id ,SimulatorObject object, AsyncCallback<Boolean> callback)
+	//throws IllegalArgumentException;
 	void changeAccessLevel(String username, String access_level,
 			AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;

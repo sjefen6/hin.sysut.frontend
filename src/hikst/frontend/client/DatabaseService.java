@@ -36,7 +36,7 @@ public interface DatabaseService extends RemoteService
 	boolean changeAccessLevel(String username,String access_level);
 
 	int saveObject(SimObjectTree simobject);
-	boolean updateObject(int id,SimulatorObject object);
+	//boolean updateObject(int id,SimulatorObject object);
 	boolean deleteObject(int object_id);
 	SimulationTicket requestSimulation(SimulationRequest request);
 	boolean deleteSimulations(int id);

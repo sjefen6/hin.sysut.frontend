@@ -110,8 +110,6 @@ public class NewObject extends Composite implements HasText {
 		effect.setText("1");
 		volt.setText("1");
 		name.setText("1");
-		longtitude.setText("1");
-		latitude.setText("1");
 		usagePattern.setText("1");
 	}
 	@UiHandler("latitude")
@@ -142,9 +140,9 @@ public class NewObject extends Composite implements HasText {
 	          Overlay overlay = e.getOverlay();
 	          LatLng point = e.getLatLng();
 
-	          NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
-	          latitude.setText(fmt.format(point.getLatitude()));
-	          longtitude.setText(fmt.format(point.getLongitude()));
+	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
+	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
+	          longtitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
 
 	    MarkerOptions opt = MarkerOptions.newInstance();
 	    opt.setDraggable(true);
@@ -159,13 +157,6 @@ public class NewObject extends Composite implements HasText {
 	    
 	    latitude.setEnabled(false);
 	    longtitude.setEnabled(false);
-		
-	/*   
-	    // Add a marker
-	    map.addOverlay(new Marker(startPos, opt));
-	    // Add an info window to highlight a point of interest
-	    map.getInfoWindow().open(map.getCenter(),
-	        new InfoWindowContent("Selve byen!"));*/
 	
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
@@ -183,14 +174,6 @@ public class NewObject extends Composite implements HasText {
 		// TODO Auto-generated method stub
 		
 	}
-	/*@UiHandler("latitude")
-	void onlatitudeClick(ClickEvent event){
-	   Maps.loadMapsApi("", "2", false, new Runnable() {
-		      public void run() {
-		        buildUi();
-		      }
-		    });
-	}*/
 	
 	@UiHandler("showMap")
 	void onshowMapClick(ClickEvent event){
@@ -271,16 +254,7 @@ public class NewObject extends Composite implements HasText {
 		tree.clear();
 		
 		CheckBox cb = new CheckBox(simulatorObject.rootObject.name);
-		TreeItem rootItem = new TreeItem(cb);
-	
-//		rootItem.addItem("Effect: "+simulatorObject.rootObject.effect);
-//		rootItem.addItem("Volt: "+simulatorObject.rootObject.volt);
-//		rootItem.addItem("Longitude: "+simulatorObject.rootObject.longitude);
-//		rootItem.addItem("Latitude: "+simulatorObject.rootObject.latitude);
-//		rootItem.addItem("Usagepattern: "+simulatorObject.rootObject.usagePattern);
-//		rootItem.addItem("Impact degree :"+simulatorObject.rootObject.impactDegree);
-//		
-		
+		TreeItem rootItem = new TreeItem(cb);	
 		
     	cb.setValue(true);
     	cb.addClickListener(new ClickListener()
@@ -308,27 +282,18 @@ public class NewObject extends Composite implements HasText {
     	//initWidget(tree);
 	}
 	
-
 	@SuppressWarnings("deprecation")
 	private TreeItem addChildren(SimObject simObject)
 	{
 		CheckBox cb = new CheckBox(simObject.name);
 		TreeItem rootItem = new TreeItem(cb);
-//		rootItem.addItem("Effect: "+simObject.effect);
-//		rootItem.addItem("Volt: "+simObject.volt);
-//		rootItem.addItem("Longitude: "+simObject.longitude);
-//		rootItem.addItem("Latitude: "+simObject.latitude);
-		//rootItem.addItem("Usagepattern: "+simObject.usagePattern);
-		//rootItem.addItem("Impact degree :"+simulatorObject.rootObject.impactDegree);
 		
     	cb.setValue(true);
     	cb.addClickListener(new ClickListener()
     	{
-
 			@Override
 			public void onClick(Widget sender) {
 				
-		
 			}
     		
     	});
@@ -379,11 +344,6 @@ public class NewObject extends Composite implements HasText {
 		return returnPath;
 	}
 	
-	
-	
-	
-
-	
 	@UiHandler("slettObjektButton")
 	void onSlettObjektButtonClick(ClickEvent event) {
 			
@@ -392,52 +352,7 @@ public class NewObject extends Composite implements HasText {
 		selectedSimObject = simulatorObject.rootObject;
 		updateMenu();
 	}
-	/*
-	@UiHandler("oppdaterObjekt")
-	void onOppdaterObjektClick(ClickEvent event) {
-		
-		if(selectedSimObject != null){
-		
-			String objectName = updateNameTextButton.getText();
-			String impactDegree = updateImpactDegreeButton.getText();
-			String objectEffect = updateEffectTextButton.getText();
-			String objectVolt = updateVoltTextButton.getText();
-			String objectLongitude = updateLongitudeTextButton.getText();
-			String objectLatitude = updateLatitudeButton.getText();
-			String objectUsagePattern = updateUsagePatternButton.getText();
-			
-			try
-			{
-				float floatEffect = Float.parseFloat(objectEffect);
-				float floatVolt = Float.parseFloat(objectVolt);
-				int intLongitude = Integer.parseInt(objectLongitude);
-				int intLatitude = Integer.parseInt(objectLatitude);
-				int intUsagePattern = Integer.parseInt(objectUsagePattern);
-				float intImpactDegree = Float.parseFloat(impactDegree);
-				
-				selectedSimObject.name = objectName;
-				selectedSimObject.impactDegree = intImpactDegree;
-				selectedSimObject.effect = floatEffect;
-				selectedSimObject.volt = floatVolt;
-				selectedSimObject.longitude = intLongitude;
-				selectedSimObject.latitude = intLatitude;
-				selectedSimObject.usagePattern = intUsagePattern;
-				//newObject.effect = floatEffect;
-				//newObject.volt = floatVolt;
-				//newObject.longitude = intLongitude;
-				//newObject.latitude = intLatitude;
-				//newObject.usagePattern = intUsagePattern;
-				//newObject.impactDegree = intImpactDegree;
-			}catch(Exception ex)
-			{
-				ex.printStackTrace();
-			}
-		}
-		else
-		{
-			Window.alert("You must select an object");
-		}
-	}*/
+
 	@UiHandler("updateObjectButton")
 	void onUpdateObjectButtonClick(ClickEvent event) {
 		
