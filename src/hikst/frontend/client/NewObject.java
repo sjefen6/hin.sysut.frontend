@@ -3,6 +3,8 @@ package hikst.frontend.client;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.tools.ant.taskdefs.PathConvert.MapEntry;
+
 
 import hikst.frontend.client.ObjectMenu;
 import hikst.frontend.shared.Description;
@@ -11,18 +13,24 @@ import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.control.MapTypeControl;
+import com.google.gwt.maps.client.geocode.LocationCallback;
+import com.google.gwt.maps.client.geocode.Placemark;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.event.MarkerDragEndHandler;
 import com.google.gwt.maps.client.event.MarkerDragStartHandler;
 import com.google.gwt.maps.client.event.MapClickHandler;
@@ -35,6 +43,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
@@ -47,7 +56,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
-public class NewObject extends Composite implements HasText {
+public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
 	ObjectMenu panel;
 	SimulatorObjectTree simulatorObject = new SimulatorObjectTree();
@@ -69,7 +78,10 @@ public class NewObject extends Composite implements HasText {
 	@UiField Tree tree;
 	@UiField Button slettObjektButton;
 	@UiField AbsolutePanel mapsPanel;
-
+	private String lat;
+	private String lon;
+	MapWidget map;
+	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
@@ -110,16 +122,40 @@ public class NewObject extends Composite implements HasText {
 	    map.setSize("100%", "100%");
 	    // Add some controls for the zoom level
 	    map.addControl(new LargeMapControl());
+	    map.addControl(new MapTypeControl());
 	    
-	
+	    map.addMapClickHandler(new MapClickHandler() {
+	        public void onClick(MapClickEvent e) {
+	          map.clearOverlays();
+	        	
+	        	MapWidget sender = e.getSender();
+	          Overlay overlay = e.getOverlay();
+	          LatLng point = e.getLatLng();
+
+	          NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
+	          latitude.setText(fmt.format(point.getLatitude()));
+	          longtitude.setText(fmt.format(point.getLongitude()));
+
 	    MarkerOptions opt = MarkerOptions.newInstance();
 	    opt.setDraggable(true);
+	    
+	    if (overlay != null && overlay instanceof Marker) {
+	          sender.removeOverlay(overlay);
+	        } else {
+	          sender.addOverlay(new Marker(point));
+	        }
+	      }
+	    });
+	    
+	    
+
 	   
+	/*   
 	    // Add a marker
 	    map.addOverlay(new Marker(startPos, opt));
 	    // Add an info window to highlight a point of interest
 	    map.getInfoWindow().open(map.getCenter(),
-	        new InfoWindowContent("Selve byen!"));
+	        new InfoWindowContent("Selve byen!"));*/
 	
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
@@ -424,5 +460,106 @@ public class NewObject extends Composite implements HasText {
 		selectedSimObject = simulatorObject.rootObject;
 		updateMenu();
 	}
+	/*
+	 class ConsumeResult implements LocationCallback {
+         private String address;
+         public ConsumeResult(String add) {
+                 address = add;
+         }
+         @Override
+         public void onFailure(int statusCode) {
+                 final DialogBox dbg = new DialogBox();
+            /*     dbg.add(mMsgOK);
+                 mMsgOK.addClickHandler(new ClickHandler() {
+                         @Override
+                         public void onClick(ClickEvent event) {
+                                 dbg.hide();
+                         }
+                 });
+                 dbg.setText("Could not find address: " + address);
+                 dbg.setPopupPosition(100, 100);
+                 dbg.show();
+         }
 
+         @Override
+         public void onSuccess(JsArray<Placemark> locations) {
+                 // TODO Auto-generated method stub
+             for (int i = 0; i < locations.length(); i++) {
+                 Placemark pm = locations.get(i);
+                 LatLng ll = pm.getPoint();
+                 double longi = ll.getLongitude();
+                 double lati = ll.getLatitude();
+                         final String msg = new String(Double.toString(longi) + ", " + Double.toString(lati));
+                         //make a mapEntry to mapData
+                         MapEntry me = new MapEntry(address, lati, longi, pm.getAccuracy());
+                         mMapData.add(me);
+                         //Add a bubble to mapWidget with click handler to display coords
+                         Marker mm = new Marker(ll);
+                         mm.addMarkerClickHandler(new MarkerClickHandler(){
+                                 @Override
+                                 public void onClick(MarkerClickEvent event) {
+                                         // TODO Auto-generated method stub                              
+                                         mMapWidget.getInfoWindow().open(((Marker)event.getSource()).getLatLng(),
+                                         new InfoWindowContent(msg));            
+                                 }                                      
+                         });
+                         mMapWidget.addOverlay(mm);
+                         mMapWidget.getInfoWindow().open(ll, new InfoWindowContent(msg));                                                
+             }
+             //Should have been called using DeferedCommand but that didn't work
+             refreshMaps();
+         }
+		@Override
+		public void onSuccess(JsArray<Placemark> locations) {
+			// TODO Auto-generated method stub
+			
+		}
+ }
+*/
+
+
+
+/*	@Override
+	public void onFailure(int statusCode) {
+		// TODO Auto-generated method stub
+		Window.alert("onFailure fucked up!");
+	}
+
+
+
+	@Override
+	public void onSuccess(JsArray<Placemark> locations) {
+		for (int i = 0; i < locations.length(); i++) {
+            Placemark pm = locations.get(i);
+            LatLng ll = pm.getPoint();
+            double longi = ll.getLongitude();
+            double lati = ll.getLatitude();
+            lon  = String.valueOf(longi);
+            lat = String.valueOf(lati);
+            
+            final String msg = new String(Double.toString(longi) + ", " + Double.toString(lati));
+            
+            Marker mm = new Marker(ll);
+            mm.addMarkerClickHandler(new MarkerClickHandler()
+            {
+
+				@Override
+				public void onClick(MarkerClickEvent event) {
+					// TODO Auto-generated method stub
+					
+					 map.getInfoWindow().open(((Marker)event.getSource()).getLatLng(),
+                             new InfoWindowContent(msg));   
+				
+                    longtitude.setText(msg);
+                    latitude.setText(lat);
+                    		
+				}
+            	
+            });
+            map.addOverlay(mm);
+            
+           
+		}
+		
+	}*/
 }
