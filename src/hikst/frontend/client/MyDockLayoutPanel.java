@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -27,8 +26,6 @@ import com.google.gwt.user.client.ui.TextArea;
  
 public class MyDockLayoutPanel extends Composite {
 
-  private boolean lightbolb = false;
-  private boolean heater = false;
   private boolean loggedin = false;
   private boolean updated = false;
   private String user1 = "Navn";
@@ -112,7 +109,7 @@ public class MyDockLayoutPanel extends Composite {
     	simManager.setEffect(watt);
     	simManager.setVoltage(volt);
     	simManager.setName(name);
-    	simManager.save(this);
+    	//simManager.save(this);
     	    	
     	CheckBox cb = new CheckBox("Object "+(objectCounter = objectCounter + 1)+" - "+name);
     	cb.setValue(true);
@@ -137,8 +134,6 @@ public class MyDockLayoutPanel extends Composite {
  
 	@UiHandler("Test1")
     void onClick2(ClickEvent e) {
-        heater = false;
-		lightbolb = true;
 		//centerPanel.clear();
 		if (loggedin ==  true){
 			if(updated == true){

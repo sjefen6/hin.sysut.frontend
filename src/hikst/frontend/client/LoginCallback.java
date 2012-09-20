@@ -1,7 +1,5 @@
 package hikst.frontend.client;
 
-import hikst.frontend.shared.LoginRequest;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
