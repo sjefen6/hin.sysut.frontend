@@ -48,9 +48,14 @@
        <g:east size='11.4'>
          <g:FlowPanel styleName="{style.eastPanel}">
          	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
-         	<g:TextBox/>
-         	<g:TextBox/>
-         	<g:TextBox text="Navn" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateNameButton" text="Navn" alignment="CENTER"/>
+         	<g:TextBox text="Påvirkningsgrad" ui:field="updateImpactDegreeButton" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateEffectButton" text="Effect" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateVoltButton" text="Volt" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateLongitudeButton" text="Lengdegrader" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateLatitudeButton" text="Breddegrader" alignment="CENTER"/>
+         	<g:TextBox text="Forbrukermønster" alignment="CENTER" ui:field="updateUsagePatternButton"/>
+         	<g:Button width="149px" ui:field="updateObjectButton" text="Oppdater Objekt"/>
          	<g:Button width="157px" ui:field="slettObjektButton">Slett Objekt</g:Button>
          </g:FlowPanel>
        </g:east>     

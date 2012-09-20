@@ -15,7 +15,15 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.maps.client.InfoWindowContent;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.Maps;
+import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -54,14 +62,22 @@ public class NewObject extends Composite implements HasText {
 	@UiField Button saveObject;
 	@UiField Tree tree;
 	@UiField Button slettObjektButton;
-	@UiField Button oppdaterObjekt;
-	@UiField TextBox updateUsagePatternButton;
-	@UiField TextBox updateNameTextButton;
+	@UiField Button updateObjectButton;
+	@UiField TextBox updateNameButton;
 	@UiField TextBox updateImpactDegreeButton;
-	@UiField TextBox updateEffectTextButton;
-	@UiField TextBox updateVoltTextButton;
-	@UiField TextBox updateLongitudeTextButton;
+	@UiField TextBox updateEffectButton;
+	@UiField TextBox updateVoltButton;
+	@UiField TextBox updateLongitudeButton;
 	@UiField TextBox updateLatitudeButton;
+	@UiField TextBox updateUsagePatternButton;
+	//@UiField Button oppdaterObjekt;
+	//@UiField TextBox updateUsagePatternButton;
+	//@UiField TextBox updateNameTextButton;
+	//@UiField TextBox updateImpactDegreeButton;
+	//@UiField TextBox updateEffectTextButton;
+	//@UiField TextBox updateVoltTextButton;
+	//@UiField TextBox updateLongitudeTextButton;
+	//@UiField TextBox updateLatitudeButton;
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
@@ -84,18 +100,62 @@ public class NewObject extends Composite implements HasText {
 		latitude.setText("1");
 		usagePattern.setText("1");
 	}
-	/*@UiHandler("latitude")
+	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event){
-
+		
 		Maps.loadMapsApi("", "2", false, new Runnable() {
 		      public void run() {
 		        buildUi();
 		      }
-		});
-		
-	}*/
+		    });
+	}
 	
-	
+	private void buildUi() {
+	    // Open a map centered on Cawker City, KS USA
+	    LatLng cawkerCity = LatLng.newInstance(39.509, -98.434);
+
+	    final MapWidget map = new MapWidget(cawkerCity, 2);
+	    map.setSize("100%", "100%");
+	    // Add some controls for the zoom level
+	    map.addControl(new LargeMapControl());
+
+	    // Add a marker
+	    map.addOverlay(new Marker(cawkerCity));
+
+	    // Add an info window to highlight a point of interest
+	    map.getInfoWindow().open(map.getCenter(),
+	        new InfoWindowContent("World's Largest Ball of Sisal Twine"));
+
+	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
+	    dock.addNorth(map, 500);
+
+	    // Add the map to the HTML host page
+	    RootLayoutPanel.get().add(dock);
+	    
+	    tree.addSelectionHandler(new SelectionHandler<TreeItem>()
+				{
+
+					@Override
+					public void onSelection(SelectionEvent<TreeItem> event) {
+						
+						TreeItem treeItem = tree.getSelectedItem();
+						
+						Integer[] path = getPath(treeItem);
+						
+						SimObject selectedObject = simulatorObject.rootObject;
+						
+						for(int depth = path.length - 1; depth>= 0; depth--)
+						{
+							selectedObject = selectedObject.simulatorObjects.get(path[depth]);
+						}
+						
+						selectedSimObject = selectedObject;
+						
+						updateMenu();
+					}
+			
+				});
+	  }
 	
 	@Override
 	public String getText() {
@@ -153,11 +213,10 @@ public class NewObject extends Composite implements HasText {
 			newObject.usagePattern = intUsagePattern;
 			newObject.impactDegree = intImpactDegree;
 			
-			
-			
 			if(simulatorObject.isEmpty)
 			{
 				simulatorObject.rootObject = newObject;
+				
 			}
 			else
 			{
@@ -165,7 +224,7 @@ public class NewObject extends Composite implements HasText {
 			}
 			
 			simulatorObject.isEmpty = false;
-			
+			selectedSimObject = newObject;
 			updateTree();
 		}catch(Exception ex)
 		{
@@ -188,29 +247,7 @@ public class NewObject extends Composite implements HasText {
 //		rootItem.addItem("Usagepattern: "+simulatorObject.rootObject.usagePattern);
 //		rootItem.addItem("Impact degree :"+simulatorObject.rootObject.impactDegree);
 //		
-		tree.addSelectionHandler(new SelectionHandler<TreeItem>()
-				{
-
-					@Override
-					public void onSelection(SelectionEvent<TreeItem> event) {
-						
-						TreeItem treeItem = tree.getSelectedItem();
-						
-						Integer[] path = getPath(treeItem);
-						
-						SimObject selectedObject = simulatorObject.rootObject;
-						
-						for(int depth = path.length - 1; depth>= 0; depth--)
-						{
-							selectedObject = selectedObject.simulatorObjects.get(path[depth]);
-						}
-						
-						selectedSimObject = selectedObject;
-						
-						updateMenu();
-					}
-			
-				});
+		
 		
     	cb.setValue(true);
     	cb.addClickListener(new ClickListener()
@@ -238,40 +275,7 @@ public class NewObject extends Composite implements HasText {
     	//initWidget(tree);
 	}
 	
-	/*private void buildUi() {
-//		 DockLayoutPanel pan = new DockLayoutPanel(Unit.PX);
-//		 pan.addNorth(new HTML("north"), 2);
-//		 pan.addNorth(new HTML("north"), 2); 
-//	     pan.addSouth(new HTML("south"), 2); 
-//		 pan.addEast(new HTML("east"), 2); 
-//		 pan.addWest(new HTML("west"), 2); 
-		
-		// Open a map centered on Cawker City, KS USA
-	    LatLng cawkerCity = LatLng.newInstance(39.509, -98.434);
-
-	    final MapWidget map = new MapWidget(cawkerCity, 2);
-	    map.setSize("100%", "100%");
-	    // Add some controls for the zoom level
-	    map.addControl(new LargeMapControl());
-
-	    // Add a marker
-	    map.addOverlay(new Marker(cawkerCity));
-
-	    // Add an info window to highlight a point of interest
-	    map.getInfoWindow().open(map.getCenter(),
-	        new InfoWindowContent("World's Largest Ball of Sisal Twine"));
-
-	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-	    dock.addSouth(map, 150);
-	    //dock.addNorth(map, 500);
-
-	    // Add the map to the HTML host page
-	    RootLayoutPanel.get().add(dock);
-	   // MapClickHandler mapClick = null;
-	    //map.addMapClickHandler(mapClick);
-	    
-
-	  }*/
+	
 	
 	@SuppressWarnings("deprecation")
 	private TreeItem addChildren(SimObject simObject)
@@ -312,12 +316,12 @@ public class NewObject extends Composite implements HasText {
 	
 	private void updateMenu()
 	{
-		name.setText(selectedSimObject.name);
-		impactFactor.setText(String.valueOf(selectedSimObject.impactDegree));
-		effect.setText(String.valueOf(selectedSimObject.effect));
-		volt.setText(String.valueOf(selectedSimObject.volt));
-		longtitude.setText(String.valueOf(selectedSimObject.longitude));
-		usagePattern.setText(String.valueOf(selectedSimObject.usagePattern));
+		updateNameButton.setText(selectedSimObject.name);
+		updateImpactDegreeButton.setText(String.valueOf(selectedSimObject.impactDegree));
+		updateEffectButton.setText(String.valueOf(selectedSimObject.effect));
+		updateVoltButton.setText(String.valueOf(selectedSimObject.volt));
+		updateLongitudeButton.setText(String.valueOf(selectedSimObject.longitude));
+		updateUsagePatternButton.setText(String.valueOf(selectedSimObject.usagePattern));
 	}
 	
 	private Integer[] getPath(TreeItem treeItem)
@@ -425,7 +429,7 @@ public class NewObject extends Composite implements HasText {
 		selectedSimObject = simulatorObject.rootObject;
 		updateMenu();
 	}
-	
+	/*
 	@UiHandler("oppdaterObjekt")
 	void onOppdaterObjektClick(ClickEvent event) {
 		
@@ -469,6 +473,29 @@ public class NewObject extends Composite implements HasText {
 		else
 		{
 			Window.alert("You must select an object");
+		}
+	}*/
+	@UiHandler("updateObjectButton")
+	void onUpdateObjectButtonClick(ClickEvent event) {
+		
+		if(selectedSimObject != null)
+		{
+			try
+			{
+				selectedSimObject.name = updateNameButton.getText();
+				selectedSimObject.effect = Float.parseFloat(updateEffectButton.getText());
+				selectedSimObject.volt = Float.parseFloat(updateVoltButton.getText());
+				selectedSimObject.impactDegree = Integer.parseInt(updateImpactDegreeButton.getText());
+				selectedSimObject.latitude = Integer.parseInt(updateLatitudeButton.getText());
+				selectedSimObject.longitude = Integer.parseInt(updateLongitudeButton.getText());
+				selectedSimObject.usagePattern = Integer.parseInt(updateUsagePatternButton.getText());
+			}
+			catch(Exception ex)
+			{
+				Window.alert("Parsing exception :"+ex.getMessage());
+			}
+			
+			updateTree();
 		}
 	}
 }
