@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
+import hikst.frontend.client.ObjectMenu;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
@@ -270,41 +271,6 @@ public class NewObject extends Composite implements HasText {
     	
     	//initWidget(tree);
 	}
-	
-	private void buildUi() {
-//		 DockLayoutPanel pan = new DockLayoutPanel(Unit.PX);
-//		 pan.addNorth(new HTML("north"), 2);
-//		 pan.addNorth(new HTML("north"), 2); 
-//	     pan.addSouth(new HTML("south"), 2); 
-//		 pan.addEast(new HTML("east"), 2); 
-//		 pan.addWest(new HTML("west"), 2); 
-		
-		// Open a map centered on Cawker City, KS USA
-	    LatLng cawkerCity = LatLng.newInstance(39.509, -98.434);
-
-	    final MapWidget map = new MapWidget(cawkerCity, 2);
-	    map.setSize("100%", "100%");
-	    // Add some controls for the zoom level
-	    map.addControl(new LargeMapControl());
-
-	    // Add a marker
-	    map.addOverlay(new Marker(cawkerCity));
-
-	    // Add an info window to highlight a point of interest
-	    map.getInfoWindow().open(map.getCenter(),
-	        new InfoWindowContent("World's Largest Ball of Sisal Twine"));
-
-	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-	    dock.addSouth(map, 150);
-	    //dock.addNorth(map, 500);
-
-	    // Add the map to the HTML host page
-	    RootLayoutPanel.get().add(dock);
-	   // MapClickHandler mapClick = null;
-	    //map.addMapClickHandler(mapClick);
-	    
-
-	  }
 	
 	@SuppressWarnings("deprecation")
 	private TreeItem addChildren(SimObject simObject)
