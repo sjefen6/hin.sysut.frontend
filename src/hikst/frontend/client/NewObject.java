@@ -12,6 +12,7 @@ import hikst.frontend.shared.SimulatorObject;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.maps.client.InfoWindowContent;
@@ -23,6 +24,8 @@ import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.maps.client.event.MarkerDragEndHandler;
 import com.google.gwt.maps.client.event.MarkerDragStartHandler;
+import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -32,6 +35,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -64,16 +68,17 @@ public class NewObject extends Composite implements HasText {
 	@UiField Tree tree;
 	@UiField Button slettObjektButton;
 	@UiField AbsolutePanel mapsPanel;
-	
+
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-	
-	
+
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
 
 	public NewObject() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
+	
+	
 
 	@UiHandler("impactFactor")
 	void onimpactFactorClick(ClickEvent event){
@@ -84,6 +89,16 @@ public class NewObject extends Composite implements HasText {
 		longtitude.setText("1");
 		latitude.setText("1");
 		usagePattern.setText("1");
+	}
+	@UiHandler("latitude")
+	void onLatitudeClick(ClickEvent event){
+
+		Maps.loadMapsApi("", "2", false, new Runnable() {
+		      public void run() {
+		        buildUi();
+		      }
+		});
+		
 	}
 	
 	private void buildUi() {
@@ -175,12 +190,10 @@ public class NewObject extends Composite implements HasText {
 			
 			if(simulatorObject.isEmpty)
 			{
-				
 				simulatorObject.rootObject = newObject;
 			}
 			else
 			{
-				
 				selectedSimObject.simulatorObjects.add(newObject);
 			}
 			
@@ -235,16 +248,11 @@ public class NewObject extends Composite implements HasText {
     	cb.setValue(true);
     	cb.addClickListener(new ClickListener()
     	{
-
 			@Override
 			public void onClick(Widget sender) {
 					
-				
 			}
-    		
-    		
     	});
-    	
     	
     	
     	
@@ -262,6 +270,41 @@ public class NewObject extends Composite implements HasText {
     	
     	//initWidget(tree);
 	}
+	
+	private void buildUi() {
+//		 DockLayoutPanel pan = new DockLayoutPanel(Unit.PX);
+//		 pan.addNorth(new HTML("north"), 2);
+//		 pan.addNorth(new HTML("north"), 2); 
+//	     pan.addSouth(new HTML("south"), 2); 
+//		 pan.addEast(new HTML("east"), 2); 
+//		 pan.addWest(new HTML("west"), 2); 
+		
+		// Open a map centered on Cawker City, KS USA
+	    LatLng cawkerCity = LatLng.newInstance(39.509, -98.434);
+
+	    final MapWidget map = new MapWidget(cawkerCity, 2);
+	    map.setSize("100%", "100%");
+	    // Add some controls for the zoom level
+	    map.addControl(new LargeMapControl());
+
+	    // Add a marker
+	    map.addOverlay(new Marker(cawkerCity));
+
+	    // Add an info window to highlight a point of interest
+	    map.getInfoWindow().open(map.getCenter(),
+	        new InfoWindowContent("World's Largest Ball of Sisal Twine"));
+
+	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
+	    dock.addSouth(map, 150);
+	    //dock.addNorth(map, 500);
+
+	    // Add the map to the HTML host page
+	    RootLayoutPanel.get().add(dock);
+	   // MapClickHandler mapClick = null;
+	    //map.addMapClickHandler(mapClick);
+	    
+
+	  }
 	
 	@SuppressWarnings("deprecation")
 	private TreeItem addChildren(SimObject simObject)
@@ -415,4 +458,5 @@ public class NewObject extends Composite implements HasText {
 		selectedSimObject = simulatorObject.rootObject;
 		updateMenu();
 	}
+
 }
