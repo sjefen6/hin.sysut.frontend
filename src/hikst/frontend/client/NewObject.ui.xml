@@ -57,6 +57,7 @@
          	<g:TextBox text="Forbrukermønster" alignment="CENTER" ui:field="updateUsagePatternButton"/>
          	<g:Button width="149px" ui:field="updateObjectButton" text="Oppdater Objekt"/>
          	<g:Button width="157px" ui:field="slettObjektButton">Slett Objekt</g:Button>
+         	<g:AbsolutePanel height="479px" ui:field="mapsPanel" width="492px"/>
          </g:FlowPanel>
        </g:east>     
         <g:south size="5">
