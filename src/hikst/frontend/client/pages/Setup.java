@@ -1,4 +1,8 @@
-package hikst.frontend.client;
+package hikst.frontend.client.pages;
+
+import hikst.frontend.client.DatabaseService;
+import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.callback.SetupCallback;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

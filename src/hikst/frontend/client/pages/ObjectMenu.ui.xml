@@ -39,11 +39,13 @@
          </g:FlowPanel>
        </g:west>
        <g:center>
-         <g:FlowPanel styleName="{style.centerPanel}">
+         <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
          </g:FlowPanel>
        </g:center>
        <g:east size='7.5'>
-         <g:FlowPanel styleName="{style.eastPanel}"/>
+         <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
+         	<g:Button ui:field="buttonShowSpline">Vis Splinegraf</g:Button>
+         </g:FlowPanel>
        </g:east>     
         <g:south size="5">
          <g:FlowPanel styleName="{style.southPanel}">

@@ -1,4 +1,5 @@
-package hikst.frontend.client;
+package hikst.frontend.client.pages;
+
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

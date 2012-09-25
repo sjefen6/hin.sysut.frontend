@@ -1,14 +1,16 @@
-package hikst.frontend.client;
+package hikst.frontend.client.callback;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import hikst.frontend.client.SimulationManagementObject;
 import hikst.frontend.shared.*;
 
 public class SimulatorObjectCallback implements AsyncCallback<SimulatorObject>
 {
 	SimulationManagementObject simulationManagementObject;
 	
-	SimulatorObjectCallback(SimulationManagementObject simulationManagementObject)
+	public SimulatorObjectCallback(SimulationManagementObject simulationManagementObject)
 	{
 		this.simulationManagementObject = simulationManagementObject;
 	}

@@ -1,10 +1,12 @@
-package hikst.frontend.client;
+package hikst.frontend.client.pages;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 
-import hikst.frontend.client.ObjectMenu;
+import hikst.frontend.client.DatabaseService;
+import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.callback.StoreObjectCallback;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 import com.google.gwt.core.client.GWT;

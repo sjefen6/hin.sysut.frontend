@@ -53,4 +53,5 @@ public interface DatabaseServiceAsync {
 	void setUp(String hostname, String port, String name, String user,
 			String password, AsyncCallback<Boolean> callback);
 	void settingsLoadable(AsyncCallback<Boolean> callback);
+	void loadObject(int id, AsyncCallback<SimObjectTree> callback);
 }

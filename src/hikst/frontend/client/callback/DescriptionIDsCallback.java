@@ -1,4 +1,4 @@
-package hikst.frontend.client;
+package hikst.frontend.client.callback;
 
 import java.util.List;
 

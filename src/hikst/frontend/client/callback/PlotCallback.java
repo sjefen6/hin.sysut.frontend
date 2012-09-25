@@ -1,5 +1,6 @@
-package hikst.frontend.client;
+package hikst.frontend.client.callback;
 
+import hikst.frontend.client.pages.MyDockLayoutPanel;
 import hikst.frontend.shared.Plot;
 
 import java.util.List;

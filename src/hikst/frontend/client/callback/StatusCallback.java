@@ -1,15 +1,19 @@
-package hikst.frontend.client;
+package hikst.frontend.client.callback;
+
+import hikst.frontend.client.DatabaseService;
+import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.pages.MyDockLayoutPanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class GetStatusCallback implements AsyncCallback<Integer>
+public class StatusCallback implements AsyncCallback<Integer>
 {
 	MyDockLayoutPanel panel;
 	DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 	
-	public GetStatusCallback(MyDockLayoutPanel panel)
+	public StatusCallback(MyDockLayoutPanel panel)
 	{
 		this.panel = panel;
 	}

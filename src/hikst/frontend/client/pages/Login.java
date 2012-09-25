@@ -1,5 +1,10 @@
-package hikst.frontend.client;
+package hikst.frontend.client.pages;
 
+import hikst.frontend.client.DatabaseService;
+import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.Graph;
+import hikst.frontend.client.Simulation;
+import hikst.frontend.client.callback.LoginCallback;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.LoginRequest;
 import com.google.gwt.core.client.GWT;

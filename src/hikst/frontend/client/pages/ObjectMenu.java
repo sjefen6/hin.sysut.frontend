@@ -1,5 +1,6 @@
-package hikst.frontend.client;
+package hikst.frontend.client.pages;
 
+import hikst.frontend.client.SplineGraf;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -11,6 +12,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 
 public class ObjectMenu extends Composite implements HasText {
 
@@ -22,6 +24,10 @@ public class ObjectMenu extends Composite implements HasText {
 	@UiField Button addObject;
 	@UiField DateBox fromDate;
 	@UiField DateBox toDate;
+	@UiField Button buttonShowSpline;
+	@UiField FlowPanel eastPanel;
+	@UiField FlowPanel centerPanel;
+	
 
 	interface ObjectMenuUiBinder extends UiBinder<Widget, ObjectMenu> {
 	}
@@ -56,4 +62,8 @@ public class ObjectMenu extends Composite implements HasText {
 	}
 
 
+	@UiHandler("buttonShowSpline")
+	void onButtonShowSplineClick(ClickEvent event) {
+		centerPanel.add(SplineGraf.createChart());
+	}
 }

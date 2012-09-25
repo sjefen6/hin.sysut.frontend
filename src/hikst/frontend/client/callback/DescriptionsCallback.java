@@ -1,5 +1,6 @@
-package hikst.frontend.client;
+package hikst.frontend.client.callback;
 
+import hikst.frontend.client.pages.MyDockLayoutPanel;
 import hikst.frontend.shared.Description;
 
 import com.google.gwt.user.client.Window;
@@ -9,7 +10,7 @@ public class DescriptionsCallback implements AsyncCallback<Description>
 {
 	MyDockLayoutPanel panel;
 	
-	DescriptionsCallback(MyDockLayoutPanel panel)
+	public DescriptionsCallback(MyDockLayoutPanel panel)
 	{
 		this.panel = panel;
 	}

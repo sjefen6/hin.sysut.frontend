@@ -41,6 +41,7 @@ public interface DatabaseService extends RemoteService
 	SimulationTicket requestSimulation(SimulationRequest request);
 	boolean deleteSimulations(int id);
 	int getSimulationStatus(SimulationTicket ticket);
+	SimObjectTree loadObject(int id);
 	
 	 
 }

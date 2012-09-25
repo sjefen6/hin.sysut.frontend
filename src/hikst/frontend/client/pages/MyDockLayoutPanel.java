@@ -1,5 +1,13 @@
-package hikst.frontend.client;
+package hikst.frontend.client.pages;
 
+import hikst.frontend.client.DatabaseService;
+import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.Graph;
+import hikst.frontend.client.Simulation;
+import hikst.frontend.client.SimulationManagementObject;
+import hikst.frontend.client.callback.DescriptionsCallback;
+import hikst.frontend.client.callback.StatusCallback;
+import hikst.frontend.client.callback.SimulationRequestCallback;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
@@ -34,7 +42,7 @@ public class MyDockLayoutPanel extends Composite {
 
   
 	//interface MyUiBinder extends UiBinder<Widget, MyDockLayoutPanel>{}
-	SimulationManagementObject simManager = new SimulationManagementObject(this);
+	public SimulationManagementObject simManager = new SimulationManagementObject(this);
     Graph g;
 	private static MyDockLayoutPanelUiBinder uiBinder = GWT
     .create(MyDockLayoutPanelUiBinder.class);
@@ -55,7 +63,8 @@ public class MyDockLayoutPanel extends Composite {
     @UiField TextBox intervalField;
     @UiField DateBox fromDateField;
     @UiField DateBox toDateField;
-    @UiField TextArea statusField;
+    @UiField
+	public TextArea statusField;
     int yAxis = 1200;
     long interval;
 	private int objectCounter = 0;
@@ -214,7 +223,7 @@ public class MyDockLayoutPanel extends Composite {
 		if(this.simulationStarted)
 		{
 			this.statusField.setText("Checking simulation status...");
-			databaseService.getSimulationStatus(ticket,new GetStatusCallback(this));
+			databaseService.getSimulationStatus(ticket,new StatusCallback(this));
 		}
 		else
 		{

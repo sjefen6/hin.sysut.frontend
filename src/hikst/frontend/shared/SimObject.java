@@ -90,4 +90,30 @@ public class SimObject implements Serializable
 	{
 		return simulatorObjects;
 	}
+	
+	public void addChildren(ArrayList<SimObject> children)
+	{
+		simulatorObjects.addAll(children);
+	}
+	
+	public SimObject Clone()
+	{
+		SimObject clone = new SimObject();
+		clone.name = this.name;
+		clone.effect = this.effect;
+		clone.volt = this.volt;
+		clone.latitude = this.latitude;
+		clone.longitude = this.longitude;
+		clone.usagePattern = this.usagePattern;
+		clone.impactDegree = this.impactDegree;
+		
+		Iterator<SimObject> children = this.getChildIterator();
+		
+		while(children.hasNext())
+		{
+			clone.addChild(children.next().Clone());
+		}
+		
+		return clone;
+	}
 }

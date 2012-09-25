@@ -1,4 +1,4 @@
-package hikst.frontend.client;
+package hikst.frontend.client.callback;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;

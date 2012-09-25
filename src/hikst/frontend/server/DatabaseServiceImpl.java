@@ -405,7 +405,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			}
 			else
 			{
-				saveSimObject(child);
+				 child_id = saveSimObject(child);
 			}
 			
 			saveChildLink(object_id,child_id);
@@ -712,5 +712,96 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	public boolean settingsLoadable() {
 		// TODO Auto-generated method stub
 		return Settings.loadable();
+	}
+
+	@Override
+	public SimObjectTree loadObject(int id) {
+		
+		
+		try 
+		{
+			SimObjectTree tree = new SimObjectTree();
+			tree.rootObject = getSimObject(id);
+			
+			tree.rootObject.addChildren(getChildObjects(id));
+			
+			
+			return tree;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	private ArrayList<SimObject> getChildObjects(int id) throws SQLException
+	{
+		ArrayList<SimObject> children = new ArrayList<SimObject>();
+		
+		ArrayList<Integer> childrenIDs = getChildren(id);
+		
+		for(int i = 0; i<childrenIDs.size(); i++)
+		{
+			SimObject child = getSimObject(childrenIDs.get(i));
+			
+			ArrayList<SimObject> grandChildren = getChildObjects(childrenIDs.get(i));
+			
+			child.addChildren(grandChildren);
+			
+			children.add(child);
+		}
+		
+		return children;
+	}
+	
+	private SimObject getSimObject(int id) throws SQLException
+	{		
+		Connection connection = Settings.getDBC();
+		
+		String query = "SELECT id, name, effect, voltage, current, usage_pattern_id,latitude, longitude from objects where id=?";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setInt(1, id);
+		
+		ResultSet set = preparedStatement.executeQuery();
+		
+		if(set.next())
+		{
+			SimObject simObject = new SimObject(id);
+			simObject.name = set.getString(2);
+			simObject.effect = set.getFloat(3);
+			simObject.volt = set.getFloat(4);
+			//simObjectTree.rootObject.current = set.getFloat(5);
+			simObject.usagePattern = set.getInt(6);
+			simObject.latitude = set.getInt(7);
+			simObject.longitude = set.getInt(8);
+			
+			return simObject;
+		}
+		//if it doesnt exist in the database
+		else
+		{
+			return null;
+		}
+	}
+	
+	private ArrayList<Integer> getChildren(int object_id) throws SQLException
+	{
+		Connection connection = Settings.getDBC();
+		
+		ArrayList<Integer> sonIDs = new ArrayList<Integer>();
+		
+		String query = "select son_id from part_objects where father_id = ?";
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setInt(1, object_id);
+		ResultSet set = preparedStatement.executeQuery();
+		while(set.next())
+		{
+			sonIDs.add(object_id);
+		}
+		
+		return sonIDs;
 	}
 }

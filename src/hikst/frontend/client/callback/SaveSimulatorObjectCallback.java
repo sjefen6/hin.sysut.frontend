@@ -1,4 +1,6 @@
-package hikst.frontend.client;
+package hikst.frontend.client.callback;
+
+import hikst.frontend.client.pages.MyDockLayoutPanel;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
