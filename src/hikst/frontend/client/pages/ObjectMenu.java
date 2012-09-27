@@ -65,5 +65,6 @@ public class ObjectMenu extends Composite implements HasText {
 	@UiHandler("buttonShowSpline")
 	void onButtonShowSplineClick(ClickEvent event) {
 		centerPanel.add(SplineGraf.createChart());
+		System.out.println("Should show spline!!!");
 	}
 }
