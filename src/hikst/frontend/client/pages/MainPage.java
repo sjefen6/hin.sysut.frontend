@@ -16,13 +16,14 @@ public class MainPage extends Composite implements HasText {
 
 	ObjectMenu panel;
 	MyDockLayoutPanel oldPanel;
-	
+	SimResoults simPanel;
 	private static MainPageUiBinder uiBinder = GWT
 			.create(MainPageUiBinder.class);
 	@UiField Button buttonLogout;
 	@UiField Button emailAdmin;
 	@UiField Button adminAccount;
 	@UiField Button oldFront;
+	@UiField Button simResoult;
 
 	interface MainPageUiBinder extends UiBinder<Widget, MainPage> {
 	}
@@ -53,8 +54,12 @@ public class MainPage extends Composite implements HasText {
 	void onOldFrontClick(ClickEvent event) {
 		RootLayoutPanel.get().add(new MyDockLayoutPanel());
 		oldPanel = new MyDockLayoutPanel();
-		RootLayoutPanel.get().add(oldPanel);
-		
-		
+		RootLayoutPanel.get().add(oldPanel);	
 	}
+	@UiHandler("simResoult")
+	void onSimResoultClick(ClickEvent event){
+		simPanel = new SimResoults();
+		RootLayoutPanel.get().add(simPanel);
+	}
+	
 }

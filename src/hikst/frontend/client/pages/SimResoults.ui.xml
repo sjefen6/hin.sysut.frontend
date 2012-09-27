@@ -18,32 +18,26 @@
             background-color: grey;
         }       
     </ui:style>
-     <g:DockLayoutPanel unit='EM'>
-       <g:north size='3.0'>
+     <g:SplitLayoutPanel>
+       <g:north size='60' unit='EM'>
          <g:FlowPanel styleName="{style.northPanel}">
-         	<g:Button ui:field="adminAccount" width="150px">Administrere Konto</g:Button>
-         	<g:Button ui:field="emailAdmin" width="150px">Email Administrator</g:Button>
-         	<g:Button ui:field="userList" width="150px">Brukerliste</g:Button>
-         	<g:Button ui:field="buttonLogout" width="150px">Logg Ut</g:Button>
          </g:FlowPanel>
        </g:north>
-       <g:west size='14.8'>
+       <g:west size='200' unit='EM'>
          <g:FlowPanel styleName="{style.westPanel}">
-         	<g:Button ui:field="newSim" width="150px">Ny Simulering</g:Button>
-         	<g:Button width="150px" ui:field="oldFront">Gammelt Oppsett</g:Button>
-         	<g:Button width="150px" ui:field="simResoult">Simulerings Resultater</g:Button>
-         	<g:Button width="150px">Tilbake</g:Button>
          </g:FlowPanel>
        </g:west>
        <g:center>
-         <g:FlowPanel styleName="{style.centerPanel}"/>
+         <g:FlowPanel styleName="{style.centerPanel}">
+         </g:FlowPanel>
        </g:center>
-       <g:east size='12.8'>
-         <g:FlowPanel styleName="{style.eastPanel}"/>
+       <g:east size='200' unit='EM'>
+         <g:FlowPanel styleName="{style.eastPanel}">
+         </g:FlowPanel>
        </g:east>     
-        <g:south size="5">
+        <g:south size="60" unit='EM'>
          <g:FlowPanel styleName="{style.southPanel}">
          </g:FlowPanel>
         </g:south>       
-     </g:DockLayoutPanel>
+     </g:SplitLayoutPanel>
 </ui:UiBinder> 

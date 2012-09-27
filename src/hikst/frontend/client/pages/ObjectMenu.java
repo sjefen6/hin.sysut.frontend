@@ -1,5 +1,7 @@
 package hikst.frontend.client.pages;
 
+import javax.swing.plaf.RootPaneUI;
+
 import hikst.frontend.client.SplineGraf;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -27,6 +29,7 @@ public class ObjectMenu extends Composite implements HasText {
 	@UiField Button buttonShowSpline;
 	@UiField FlowPanel eastPanel;
 	@UiField FlowPanel centerPanel;
+	@UiField Button printIt;
 	
 
 	interface ObjectMenuUiBinder extends UiBinder<Widget, ObjectMenu> {
@@ -56,6 +59,7 @@ public class ObjectMenu extends Composite implements HasText {
 	}
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
+		
 		RootLayoutPanel.get().add(new MainPage());
 		panelBack = new MainPage();
 		RootLayoutPanel.get().add(panelBack);
@@ -67,4 +71,6 @@ public class ObjectMenu extends Composite implements HasText {
 		centerPanel.add(SplineGraf.createChart());
 		System.out.println("Should show spline!!!");
 	}
+	
+
 }

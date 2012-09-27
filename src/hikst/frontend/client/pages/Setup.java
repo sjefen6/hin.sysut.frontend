@@ -38,7 +38,7 @@ public class Setup extends Composite implements HasText {
 	
 	@UiHandler("install")
 	void onButtonClick(ClickEvent e){
-		Window.alert("Click!");
+		//Window.alert("Click!");
 		databaseService.setUp(db_hostname.getText(), db_port.getText(), db_name.getText(), db_user.getText(), db_password.getText(),new SetupCallback());
 	
 	}
