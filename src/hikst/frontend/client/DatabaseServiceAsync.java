@@ -4,11 +4,13 @@ import hikst.frontend.shared.Description;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
+import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -54,4 +56,6 @@ public interface DatabaseServiceAsync {
 			String password, AsyncCallback<Boolean> callback);
 	void settingsLoadable(AsyncCallback<Boolean> callback);
 	void loadObject(int id, AsyncCallback<SimObjectTree> callback);
+	void getSimObjects(AsyncCallback<ArrayList<SimObject>> callback);
+	
 }
