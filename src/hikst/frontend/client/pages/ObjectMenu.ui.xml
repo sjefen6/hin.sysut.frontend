@@ -1,0 +1,57 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+    <ui:style>        
+        .eastPanel {
+            background-color: grey;
+        }
+        .westPanel {
+            background-color: grey;
+        }
+        .northPanel {
+            background-color: grey;
+        }
+        .southPanel {
+            background-color: grey;
+        }
+        .centerPanel {
+            background-color: grey;
+        }       
+    </ui:style>
+     <g:DockLayoutPanel unit='EM'>
+       <g:north size='3.0'>
+         <g:FlowPanel styleName="{style.northPanel}">
+         	<g:Button ui:field="adminAccount" width="150px">Administrere Konto</g:Button>
+         	<g:Button ui:field="emailAdmin" width="150px">Email Administrator</g:Button>
+         	<g:Button ui:field="userList" width="150px">Brukerliste</g:Button>
+         	<g:Button ui:field="buttonLogout" width="150px">Logg Ut</g:Button>
+         </g:FlowPanel>
+       </g:north>
+       <g:west size='10.8'>
+         <g:FlowPanel styleName="{style.westPanel}">
+         	<g:Button ui:field="addObject" width="140px">Legg Til Objekt</g:Button>
+         	<g:Label text="From Date"/>
+         	<p1:DateBox ui:field="fromDate"/>
+         	<g:Label text="To Date"/>
+         	<p1:DateBox ui:field="toDate"/>
+         	<g:Button width="140px" ui:field="back">Tilbake</g:Button>
+         	<g:TextBox text="Intervall" ui:field="intervall"/>
+         	<g:Tree ui:field="ObjectMainTree" animationEnabled="true" width="141px"/>
+         </g:FlowPanel>
+       </g:west>
+       <g:center>
+         <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
+         </g:FlowPanel>
+       </g:center>
+       <g:east size='7.5'>
+         <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
+         	<g:Button ui:field="buttonShowSpline">Vis Splinegraf</g:Button>
+         	<g:Button width="97px" ui:field="printIt">Skriv ut</g:Button>
+         </g:FlowPanel>
+       </g:east>     
+        <g:south size="5">
+         <g:FlowPanel styleName="{style.southPanel}">
+         </g:FlowPanel>
+        </g:south>       
+     </g:DockLayoutPanel>
+</ui:UiBinder> 

@@ -1,5 +1,7 @@
 package hikst.frontend.client;
 
+import hikst.frontend.client.pages.Start;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 /**
