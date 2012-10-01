@@ -23,19 +23,19 @@
 		}
 	</ui:style>
 	<g:DockLayoutPanel unit='EM'>
-		<g:north size='3.0'>
-			<g:FlowPanel styleName="{style.northPanel}">
-				<g:TextBox text="Username" name="user" ui:field="user" width="150px" />
-				<g:TextBox text="Password" name="pass" ui:field="pass" width="150px" />
-				<g:Button width="150px" ui:field="button">Login</g:Button>
-			</g:FlowPanel>
+		<g:north size='17.8'>
+			<g:FlowPanel styleName="{style.northPanel}"/>
 		</g:north>
-		<g:west size='11.5'>
+		<g:west size='24.4'>
 			<g:FlowPanel styleName="{style.westPanel}">
 			</g:FlowPanel>
 		</g:west>
 		<g:center>
-			<g:FlowPanel styleName="{style.centerPanel}"/>
+			<g:FlowPanel styleName="{style.centerPanel}">
+				<g:TextBox text="Username" name="user" ui:field="user" width="150px" />
+				<g:TextBox text="Password" name="pass" ui:field="pass" width="150px" />
+				<g:Button width="160px" ui:field="button">Login</g:Button>
+			</g:FlowPanel>
 		</g:center>
 		<g:east size='4.0'>
 			<g:FlowPanel styleName="{style.eastPanel}" />

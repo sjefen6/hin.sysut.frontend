@@ -23,6 +23,7 @@
          <g:FlowPanel styleName="{style.northPanel}">
          	<g:Button ui:field="adminAccount" width="150px">Administrere Konto</g:Button>
          	<g:Button ui:field="emailAdmin" width="150px">Email Administrator</g:Button>
+         	<g:Button ui:field="userList" width="150px">Brukerliste</g:Button>
          	<g:Button ui:field="buttonLogout" width="150px">Logg Ut</g:Button>
          </g:FlowPanel>
        </g:north>
@@ -46,7 +47,7 @@
          </g:FlowPanel>
        </g:center>
        <g:east size='25.5'>
-         <g:FlowPanel styleName="{style.eastPanel}">
+         <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
          	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
          	<g:TextBox ui:field="updateNameButton" text="Navn" alignment="CENTER" width="156px"/>
          	<g:TextBox text="Påvirkningsgrad" ui:field="updateImpactDegreeButton" alignment="CENTER" width="156px"/>
