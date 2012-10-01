@@ -111,10 +111,10 @@ public class NewObject extends Composite implements HasText {
 	@UiHandler("impactFactor")
 	void onimpactFactorClick(ClickEvent event){
 		impactFactor.setText("1");
-		effect.setText("1");
-		volt.setText("1");
-		name.setText("1");
-		usagePattern.setText("1");
+		effect.setText("500");
+		volt.setText("230");
+		name.setText("Hus");
+		usagePattern.setText("2");
 	}
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event){
