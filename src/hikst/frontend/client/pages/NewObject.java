@@ -38,6 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 
 public class NewObject extends Composite implements HasText {
 
@@ -71,6 +72,7 @@ public class NewObject extends Composite implements HasText {
 	@UiField AbsolutePanel mapsPanel;
 	MapWidget map;
 	@UiField Button showMap;
+	@UiField FlowPanel eastPanel;
 
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
@@ -109,10 +111,10 @@ public class NewObject extends Composite implements HasText {
 	@UiHandler("impactFactor")
 	void onimpactFactorClick(ClickEvent event){
 		impactFactor.setText("1");
-		effect.setText("1");
-		volt.setText("1");
-		name.setText("1");
-		usagePattern.setText("1");
+		effect.setText("500");
+		volt.setText("230");
+		name.setText("Hus");
+		usagePattern.setText("2");
 	}
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event){
@@ -189,6 +191,8 @@ public class NewObject extends Composite implements HasText {
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
+		mapsPanel.clear();
+		eastPanel.clear();
 		RootLayoutPanel.get().add(new ObjectMenu());
 		panel = new ObjectMenu();
 		RootLayoutPanel.get().add(panel);

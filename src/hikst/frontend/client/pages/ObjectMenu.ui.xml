@@ -23,6 +23,7 @@
          <g:FlowPanel styleName="{style.northPanel}">
          	<g:Button ui:field="adminAccount" width="150px">Administrere Konto</g:Button>
          	<g:Button ui:field="emailAdmin" width="150px">Email Administrator</g:Button>
+         	<g:Button ui:field="userList" width="150px">Brukerliste</g:Button>
          	<g:Button ui:field="buttonLogout" width="150px">Logg Ut</g:Button>
          </g:FlowPanel>
        </g:north>
@@ -45,6 +46,7 @@
        <g:east size='7.5'>
          <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
          	<g:Button ui:field="buttonShowSpline">Vis Splinegraf</g:Button>
+         	<g:Button width="97px" ui:field="printIt">Skriv ut</g:Button>
          </g:FlowPanel>
        </g:east>     
         <g:south size="5">
