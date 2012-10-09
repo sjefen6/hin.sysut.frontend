@@ -18,7 +18,7 @@
             background-color: white;
         }       
     </ui:style>
-     <g:DockLayoutPanel unit='EM' width="800" height="600">
+     <g:DockLayoutPanel unit='EM' width="1024" height="768">
         <g:north size='3.0'>
          <g:FlowPanel styleName="{style.northPanel}">
          	<g:Button ui:field="adminAccount" width="150px">Administrere Konto</g:Button>

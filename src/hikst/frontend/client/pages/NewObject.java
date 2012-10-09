@@ -89,8 +89,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@UiField Button showMap;
 
 	MapWidget map;
-	MapWidget map;
-	@UiField Button showMap;
 	@UiField FlowPanel eastPanel;
 
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
@@ -400,53 +398,39 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 				Window.alert("Parsing exception :"+ex.getMessage());
 			}
 		}	
-		
-		public void clear()
-		{
-			isEmpty = true;
-			rootObject.clear();
-		}
 	}
 	
-	private class SimObject
-	{	
-		public String name = "empty";
-		public float impactDegree = 1;
-		public float effect = 1;
-		public float volt = 1;
-		public int longitude = 1;
-		public int latitude = 1;
-		public int usagePattern = 1;
-		
-		public SimObject Parent = null;
-		
-		private ArrayList<SimObject> simulatorObjects = new ArrayList<SimObject>();
-		
-		public boolean hasChildren()
-		{
-			return simulatorObjects.isEmpty();
-		}
-		
-		public void clear()
-		{
-			name = "Empty";
-			impactDegree = 0;
-			effect = 0;
-			volt = 0;
-			longitude = 0;
-			latitude = 0;
-			usagePattern = 0;
-			
-			updateTree();
-		}
-	}
-
-	@UiHandler("slettObjektButton")
-	void onSlettObjektButtonClick(ClickEvent event) {
-			
-		simulatorObject.delete(selectedSimObject);
-		updateTree();
-		selectedSimObject = simulatorObject.rootObject;
-		updateMenu();
-	}
+	
+//	private class SimObject
+//	{	
+//		public String name = "empty";
+//		public float impactDegree = 1;
+//		public float effect = 1;
+//		public float volt = 1;
+//		public int longitude = 1;
+//		public int latitude = 1;
+//		public int usagePattern = 1;
+//		
+//		public SimObject Parent = null;
+//		
+//		private ArrayList<SimObject> simulatorObjects = new ArrayList<SimObject>();
+//		
+//		public boolean hasChildren()
+//		{
+//			return simulatorObjects.isEmpty();
+//		}
+//		
+//		public void clear()
+//		{
+//			name = "Empty";
+//			impactDegree = 0;
+//			effect = 0;
+//			volt = 0;
+//			longitude = 0;
+//			latitude = 0;
+//			usagePattern = 0;
+//			
+//			updateTree();
+//		}
+//	}
 }

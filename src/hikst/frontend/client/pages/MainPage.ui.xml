@@ -30,12 +30,9 @@
        <g:west size='14.8'>
          <g:FlowPanel styleName="{style.westPanel}">
          	<g:Button ui:field="newSim" width="140px">Ny Simulering</g:Button>
-         	<g:Button ui:field="userList" width="140px">Brukerliste</g:Button>
          	<g:Button width="140px" ui:field="stats">Statistikk</g:Button>
          	<g:Button width="140px" ui:field="tilbake">Tilbake</g:Button>
          	<g:Button width="140px" ui:field="oldFront">Gammelt Oppsett</g:Button>
-         	<g:Button ui:field="newSim" width="150px">Ny Simulering</g:Button>
-         	<g:Button width="150px" ui:field="oldFront">Gammelt Oppsett</g:Button>
          	<g:Button width="150px" ui:field="simResoult">Simulerings Resultater</g:Button>
          	<g:Button width="150px">Tilbake</g:Button>
          </g:FlowPanel>

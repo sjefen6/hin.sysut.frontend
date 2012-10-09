@@ -1,6 +1,8 @@
 package hikst.frontend.client.pages;
 
 import java.util.Date;
+
+import hikst.frontend.client.SplineGraph;
 import hikst.frontend.shared.Description;
 
 import com.google.gwt.core.client.GWT;
