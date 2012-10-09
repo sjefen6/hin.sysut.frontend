@@ -575,6 +575,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			statement.setLong(3,request.getFrom());
 			statement.setLong(4, request.getTo());
 			ResultSet set = statement.executeQuery();
+			// TODO: Feil på linjen over sql exception....
 			
 			int description_id = 0;
 			
@@ -710,7 +711,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 
 	@Override
 	public boolean settingsLoadable() {
-		// TODO Auto-generated method stub
+
 		return Settings.loadable();
 	}
 
@@ -729,7 +730,6 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			return tree;
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -745,10 +745,10 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		for(int i = 0; i<childrenIDs.size(); i++)
 		{
 			SimObject child = getSimObject(childrenIDs.get(i));
+			// TODO: feil her en plass (feil i rekursiviteten)
+			//ArrayList<SimObject> grandChildren = getChildObjects(childrenIDs.get(i));
 			
-			ArrayList<SimObject> grandChildren = getChildObjects(childrenIDs.get(i));
-			
-			child.addChildren(grandChildren);
+			//child.addChildren(grandChildren);
 			
 			children.add(child);
 		}
@@ -803,5 +803,48 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		}
 		
 		return sonIDs;
+	}
+
+	@Override
+	public ArrayList<SimObject> getSimObjects() {
+		
+		ArrayList<SimObject> simObjects = new ArrayList<SimObject>();
+		
+		try
+		{
+			Connection connection = Settings.getDBC();
+			String query = "SELECT id, name, effect, voltage, current, usage_pattern_id,latitude, longitude from objects";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			ResultSet set = preparedStatement.executeQuery();
+
+		
+			while(set.next())
+			{
+				SimObject simObject = new SimObject(set.getInt(1));
+				simObject.name = set.getString(2);
+				simObject.effect = set.getFloat(3);
+				simObject.volt = set.getFloat(4);
+				//simObjectTree.rootObject.current = set.getFloat(5);
+				simObject.usagePattern = set.getInt(6);
+				simObject.latitude = set.getInt(7);
+				simObject.longitude = set.getInt(8);
+				simObjects.add(simObject);
+				
+			}
+			
+			for(int i = 0; i<simObjects.size(); i++)
+			{
+				SimObject simObject = simObjects.get(i);
+				simObject.addChildren(this.getChildObjects(simObject.getID()));
+			}
+			
+			
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return simObjects;
 	}
 }

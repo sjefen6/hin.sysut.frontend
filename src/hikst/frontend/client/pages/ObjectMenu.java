@@ -12,13 +12,14 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class ObjectMenu extends Composite implements HasText {
 
-	NewObject panel;
+	ViewObjects panel;
 	MainPage panelBack;
 	private static ObjectMenuUiBinder uiBinder = GWT
 			.create(ObjectMenuUiBinder.class);
@@ -29,7 +30,7 @@ public class ObjectMenu extends Composite implements HasText {
 	@UiField Button buttonShowSpline;
 	@UiField FlowPanel eastPanel;
 	@UiField FlowPanel centerPanel;
-	@UiField Button printIt;
+	//@UiField Button printIt;
 	
 
 	interface ObjectMenuUiBinder extends UiBinder<Widget, ObjectMenu> {
@@ -41,8 +42,9 @@ public class ObjectMenu extends Composite implements HasText {
 
 	@UiHandler("addObject")
 	void onAddObjectClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new NewObject());
-		panel = new NewObject();
+		//RootLayoutPanel.get().add(new NewObject());
+		RootLayoutPanel.get().add(new ViewObjects());
+		panel = new ViewObjects();
 		RootLayoutPanel.get().add(panel);
 	}
 
@@ -59,7 +61,6 @@ public class ObjectMenu extends Composite implements HasText {
 	}
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		
 		RootLayoutPanel.get().add(new MainPage());
 		panelBack = new MainPage();
 		RootLayoutPanel.get().add(panelBack);
