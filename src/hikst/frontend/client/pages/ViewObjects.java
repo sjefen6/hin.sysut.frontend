@@ -29,6 +29,8 @@ public class ViewObjects extends Composite {
 
 	//VerticalPanel panel = new VerticalPanel();
 	//FlexTable objectTable;
+	
+	
 	NewObject newObjectPanel;
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
@@ -66,10 +68,11 @@ public class ViewObjects extends Composite {
 	{
 		//flexyTable = new FlexTable();
 		
+		centerPanel.remove(flexyTable);
 		databaseService.getSimObjects(new SimObjectsCallback(flexyTable));
-	
-		
 		centerPanel.add(flexyTable);
+		
+	//	centerPanel.add(flexyTable);
 	}
 	@UiHandler("buttonSave")
 	void onButtonSave(ClickEvent event){
@@ -85,5 +88,4 @@ public class ViewObjects extends Composite {
 		//centerPanel.add(buttonPanel);
 	//}
 }
-
 
