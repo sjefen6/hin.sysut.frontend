@@ -27,7 +27,7 @@
        </g:west>
        <g:center>
          <g:ScrollPanel styleName="{style.centerPanel}" ui:field="centerPanel">
-         	<g:Button width="200px" text="Lag Ett Nytt Objekt" ui:field="buttonSave"/>
+         	<!-- <g:Button width="200px" text="Lag Ett Nytt Objekt" ui:field="buttonSave"/> -->
          	<g:FlexTable ui:field="flexyTable"/>
 
          </g:ScrollPanel>
