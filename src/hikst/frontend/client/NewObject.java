@@ -78,8 +78,8 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@UiField Tree tree;
 	@UiField Button slettObjektButton;
 	@UiField AbsolutePanel mapsPanel;
-	private String lat;
-	private String lon;
+	@UiField Button showMap;
+
 	MapWidget map;
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
@@ -91,8 +91,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	
-
 	@UiHandler("impactFactor")
 	void onimpactFactorClick(ClickEvent event){
 		impactFactor.setText("1");
@@ -148,15 +146,8 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	    });
 	    
 	    
-
-	   
-	/*   
-	    // Add a marker
-	    map.addOverlay(new Marker(startPos, opt));
-	    // Add an info window to highlight a point of interest
-	    map.getInfoWindow().open(map.getCenter(),
-	        new InfoWindowContent("Selve byen!"));*/
-	
+	    latitude.setEnabled(false);
+	    longtitude.setEnabled(false);
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
 	}
@@ -174,7 +165,13 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	}
 	@UiHandler("latitude")
 	void onlatitudeClick(ClickEvent event){
-	   Maps.loadMapsApi("", "2", false, new Runnable() {
+	 
+	}
+	
+	@UiHandler("showMap")
+	void onshowMapClick(ClickEvent event){
+		
+		  Maps.loadMapsApi("", "2", false, new Runnable() {
 		      public void run() {
 		        buildUi();
 		      }

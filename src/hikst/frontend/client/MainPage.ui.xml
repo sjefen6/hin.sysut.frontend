@@ -31,12 +31,12 @@
          	<g:Button ui:field="newSim" width="140px">Ny Simulering</g:Button>
          	<g:Button ui:field="userList" width="140px">Brukerliste</g:Button>
          	<g:Button width="140px" ui:field="stats">Statistikk</g:Button>
-         	<g:Button width="140px">Tilbake</g:Button>
+         	<g:Button width="140px" ui:field="tilbake">Tilbake</g:Button>
          	<g:Button width="140px" ui:field="oldFront">Gammelt Oppsett</g:Button>
          </g:FlowPanel>
        </g:west>
        <g:center>
-         <g:FlowPanel styleName="{style.centerPanel}"/>
+         <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel"/>
        </g:center>
        <g:east size='12.8'>
          <g:FlowPanel styleName="{style.eastPanel}"/>

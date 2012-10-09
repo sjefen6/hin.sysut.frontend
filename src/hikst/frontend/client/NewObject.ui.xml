@@ -52,6 +52,7 @@
          	<g:TextBox/>
          	<g:TextBox text="Navn" alignment="CENTER"/>
          	<g:Button width="157px" ui:field="slettObjektButton">Slett Objekt</g:Button>
+         	<g:Button width="137px" text="Vis Kart" ui:field="showMap"/>
          	<g:AbsolutePanel height="479px" ui:field="mapsPanel" width="492px"/>
          </g:FlowPanel>
        </g:east>     
