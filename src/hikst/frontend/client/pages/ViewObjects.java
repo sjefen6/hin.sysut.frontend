@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -35,7 +36,7 @@ public class ViewObjects extends Composite {
 
 	private static ViewObjectsUiBinder uiBinder = GWT
 	.create(ViewObjectsUiBinder.class);
-	@UiField FlowPanel centerPanel;
+	@UiField ScrollPanel centerPanel;
 	@UiField FlexTable flexyTable;
 	@UiField Button buttonSave;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
@@ -67,6 +68,7 @@ public class ViewObjects extends Composite {
 		
 		databaseService.getSimObjects(new SimObjectsCallback(flexyTable));
 	
+		
 		centerPanel.add(flexyTable);
 	}
 	@UiHandler("buttonSave")
