@@ -4,6 +4,7 @@ import hikst.frontend.shared.Description;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
+import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
@@ -35,15 +36,15 @@ public interface DatabaseServiceAsync {
 	throws IllegalArgumentException;
 	void exists(String username, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
-	void saveObject(SimulatorObject object, AsyncCallback<Integer> callback);
+	void saveObject(SimObjectTree simobject, AsyncCallback<Integer> callback);
 	void requestSimulation(SimulationRequest request,
 			AsyncCallback<SimulationTicket> callback);
 	void deleteObject(int object_id, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
 	void deleteSimulations(int id, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
-	void updateObject(int id ,SimulatorObject object, AsyncCallback<Boolean> callback)
-	throws IllegalArgumentException;
+	//void updateObject(int id ,SimulatorObject object, AsyncCallback<Boolean> callback)
+	//throws IllegalArgumentException;
 	void changeAccessLevel(String username, String access_level,
 			AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
@@ -52,4 +53,5 @@ public interface DatabaseServiceAsync {
 	void setUp(String hostname, String port, String name, String user,
 			String password, AsyncCallback<Boolean> callback);
 	void settingsLoadable(AsyncCallback<Boolean> callback);
+	void loadObject(int id, AsyncCallback<SimObjectTree> callback);
 }

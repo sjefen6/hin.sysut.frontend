@@ -1,0 +1,75 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>        
+        .eastPanel {
+            background-color: grey;
+        }
+        .westPanel {
+            background-color: grey;
+        }
+        .northPanel {
+            background-color: grey;
+        }
+        .southPanel {
+            background-color: grey;
+        }
+        .centerPanel {
+            background-color: white;
+        }       
+    </ui:style>
+     <g:DockLayoutPanel unit='EM' width="800" height="600">
+        <g:north size='3.0'>
+         <g:FlowPanel styleName="{style.northPanel}">
+         	<g:Button ui:field="adminAccount" width="150px">Administrere Konto</g:Button>
+         	<g:Button ui:field="emailAdmin" width="150px">Email Administrator</g:Button>
+         	<g:Button ui:field="userList" width="150px">Brukerliste</g:Button>
+         	<g:Button ui:field="buttonLogout" width="150px">Logg Ut</g:Button>
+         </g:FlowPanel>
+       </g:north>
+       <g:west size='13.5'>
+         <g:FlowPanel styleName="{style.westPanel}">
+         	<g:Label/>
+         	<g:Label text="Create New Object" horizontalAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="Navn" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="Påvirkningsgrad" ui:field="impactFactor" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="Effekt" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="Volt" ui:field="volt" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="Lengdegrader" ui:field="longtitude" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="Breddegrader" ui:field="latitude" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="Forbrukermønster" ui:field="usagePattern" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Button width="166px" ui:field="addObject">Legg Til Objektet</g:Button>
+         </g:FlowPanel>
+       </g:west>
+       <g:center>
+         <g:FlowPanel styleName="{style.centerPanel}">
+         	<g:Tree ui:field="tree"/>
+         </g:FlowPanel>
+       </g:center>
+       <g:east size='25.5'>
+         <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
+         	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
+			<g:TextBox/>
+         	<g:TextBox/>
+			<g:TextBox text="Navn" alignment="CENTER"/>
+         	<g:TextBox ui:field="updateNameButton" text="Navn" alignment="CENTER" width="156px"/>
+         	<g:TextBox text="Påvirkningsgrad" ui:field="updateImpactDegreeButton" alignment="CENTER" width="156px"/>
+         	<g:TextBox ui:field="updateEffectButton" text="Effect" alignment="CENTER" width="156px"/>
+         	<g:TextBox ui:field="updateVoltButton" text="Volt" alignment="CENTER" width="156px"/>
+         	<g:TextBox ui:field="updateLongitudeButton" text="Lengdegrader" alignment="CENTER" width="156px"/>
+         	<g:TextBox ui:field="updateLatitudeButton" text="Breddegrader" alignment="CENTER" width="156px"/>
+         	<g:TextBox text="Forbrukermønster" alignment="CENTER" ui:field="updateUsagePatternButton" width="156px"/>
+         	<g:Button width="149px" ui:field="updateObjectButton" text="Oppdater Objekt"/>
+         	<g:Button width="166px" ui:field="slettObjektButton">Slett Objekt</g:Button>
+         	<g:Button width="149px" text="Vis Kart" ui:field="showMap"/>
+         	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="328px"/>
+         </g:FlowPanel>
+       </g:east>     
+        <g:south size="12.6">
+         <g:FlowPanel styleName="{style.southPanel}">
+         	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
+         	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
+         </g:FlowPanel>
+        </g:south>       
+     </g:DockLayoutPanel>
+</ui:UiBinder> 

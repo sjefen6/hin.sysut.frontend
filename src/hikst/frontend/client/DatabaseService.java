@@ -2,6 +2,7 @@ package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.Plot;
+import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulatorObject;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
@@ -34,13 +35,13 @@ public interface DatabaseService extends RemoteService
 	boolean exists(String username);
 	boolean changeAccessLevel(String username,String access_level);
 
-	//simulation management
-	int saveObject(SimulatorObject object);
-	boolean updateObject(int id,SimulatorObject object);
+	int saveObject(SimObjectTree simobject);
+	//boolean updateObject(int id,SimulatorObject object);
 	boolean deleteObject(int object_id);
 	SimulationTicket requestSimulation(SimulationRequest request);
 	boolean deleteSimulations(int id);
 	int getSimulationStatus(SimulationTicket ticket);
+	SimObjectTree loadObject(int id);
 	
 	 
 }

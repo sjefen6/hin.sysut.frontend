@@ -1,10 +1,5 @@
 package hikst.frontend.client;
 
-import java.awt.Composite;
-import java.awt.CompositeContext;
-import java.awt.RenderingHints;
-import java.awt.image.ColorModel;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.maps.client.InfoWindowContent;

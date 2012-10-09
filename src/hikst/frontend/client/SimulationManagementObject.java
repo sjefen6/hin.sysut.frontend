@@ -4,6 +4,8 @@ package hikst.frontend.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import hikst.frontend.client.callback.SimulatorObjectCallback;
+import hikst.frontend.client.pages.MyDockLayoutPanel;
 import hikst.frontend.shared.ImpactDegree;
 import hikst.frontend.shared.SimulatorObject;
 
@@ -192,7 +194,7 @@ public class SimulationManagementObject
 		}
 	}
 	
-	public void save(MyDockLayoutPanel panel)
+	/*public void save(MyDockLayoutPanel panel)
 	{	
 		if(this.isNotInDatabase)
 		{
@@ -203,7 +205,7 @@ public class SimulationManagementObject
 			connection.updateObject(id, this.getSimulatorObject(), new UpdateCallback());
 		}
 		
-	}
+	}*/
 	
 	public void clear()
 	{

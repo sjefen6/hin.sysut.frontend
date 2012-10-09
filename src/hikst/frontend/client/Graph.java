@@ -1,13 +1,8 @@
 package hikst.frontend.client;
 
-import hikst.frontend.shared.Description;
-import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.SimulatorObject;
 
 import java.util.Date;
-import java.util.List;
-
-import com.google.gwt.user.client.Window;
 import com.googlecode.gchart.client.GChart;
 
 public class Graph extends GChart
