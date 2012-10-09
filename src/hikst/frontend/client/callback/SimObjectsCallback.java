@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 	
 	private FlexTable objectTable;
-	private DatabaseService databaseService = GWT.create(DatabaseServiceAsync.class);
+	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 	
 	public SimObjectsCallback(FlexTable objectTable)
 	{
@@ -103,7 +103,7 @@ public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 							tree.rootObject = simObject;
 							tree.isEmpty = false;
 							
-							databaseService.saveObject(tree);
+							
 						}
 						
 					}

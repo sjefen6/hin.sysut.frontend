@@ -1,87 +1,25 @@
-package hikst.frontend.client.pages;
+package hikst.frontend.client;
 
 import java.util.Date;
 
-import hikst.frontend.client.SplineGraph;
-import hikst.frontend.shared.Description;
+import org.moxieapps.gwt.highcharts.client.Axis;
+import org.moxieapps.gwt.highcharts.client.Chart;
+import org.moxieapps.gwt.highcharts.client.Credits;
+import org.moxieapps.gwt.highcharts.client.Legend;
+import org.moxieapps.gwt.highcharts.client.Series;
+import org.moxieapps.gwt.highcharts.client.ToolTip;
+import org.moxieapps.gwt.highcharts.client.ToolTipData;
+import org.moxieapps.gwt.highcharts.client.ToolTipFormatter;
+import org.moxieapps.gwt.highcharts.client.labels.DataLabels;
+import org.moxieapps.gwt.highcharts.client.plotOptions.BarPlotOptions;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FlowPanel;
 
+public class SplineGraph {
 
-import org.moxieapps.gwt.highcharts.client.*;  
-import org.moxieapps.gwt.highcharts.client.labels.*;  
-import org.moxieapps.gwt.highcharts.client.plotOptions.*;
- 
-
-public class MainPage extends Composite implements HasText {
-
-	ObjectMenu panel;
-	MyDockLayoutPanel oldPanel;
-	SimResoults simPanel;
-	private static MainPageUiBinder uiBinder = GWT
-			.create(MainPageUiBinder.class);
-	@UiField Button buttonLogout;
-	@UiField Button emailAdmin;
-	@UiField Button adminAccount;
-	@UiField Button oldFront;
-	@UiField FlowPanel centerPanel;
-	@UiField Button tilbake;
-	@UiField Button simResoult;
-
-	interface MainPageUiBinder extends UiBinder<Widget, MainPage> {
-	}
-
-	public MainPage() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
-
-	@Override
-	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@UiHandler("tilbake")
-	void onBackClick(ClickEvent event){
-		
-		centerPanel.clear();
-		centerPanel.add(SplineGraph.createChart());
-		
-	}
-
-	@UiHandler("newSim")
-	void onNewSimClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ObjectMenu());
-		panel = new ObjectMenu();
-		RootLayoutPanel.get().add(panel);
-	}
-	@UiHandler("oldFront")
-	void onOldFrontClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new MyDockLayoutPanel());
-		oldPanel = new MyDockLayoutPanel();
-		RootLayoutPanel.get().add(oldPanel);	
-	}
-
-	public Chart createChart() {  
+	public static Chart createChart() {  
 		  
         final Chart chart = new Chart()  
             .setType(Series.Type.SPLINE)  
@@ -147,10 +85,4 @@ public class MainPage extends Composite implements HasText {
   
         return chart;  
     }  
-	
-	@UiHandler("simResoult")
-	void onSimResoultClick(ClickEvent event){
-		simPanel = new SimResoults();
-		RootLayoutPanel.get().add(simPanel);
-	}
 }

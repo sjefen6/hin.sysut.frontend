@@ -3,6 +3,8 @@ package hikst.frontend.client.pages;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.tools.ant.taskdefs.PathConvert.MapEntry;
+
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
@@ -10,14 +12,25 @@ import hikst.frontend.client.callback.StoreObjectCallback;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.control.MapTypeControl;
+import com.google.gwt.maps.client.geocode.LocationCallback;
+import com.google.gwt.maps.client.geocode.Placemark;
+import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.maps.client.event.MarkerClickHandler;
+import com.google.gwt.maps.client.event.MarkerDragEndHandler;
+import com.google.gwt.maps.client.event.MarkerDragStartHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
@@ -32,6 +45,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -40,7 +56,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-public class NewObject extends Composite implements HasText {
+public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
 	ObjectMenu panel;
 	SimObjectTree simulatorObject = new SimObjectTree();
@@ -70,8 +86,9 @@ public class NewObject extends Composite implements HasText {
 	@UiField TextBox updateLatitudeButton;
 	@UiField TextBox updateUsagePatternButton;
 	@UiField AbsolutePanel mapsPanel;
-	MapWidget map;
 	@UiField Button showMap;
+
+	MapWidget map;
 	@UiField FlowPanel eastPanel;
 
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
@@ -106,8 +123,6 @@ public class NewObject extends Composite implements HasText {
 				});
 	}
 	
-	
-
 	@UiHandler("impactFactor")
 	void onimpactFactorClick(ClickEvent event){
 		impactFactor.setText("1");
@@ -161,7 +176,6 @@ public class NewObject extends Composite implements HasText {
 	    
 	    latitude.setEnabled(false);
 	    longtitude.setEnabled(false);
-	
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
 	}
@@ -177,6 +191,11 @@ public class NewObject extends Composite implements HasText {
 	public void setText(String text) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@UiHandler("latitude")
+	void onlatitudeClick(ClickEvent event){
+	 
 	}
 	
 	@UiHandler("showMap")
@@ -378,8 +397,40 @@ public class NewObject extends Composite implements HasText {
 			{
 				Window.alert("Parsing exception :"+ex.getMessage());
 			}
-			
-			updateTree();
-		}
+		}	
 	}
+	
+	
+//	private class SimObject
+//	{	
+//		public String name = "empty";
+//		public float impactDegree = 1;
+//		public float effect = 1;
+//		public float volt = 1;
+//		public int longitude = 1;
+//		public int latitude = 1;
+//		public int usagePattern = 1;
+//		
+//		public SimObject Parent = null;
+//		
+//		private ArrayList<SimObject> simulatorObjects = new ArrayList<SimObject>();
+//		
+//		public boolean hasChildren()
+//		{
+//			return simulatorObjects.isEmpty();
+//		}
+//		
+//		public void clear()
+//		{
+//			name = "Empty";
+//			impactDegree = 0;
+//			effect = 0;
+//			volt = 0;
+//			longitude = 0;
+//			latitude = 0;
+//			usagePattern = 0;
+//			
+//			updateTree();
+//		}
+//	}
 }

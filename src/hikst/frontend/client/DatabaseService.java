@@ -2,6 +2,7 @@ package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.Plot;
+import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulatorObject;
 import hikst.frontend.shared.LoginRequest;
@@ -9,6 +10,7 @@ import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -42,6 +44,7 @@ public interface DatabaseService extends RemoteService
 	boolean deleteSimulations(int id);
 	int getSimulationStatus(SimulationTicket ticket);
 	SimObjectTree loadObject(int id);
+	ArrayList<SimObject> getSimObjects();
 	
 	 
 }

@@ -18,7 +18,7 @@
             background-color: white;
         }       
     </ui:style>
-     <g:DockLayoutPanel unit='EM' width="800" height="600">
+     <g:DockLayoutPanel unit='EM' width="1024" height="768">
         <g:north size='3.0'>
          <g:FlowPanel styleName="{style.northPanel}">
          	<g:Button ui:field="adminAccount" width="150px">Administrere Konto</g:Button>
@@ -49,6 +49,9 @@
        <g:east size='25.5'>
          <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
          	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
+			<g:TextBox/>
+         	<g:TextBox/>
+			<g:TextBox text="Navn" alignment="CENTER"/>
          	<g:TextBox ui:field="updateNameButton" text="Navn" alignment="CENTER" width="156px"/>
          	<g:TextBox text="Påvirkningsgrad" ui:field="updateImpactDegreeButton" alignment="CENTER" width="156px"/>
          	<g:TextBox ui:field="updateEffectButton" text="Effect" alignment="CENTER" width="156px"/>
