@@ -19,25 +19,27 @@
         }       
     </ui:style>
      <g:DockLayoutPanel unit='EM'>
-       <g:north size='.4' >
-         <g:FlowPanel styleName="{style.northPanel}"/>
+       <g:north size='3.2' >
+         <g:FlowPanel styleName="{style.northPanel}">
+         <g:Button width="200px" text="Lag Ett Nytt Objekt" ui:field="buttonSave"/>
+		 </g:FlowPanel>       
        </g:north>
-       <g:west size='4.6'>
+       <g:west size='7.2'>
          <g:FlowPanel styleName="{style.westPanel}"/>
        </g:west>
        <g:center>
-         <g:ScrollPanel styleName="{style.centerPanel}" ui:field="centerPanel">
-         	<!-- <g:Button width="200px" text="Lag Ett Nytt Objekt" ui:field="buttonSave"/> -->
-         	<g:FlexTable ui:field="flexyTable"/>
+         <g:ScrollPanel styleName="{style.centerPanel}" ui:field="centerPanel" width="500" height="200">
+         	 
+         	<g:FlexTable ui:field="flexyTable" width="498px" height="179px"/>
 
          </g:ScrollPanel>
        </g:center>
-       <g:east size='15' unit='EM'>
+       <g:east size='12.3' unit='EM'>
          <g:FlowPanel styleName="{style.eastPanel}">
 
          </g:FlowPanel>
        </g:east>     
-        <g:south size="6.1" unit='EM'>
+        <g:south size="3.6" unit='EM'>
          <g:FlowPanel styleName="{style.southPanel}">
 
          </g:FlowPanel>
