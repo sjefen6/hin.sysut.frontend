@@ -27,7 +27,8 @@ public class LoginCallback implements AsyncCallback<Boolean>
 
 		if(access_granted)
 		{
-			Window.alert("Access granted");
+			//Window.alert("Access granted");
+			System.out.println("LoginCallback / access granted");
 			login.GoToMainPage();
 		}
 		else
