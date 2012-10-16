@@ -69,12 +69,13 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	}
 
 	@Override
-	public SimulatorObject getSimulatorObject(int simulation_object_id)throws IllegalArgumentException
+	public SimObjectTree getSimulatorObject(int simulation_object_id)throws IllegalArgumentException
 	{
 		Connection connection = Settings.getDBC();
 		
 		try
 		{		
+			
 			String query = "SELECT Name FROM Objects WHERE ID=?";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, simulation_object_id);
@@ -83,9 +84,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			if(set.next())
 			{
 				String name = set.getString(1);
-				return new SimulatorObject(name, new ArrayList<SimulatorObject>());
-				
-				//TODO: hente ut sønn-objekter også
+				SimObjectTree simObjekt = new SimObjectTree();
 			}
 			else
 			{
@@ -149,10 +148,10 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 				long minimumTime = set.getLong(2);
 				long maximumTime = set.getLong(3);
 				
-				SimulatorObject simulator_object = getSimulatorObject(object_id);
-				List<Plot> plots = getData(sim_description_id);
+				//SimulatorObject simulator_object = getSimulatorObject(object_id);
+				//List<Plot> plots = getData(sim_description_id);
 				
-				return new Description(simulator_object,plots,minimumTime,maximumTime);
+				//return new Description(simulator_object,plots,minimumTime,maximumTime);
 			}
 			else
 			{
@@ -166,6 +165,8 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			throw new IllegalArgumentException();
 			
 		}
+		
+		return null;
 	}
 
 	@Override
@@ -414,10 +415,43 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		return object_id;
 	}
 	
+	private SimObject getSimObject(int id) throws SQLException
+	{
+		Connection connection = Settings.getDBC();
+		String query = "SELECT Name, Effect, Voltage, Current, Longitude, Latitude, self_temperature, target_temperature, base_area, base_height WHERE ID=?";
+		PreparedStatement statement = connection.prepareStatement(query);
+		statement.setInt(1, id);
+		
+		ResultSet set = statement.executeQuery();
+		
+		if(set.next()){
+		SimObject simObject = new SimObject(id);
+		simObject.name = set.getString(1);
+		simObject.effect = set.getFloat(2);
+		simObject.volt = set.getFloat(3);
+		//skal egentlig være strøm / ampere
+		simObject.volt = set.getFloat(4);
+		simObject.impactDegree = set.getFloat(5);
+		simObject.longitude = set.getInt(6);
+		simObject.latitude = set.getInt(7);
+		simObject.self_temperature = set.getInt(8);
+		simObject.target_temperature = set.getInt(9);
+		simObject.base_area = set.getInt(10);
+		simObject.base_height = set.getInt(11);
+		return simObject;
+		}else
+		{
+			return null;
+		}
+		
+		
+	}
+	
 	private void updateSimObject(SimObject simObject) throws SQLException
 	{
 		Connection connection = Settings.getDBC();
-		String query = "UPDATE Objects SET Name=?,Effect=?,Voltage=?,Current=?, Longitude=?, Latitude=? WHERE ID=?";
+		String query = "UPDATE Objects SET Name=?,Effect=?,Voltage=?,Current=?, Longitude=?, Latitude=?, self_temperature, target_temperature, base_area" +
+				" base_height,  WHERE ID=?";
 		PreparedStatement statement;
 		
 		statement = connection.prepareStatement(query);
@@ -427,10 +461,13 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		statement.setDouble(2, simObject.effect);
 		statement.setDouble(3, simObject.volt);
 		statement.setDouble(4, simObject.volt);
-		//statement.setFloat(5, simObject.impactDegree);
-		statement.setInt(5, objectID);
+		statement.setFloat(5, simObject.impactDegree);
 		statement.setInt(6, simObject.longitude);
 		statement.setInt(7, simObject.latitude);
+		statement.setDouble(8, simObject.self_temperature);
+		statement.setDouble(9, simObject.target_temperature);
+		statement.setDouble(10, simObject.base_area);
+		statement.setDouble(11, simObject.base_height);
 		statement.executeUpdate();// TODO: PÅL!
 		
 		Iterator<SimObject> children = simObject.getChildIterator();
@@ -756,7 +793,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		return children;
 	}
 	
-	private SimObject getSimObject(int id) throws SQLException
+	/*private SimObject getSimObject(int id) throws SQLException
 	{		
 		Connection connection = Settings.getDBC();
 		
@@ -785,7 +822,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		{
 			return null;
 		}
-	}
+	}*/
 	
 	private ArrayList<Integer> getChildren(int object_id) throws SQLException
 	{

@@ -22,7 +22,7 @@ public interface DatabaseService extends RemoteService
 	//for getting simulation data
 	List<Integer> getSimulationDescriptionsIDs() throws IllegalArgumentException;
 	List<Plot> getData(int sim_description_id) throws IllegalArgumentException;
-	SimulatorObject getSimulatorObject(int simulation_object_id) throws IllegalArgumentException;
+	SimObjectTree getSimulatorObject(int simulation_object_id) throws IllegalArgumentException;
 	Description getSimulation(int sim_description_id) throws IllegalArgumentException;
 	List<Description> getSimulations() throws IllegalArgumentException;
 	

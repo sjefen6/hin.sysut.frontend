@@ -41,6 +41,7 @@ public class ViewObjects extends Composite {
 	@UiField ScrollPanel centerPanel;
 	@UiField FlexTable flexyTable;
 	@UiField Button buttonSave;
+	@UiField Button backButton;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
 	
@@ -80,12 +81,9 @@ public class ViewObjects extends Composite {
 		RootLayoutPanel.get().add(newObjectPanel);
 	}
 	
-	//private void initButtons()
-	//{
-		//HorizontalPanel buttonPanel = new HorizontalPanel();
-		//buttonPanel.add(createSimObjectButton);
-
-		//centerPanel.add(buttonPanel);
-	//}
+	@UiHandler("backButton")
+	void onBackButtonClick(ClickEvent event) {
+		this.removeFromParent();
+	}
 }
 

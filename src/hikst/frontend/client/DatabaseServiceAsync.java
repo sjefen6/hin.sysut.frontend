@@ -22,8 +22,8 @@ public interface DatabaseServiceAsync {
 
 	void getData(int sim_description_id, AsyncCallback<List<Plot>> callback)
 	throws IllegalArgumentException;
-	void getSimulatorObject(int simulation_object_id, AsyncCallback<SimulatorObject> callback)
-	throws IllegalArgumentException;
+	void getSimulatorObject(int simulation_object_id,
+			AsyncCallback<SimObjectTree> callback);
 	void getSimulationDescriptionsIDs(AsyncCallback<List<Integer>> callback)
 	throws IllegalArgumentException;
 	void getSimulation(int sim_description_id, AsyncCallback<Description> callback)

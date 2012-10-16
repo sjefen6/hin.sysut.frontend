@@ -28,7 +28,7 @@ import org.moxieapps.gwt.highcharts.client.plotOptions.*;
 
 public class MainPage extends Composite implements HasText {
 
-	ObjectMenu panel;
+	NewSimulation panel;
 	MyDockLayoutPanel oldPanel;
 	SimResoults simPanel;
 	private static MainPageUiBinder uiBinder = GWT
@@ -70,8 +70,8 @@ public class MainPage extends Composite implements HasText {
 
 	@UiHandler("newSim")
 	void onNewSimClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ObjectMenu());
-		panel = new ObjectMenu();
+		RootLayoutPanel.get().add(new NewSimulation());
+		panel = new NewSimulation();
 		RootLayoutPanel.get().add(panel);
 	}
 	@UiHandler("oldFront")
