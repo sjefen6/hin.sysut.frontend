@@ -58,7 +58,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
-	ObjectMenu panel;
+	NewSimulation panel;
 	SimObjectTree simulatorObject = new SimObjectTree();
 	//SimulationManagementObject simManager = new SimulationManagementObject(this);
 	SimObject selectedSimObject = null;
@@ -75,16 +75,8 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@UiField Button back;
 	@UiField Button addObject;
 	@UiField Button saveObject;
-	@UiField Tree tree;
 	@UiField Button slettObjektButton;
 	@UiField Button updateObjectButton;
-	@UiField TextBox updateNameButton;
-	@UiField TextBox updateImpactDegreeButton;
-	@UiField TextBox updateEffectButton;
-	@UiField TextBox updateVoltButton;
-	@UiField TextBox updateLongitudeButton;
-	@UiField TextBox updateLatitudeButton;
-	@UiField TextBox updateUsagePatternButton;
 	@UiField AbsolutePanel mapsPanel;
 	@UiField Button showMap;
 
@@ -99,28 +91,28 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	public NewObject() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		tree.addSelectionHandler(new SelectionHandler<TreeItem>()
-				{
-
-					@Override
-					public void onSelection(SelectionEvent<TreeItem> event) {
-						
-						TreeItem treeItem = tree.getSelectedItem();
-						
-						Integer[] path = getPath(treeItem);
-						
-						SimObject selectedObject = simulatorObject.rootObject;
-						
-						for(int depth = path.length - 1; depth>= 0; depth--)
-						{
-							selectedObject = selectedObject.getChild(path[depth]);
-						}
-						
-						//simObject = selectedObject;
-						updateMenu();
-					}
-			
-				});
+//		tree.addSelectionHandler(new SelectionHandler<TreeItem>()
+//				{
+//
+//					@Override
+//					public void onSelection(SelectionEvent<TreeItem> event) {
+//						
+//						TreeItem treeItem = tree.getSelectedItem();
+//						
+//						Integer[] path = getPath(treeItem);
+//						
+//						SimObject selectedObject = simulatorObject.rootObject;
+//						
+//						for(int depth = path.length - 1; depth>= 0; depth--)
+//						{
+//							selectedObject = selectedObject.getChild(path[depth]);
+//						}
+//						
+//						//simObject = selectedObject;
+//						updateMenu();
+//					}
+//			
+//				});
 	}
 	
 	@UiHandler("impactFactor")
@@ -212,8 +204,8 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	void onBackClick(ClickEvent event) {
 		mapsPanel.clear();
 		eastPanel.clear();
-		RootLayoutPanel.get().add(new ObjectMenu());
-		panel = new ObjectMenu();
+		RootLayoutPanel.get().add(new NewSimulation());
+		panel = new NewSimulation();
 		RootLayoutPanel.get().add(panel);
 	}
 	
@@ -223,214 +215,4 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		
 		databaseService.saveObject(simulatorObject, new StoreObjectCallback());
 	}
-
-	@SuppressWarnings("deprecation")
-	@UiHandler("addObject")
-	void onAddObject(ClickEvent event){
-		
-		String objectName = name.getText();
-		String impactDegree = impactFactor.getText();
-		String objectEffect = effect.getText();
-		String objectVolt = volt.getText();
-		String objectLongitude = longtitude.getText();
-		String objectLatitude = latitude.getText();
-		String objectUsagePattern = usagePattern.getText();
-		
-		try
-		{
-			float floatEffect = Float.parseFloat(objectEffect);
-			float floatVolt = Float.parseFloat(objectVolt);
-			int intLongitude = Integer.parseInt(objectLongitude);
-			int intLatitude = Integer.parseInt(objectLatitude);
-			int intUsagePattern = Integer.parseInt(objectUsagePattern);
-			float intImpactDegree = Float.parseFloat(impactDegree);
-			
-			SimObject newObject = new SimObject();
-			newObject.name = objectName;
-			newObject.effect = floatEffect;
-			newObject.volt = floatVolt;
-			newObject.longitude = intLongitude;
-			newObject.latitude = intLatitude;
-			newObject.usagePattern = intUsagePattern;
-			newObject.impactDegree = intImpactDegree;
-			
-			if(simulatorObject.isEmpty)
-			{
-				simulatorObject.rootObject = newObject;
-				
-			}
-			else
-			{
-				selectedSimObject.addChild(newObject);
-			}
-			
-			simulatorObject.isEmpty = false;
-			selectedSimObject = newObject;
-			updateTree();
-		}catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	private void updateTree()
-	{
-		tree.clear();
-		
-		CheckBox cb = new CheckBox(simulatorObject.rootObject.name);
-		TreeItem rootItem = new TreeItem(cb);	
-		
-    	cb.setValue(true);
-    	cb.addClickListener(new ClickListener()
-    	{
-			@Override
-			public void onClick(Widget sender) {
-					
-			}
-    	});
-    	
-    	
-    	
-    	
-    	Iterator<SimObject> iterator = simulatorObject.rootObject.getChildIterator();
-    	
-    	while(iterator.hasNext())
-    	{
-    		SimObject entry = iterator.next();
-    		
-    		rootItem.addItem(addChildren(entry));
-    	}
-    	
-    	tree.addItem(rootItem);
-    	
-    	//initWidget(tree);
-	}
-	
-	@SuppressWarnings("deprecation")
-	private TreeItem addChildren(SimObject simObject)
-	{
-		CheckBox cb = new CheckBox(simObject.name);
-		TreeItem rootItem = new TreeItem(cb);
-		
-    	cb.setValue(true);
-    	cb.addClickListener(new ClickListener()
-    	{
-			@Override
-			public void onClick(Widget sender) {
-				
-			}
-    		
-    	});
-    	
-    	//h¯ h¯
-    	Iterator<SimObject> iterator = simObject.getChildIterator();
-    	
-    	if(iterator.hasNext())
-    	{
-    		SimObject entry = iterator.next();
-    		
-    		rootItem.addItem(addChildren(entry));
-    	}
-    	
-    	return rootItem;
-	}
-	
-	private void updateMenu()
-	{
-		updateNameButton.setText(selectedSimObject.name);
-		updateImpactDegreeButton.setText(String.valueOf(selectedSimObject.impactDegree));
-		updateEffectButton.setText(String.valueOf(selectedSimObject.effect));
-		updateVoltButton.setText(String.valueOf(selectedSimObject.volt));
-		updateLongitudeButton.setText(String.valueOf(selectedSimObject.longitude));
-		updateLatitudeButton.setText(String.valueOf(selectedSimObject.latitude));
-		updateUsagePatternButton.setText(String.valueOf(selectedSimObject.usagePattern));
-	}
-	
-	private Integer[] getPath(TreeItem treeItem)
-	{
-		TreeItem parentItem = null;
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		
-		while(treeItem.getParentItem() != null)
-		{
-			parentItem = treeItem.getParentItem();
-			
-			int index = parentItem.getChildIndex(treeItem);
-			
-			path.add(index);
-			
-			treeItem = parentItem;
-		}
-		
-		Integer[] returnPath = new Integer[path.size()];
-		path.toArray(returnPath);
-		//Window.alert(path.toString());
-		return returnPath;
-	}
-	
-	@UiHandler("slettObjektButton")
-	void onSlettObjektButtonClick(ClickEvent event) {
-			
-		simulatorObject.delete(selectedSimObject);
-		updateTree();
-		selectedSimObject = simulatorObject.rootObject;
-		updateMenu();
-	}
-
-	@UiHandler("updateObjectButton")
-	void onUpdateObjectButtonClick(ClickEvent event) {
-		
-		if(selectedSimObject != null)
-		{
-			try
-			{
-				selectedSimObject.name = updateNameButton.getText();
-				selectedSimObject.effect = Float.parseFloat(updateEffectButton.getText());
-				selectedSimObject.volt = Float.parseFloat(updateVoltButton.getText());
-				selectedSimObject.impactDegree = Integer.parseInt(updateImpactDegreeButton.getText());
-				selectedSimObject.latitude = Integer.parseInt(updateLatitudeButton.getText());
-				selectedSimObject.longitude = Integer.parseInt(updateLongitudeButton.getText());
-				selectedSimObject.usagePattern = Integer.parseInt(updateUsagePatternButton.getText());
-			}
-			catch(Exception ex)
-			{
-				Window.alert("Parsing exception :"+ex.getMessage());
-			}
-		}	
-	}
-	
-	
-//	private class SimObject
-//	{	
-//		public String name = "empty";
-//		public float impactDegree = 1;
-//		public float effect = 1;
-//		public float volt = 1;
-//		public int longitude = 1;
-//		public int latitude = 1;
-//		public int usagePattern = 1;
-//		
-//		public SimObject Parent = null;
-//		
-//		private ArrayList<SimObject> simulatorObjects = new ArrayList<SimObject>();
-//		
-//		public boolean hasChildren()
-//		{
-//			return simulatorObjects.isEmpty();
-//		}
-//		
-//		public void clear()
-//		{
-//			name = "Empty";
-//			impactDegree = 0;
-//			effect = 0;
-//			volt = 0;
-//			longitude = 0;
-//			latitude = 0;
-//			usagePattern = 0;
-//			
-//			updateTree();
-//		}
-//	}
 }
