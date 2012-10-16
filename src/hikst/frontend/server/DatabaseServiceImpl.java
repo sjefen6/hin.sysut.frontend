@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpSession;
 
@@ -187,10 +189,10 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	public boolean authenticate(LoginRequest request) {
 		
 		
-		return true;
-		/*String username = request.getUsername();
+		//return true;
+		String username = request.getUsername();
 		String password = request.getPassword();
-		
+		System.out.println(password);
 		Connection connection = Settings.getDBC();
 		
 		try
@@ -209,19 +211,22 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 				String salt = set.getString(5);
 				int access_level_id = set.getInt(6);
 				
-				String access_level = AccessLevel.getInstance().getAccessLevel(access_level_id);
+				
+				String access_level = String.valueOf(access_level_id);
+				
 				
 				try
 				{
-					String hashedPassword = getHash(password,salt);
-					
+					String hashedPassword = getHash(password);
+					System.out.println(hashedPassword);
 					//log-in attempt successful!!
 					if(passwordFromDB.equals(hashedPassword))
 					{
 						HttpSession session = getSession();
 						
-						User user = new User(username,firstname,lastname,email,salt,access_level);
-						session.setAttribute(USER_KEY, user);
+						User user = new User(username,firstname,lastname,email,salt, access_level);
+						session.setAttribute(hashedPassword, user);
+						
 						return true;
 					}
 					else
@@ -251,22 +256,27 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			ex.printStackTrace();
 			return false;
 		}
-		catch(AccessLevelNotFoundException ex)
+		/*catch(AccessLevelNotFoundException ex)
 		{
 			ex.printStackTrace();
 			return false;
-		}*/
-		
+		}
+		*/
 		
 	}
 	
-	private String getHash(String key, String salt) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	private String getHash(String key) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			String text = key + salt;
+			/*
+			String text = key;
 			messageDigest.update(text.getBytes("UTF-8"));
 			byte[] hash = messageDigest.digest();
 			return new String(hash);
+			*/
+			messageDigest.update(key.getBytes());
+			return new sun.misc.BASE64Encoder().encode(messageDigest.digest());
+			
 	}
 	
 	private String generateSalt()
@@ -304,7 +314,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			statement.setString(4, request.getEmail());
 			
 			String salt = generateSalt();
-			String hashedPassword = getHash(request.getPassword(),salt);
+			String hashedPassword = getHash(request.getPassword());
 			statement.setString(5, hashedPassword);
 			statement.setString(6,salt);
 			//sets to 0 for regular user-access

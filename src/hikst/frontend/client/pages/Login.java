@@ -64,8 +64,8 @@ public class Login extends Composite implements HasText {
 
 	@UiHandler("button")
 	void onClick(ClickEvent e) {
-		RootLayoutPanel.get().add(new MainPage());
-		panel = new MainPage();
+		//RootLayoutPanel.get().add(new MainPage());
+		//panel = new MainPage();
 
 		LoginRequest request = new LoginRequest(user.getText(), pass.getText());
 
@@ -76,6 +76,8 @@ public class Login extends Composite implements HasText {
 
 	public void GoToMainPage()
 	{
+		RootLayoutPanel.get().add(new MainPage());
+		panel = new MainPage();
 		RootLayoutPanel.get().add(panel);
 	}
 
