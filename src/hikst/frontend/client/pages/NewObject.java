@@ -3,34 +3,20 @@ package hikst.frontend.client.pages;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.tools.ant.taskdefs.PathConvert.MapEntry;
-
-
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.StoreObjectCallback;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.control.MapTypeControl;
-import com.google.gwt.maps.client.geocode.LocationCallback;
-import com.google.gwt.maps.client.geocode.Placemark;
-import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.maps.client.event.MarkerClickHandler;
-import com.google.gwt.maps.client.event.MarkerDragEndHandler;
-import com.google.gwt.maps.client.event.MarkerDragStartHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
@@ -45,9 +31,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -89,6 +72,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@UiField Button showMap;
 
 	MapWidget map;
+	
 	@UiField FlowPanel eastPanel;
 
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
@@ -155,9 +139,10 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	        public void onClick(MapClickEvent e) {
 	          map.clearOverlays();
 	        	
-	        	MapWidget sender = e.getSender();
+	          MapWidget sender = e.getSender();
 	          Overlay overlay = e.getOverlay();
 	          LatLng point = e.getLatLng();
+	          map.getInfoWindow().open(point, new InfoWindowContent("Den beste plassen!"));
 
 	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
 	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
@@ -170,6 +155,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	          sender.removeOverlay(overlay);
 	        } else {
 	          sender.addOverlay(new Marker(point));
+	          
 	        }
 	      }
 	    });
@@ -179,7 +165,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
 	}
-
 	
 	@Override
 	public String getText() {
