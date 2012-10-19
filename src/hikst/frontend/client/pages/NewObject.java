@@ -3,7 +3,6 @@ package hikst.frontend.client.pages;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
-import hikst.frontend.client.callback.StoreObjectCallback;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
@@ -33,11 +32,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
-	NewSimulation panel;
-	SimObjectTree simulatorObject = new SimObjectTree();
-	//SimulationManagementObject simManager = new SimulationManagementObject(this);
-	SimObject selectedSimObject = null;
-	HikstObject o = new HikstObject();
+	ViewObjects panel;
+//	SimObjectTree simulatorObject = new SimObjectTree();
+//	SimulationManagementObject simManager = new SimulationManagementObject(this);
+//	SimObject selectedSimObject = null;
+	Composite parent;
+	private HikstObject o = new HikstObject();
 	
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
@@ -72,15 +72,64 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
 
-	
-	public NewObject() {
+	/**
+	 * Main constructor
+	 */
+	public NewObject(Composite parent) {
+		this.parent = parent;
+		o = new HikstObject();
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
 
-	public NewObject(Composite parent, SimObject childObject){
-		this();
+	/**
+	 * Constructor used when returning from Objects list with a child object
+	 * 
+	 * @param parent
+	 * @param childObject
+	 */
+	public NewObject(NewObject parent, SimObject childObject){
+		this(parent.parent);
+		o = ((NewObject) parent).getObject();
+		o.sons.add(childObject.getID());
+		setValues();
+	}
+	
+	public HikstObject getObject(){
+		o.name = name.getValue();
+		o.effect = Float.parseFloat(effect.getValue());
+		o.voltage = Float.parseFloat(voltage.getValue());
+		o.current = Float.parseFloat(current.getValue());
+//		o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
+		o.latitude = Double.parseDouble(latitude.getValue());
+		o.longitude = Double.parseDouble(longitude.getValue());
+		o.self_temperature = Double.parseDouble(self_temperature.getValue());
+		o.target_temperature = Double.parseDouble(target_temperature.getValue());
+		o.base_area = Double.parseDouble(base_area.getValue());
+		o.base_height = Double.parseDouble(base_height.getValue());
+		o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
 		
+		return o;
+	}
+	
+	private void setValues(){
+		name.setValue(o.name);
+		effect.setValue(Float.toString(o.effect));
+		voltage.setValue(Float.toString(o.voltage));
+		current.setValue(Float.toString(o.current));
+		latitude.setValue(Double.toString(o.latitude));
+		longitude.setValue(Double.toString(o.longitude));
+		self_temperature.setValue(Double.toString(o.self_temperature));
+		target_temperature.setValue(Double.toString(o.self_temperature));
+		base_area.setValue(Double.toString(o.base_area));
+		base_height.setValue(Double.toString(o.base_height));
+		heat_loss_rate.setValue(Double.toString(o.heat_loss_rate));
+	}
+	
+	@UiHandler("addChildObject")
+	void onAddObjectClick(ClickEvent event) {
+		//RootLayoutPanel.get().add(new NewObject());
+		panel = new ViewObjects(this);
+		RootLayoutPanel.get().add(panel);
 	}
 	
 	@UiHandler("latitude")
@@ -160,7 +209,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		mapsPanel.clear();
 		eastPanel.clear();
 		RootLayoutPanel.get().add(new NewSimulation());
-		panel = new NewSimulation();
+		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
 	
@@ -169,18 +218,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		if (name.getValue().equals("Name")){
 			Window.alert("Change Name!");
 		} else {
-			o.name = name.getValue();
-			o.effect = Float.parseFloat(effect.getValue());
-			o.voltage = Float.parseFloat(voltage.getValue());
-			o.current = Float.parseFloat(current.getValue());
-//			o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
-			o.latitude = Double.parseDouble(latitude.getValue());
-			o.longitude = Double.parseDouble(longitude.getValue());
-			o.self_temperature = Double.parseDouble(self_temperature.getValue());
-			o.target_temperature = Double.parseDouble(target_temperature.getValue());
-			o.base_area = Double.parseDouble(base_area.getValue());
-			o.base_height = Double.parseDouble(base_height.getValue());
-			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
 			databaseService.saveObject(o, new SaveObjectCallback());
 		}
 	}

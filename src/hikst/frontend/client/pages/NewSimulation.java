@@ -203,7 +203,6 @@ public class NewSimulation extends Composite implements HasText {
 		//RootLayoutPanel.get().add(new NewObject());
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
-		
 	}
 
 	@Override

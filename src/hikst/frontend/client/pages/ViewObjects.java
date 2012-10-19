@@ -1,5 +1,6 @@
 package hikst.frontend.client.pages;
 
+import sun.misc.Compare;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SimObjectsCallback;
@@ -31,7 +32,7 @@ public class ViewObjects extends Composite {
 	//FlexTable objectTable;
 	
 	
-	NewObject newObjectPanel;
+	Composite panel;
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
 
@@ -40,7 +41,7 @@ public class ViewObjects extends Composite {
 	.create(ViewObjectsUiBinder.class);
 	@UiField ScrollPanel centerPanel;
 	@UiField FlexTable flexyTable;
-	@UiField Button buttonSave;
+	@UiField Button newObject;
 	@UiField Button backButton;
 	
 	private Composite parent;
@@ -78,10 +79,11 @@ public class ViewObjects extends Composite {
 		
 	//	centerPanel.add(flexyTable);
 	}
-	@UiHandler("buttonSave")
+	
+	@UiHandler("newObject")
 	void onButtonSave(ClickEvent event){
-		newObjectPanel = new NewObject();
-		RootLayoutPanel.get().add(newObjectPanel);
+		panel = new NewObject(this);
+		RootLayoutPanel.get().add(panel);
 	}
 	
 	@UiHandler("backButton")
