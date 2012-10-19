@@ -1,9 +1,15 @@
 package hikst.frontend.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class HikstObject 
+public class HikstObject implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private int ID;
 	public String name;
 	public float effect;
