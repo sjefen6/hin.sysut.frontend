@@ -18,6 +18,11 @@ public class SimObject implements Serializable
 	public int longitude = 1;
 	public int latitude = 1;
 	public int usagePattern = 1;
+	public double self_temperature = 0.0f;
+	public double target_temperature = 0.0f;
+	public double base_area = 0.0f;
+	public double base_height = 0.0f;
+	public double heat_loss_rate = 0.0f;
 	
 	public SimObject Parent = null;
 	

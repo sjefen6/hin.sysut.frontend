@@ -6,27 +6,28 @@ import hikst.frontend.shared.SimObjectTree;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-//not finished
-public class SimObjectTreeCallback implements AsyncCallback<SimObjectTree>
-{
+public class UpdateSimObjectTreeObjectMenuCallback implements AsyncCallback<SimObjectTree>{
+
 	private NewSimulation objectMenu;
 	
-	public SimObjectTreeCallback(NewSimulation objectMenu)
-	{
+	public UpdateSimObjectTreeObjectMenuCallback(NewSimulation objectMenu){
 		this.objectMenu = objectMenu;
 	}
 	
 	@Override
 	public void onFailure(Throwable caught) {
-		Window.alert("Unable to contact server :"+caught.getMessage());
+		
+		Window.alert("Server error: " + caught.getMessage());
 		
 	}
 
 	@Override
 	public void onSuccess(SimObjectTree result) {
-	
 		
+		this.objectMenu.setSimObject(result);
 		
 	}
+
+	
 	
 }
