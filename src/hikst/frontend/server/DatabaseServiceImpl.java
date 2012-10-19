@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.shared.Description;
+import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
@@ -883,5 +884,14 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		}
 		
 		return simObjects;
+	}
+
+	@Override
+	public boolean saveObject(HikstObject simObject) {
+		
+		String query = "INSERT INTO Objects VALUES";
+//		PreparedStatement = Settings.getDBC().prepareStatem7ent(query):
+		return false;
+		
 	}
 }

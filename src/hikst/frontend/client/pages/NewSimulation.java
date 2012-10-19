@@ -13,6 +13,7 @@ import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dev.javac.JsniCollector.Interval;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -27,6 +28,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
@@ -43,13 +45,14 @@ public class NewSimulation extends Composite implements HasText {
 	@UiField Button addObject;
 	@UiField DateBox fromDate;
 	@UiField DateBox toDate;
+	@UiField TextBox intervall;
 	@UiField Button buttonShowSpline;
 	@UiField FlowPanel eastPanel;
 	@UiField FlowPanel centerPanel;
 	@UiField Tree tree;
 	SimObjectTree simulatorObject = new SimObjectTree();
 	//SimulationManagementObject simManager = new SimulationManagementObject(this);
-	SimObject selectedSimObject = null;
+	SimObject selectedObject = null;
 	//@UiField Button printIt;
 	
 	DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
@@ -95,6 +98,19 @@ public class NewSimulation extends Composite implements HasText {
 				});
 	}
 	
+	public NewSimulation(Composite parent, SimObject simObject){
+		this();
+		fromDate.setValue(((NewSimulation) parent).fromDate.getValue());
+		toDate.setValue(((NewSimulation) parent).toDate.getValue());
+		intervall.setValue(((NewSimulation) parent).intervall.getValue());
+		simObjectTree = new SimObjectTree();
+		selectedObject = simObject;
+		simObjectTree.rootObject = simObject;
+		
+		updateTree();
+		
+	}
+	
 	@SuppressWarnings("deprecation")
 	private void updateTree()
 	{
@@ -102,7 +118,7 @@ public class NewSimulation extends Composite implements HasText {
 		
 		CheckBox cb = new CheckBox(simulatorObject.rootObject.name);
 		TreeItem rootItem = new TreeItem(cb);	
-		
+		rootItem.setText(simulatorObject.rootObject.name);
     	cb.setValue(true);
     	cb.addClickListener(new ClickListener()
     	{
@@ -123,7 +139,7 @@ public class NewSimulation extends Composite implements HasText {
     		
     		rootItem.addItem(addChildren(entry));
     	}
-    	
+    	tree.addItem(rootItem);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -185,8 +201,7 @@ public class NewSimulation extends Composite implements HasText {
 	@UiHandler("addObject")
 	void onAddObjectClick(ClickEvent event) {
 		//RootLayoutPanel.get().add(new NewObject());
-		RootLayoutPanel.get().add(new ViewObjects());
-		panel = new ViewObjects();
+		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 		
 	}

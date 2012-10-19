@@ -42,6 +42,8 @@ public class ViewObjects extends Composite {
 	@UiField FlexTable flexyTable;
 	@UiField Button buttonSave;
 	@UiField Button backButton;
+	
+	private Composite parent;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
 	
@@ -57,11 +59,12 @@ public class ViewObjects extends Composite {
 	
 	Button createSimObjectButton = new Button("Create object",createObjectButtonClickHandler);
 	
-	public ViewObjects() {
+	public ViewObjects(Composite parent) {
 		initWidget(uiBinder.createAndBindUi(this));
 		//initWidget(uiBinder.createAndBindUi(this));
 //		initWidget(panel);
 		//initButtons();
+		this.parent = parent;
 		initTable();
 	}
 	
@@ -70,7 +73,7 @@ public class ViewObjects extends Composite {
 		//flexyTable = new FlexTable();
 		
 		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new SimObjectsCallback(flexyTable));
+		databaseService.getSimObjects(new SimObjectsCallback(flexyTable, parent));
 		centerPanel.add(flexyTable);
 		
 	//	centerPanel.add(flexyTable);

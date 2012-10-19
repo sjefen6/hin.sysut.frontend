@@ -1,43 +1,37 @@
 package hikst.frontend.client.pages;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.callback.StoreObjectCallback;
+import hikst.frontend.client.callback.SaveObjectCallback;
+import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.control.MapTypeControl;
+import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.overlay.Overlay;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
@@ -45,68 +39,53 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	SimObjectTree simulatorObject = new SimObjectTree();
 	//SimulationManagementObject simManager = new SimulationManagementObject(this);
 	SimObject selectedSimObject = null;
+	HikstObject o = new HikstObject();
 	
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
-	@UiField TextBox impactFactor;
-	@UiField TextBox effect;
-	@UiField TextBox volt;
+	
 	@UiField TextBox name;
-	@UiField TextBox longtitude;
+	@UiField TextBox effect;
+	@UiField TextBox voltage;
+	@UiField TextBox current;
 	@UiField TextBox latitude;
-	@UiField TextBox usagePattern;
+	@UiField TextBox longitude;
+	@UiField TextBox self_temperature;
+	@UiField TextBox target_temperature;
+	@UiField TextBox base_area;
+	@UiField TextBox base_height;
+	@UiField TextBox heat_loss_rate;
+	
 	@UiField Button back;
-	@UiField Button addObject;
 	@UiField Button saveObject;
-	@UiField Button slettObjektButton;
-	@UiField Button updateObjectButton;
-	@UiField AbsolutePanel mapsPanel;
+	@UiField Button addChildObject;
+	@UiField Button addUsagePattern;
 	@UiField Button showMap;
+	
+	@UiField AbsolutePanel mapsPanel;
+	
+	@UiField FlowPanel eastPanel;
+	
 
 	MapWidget map;
 	
-	@UiField FlowPanel eastPanel;
 
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
 
+	
 	public NewObject() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-//		tree.addSelectionHandler(new SelectionHandler<TreeItem>()
-//				{
-//
-//					@Override
-//					public void onSelection(SelectionEvent<TreeItem> event) {
-//						
-//						TreeItem treeItem = tree.getSelectedItem();
-//						
-//						Integer[] path = getPath(treeItem);
-//						
-//						SimObject selectedObject = simulatorObject.rootObject;
-//						
-//						for(int depth = path.length - 1; depth>= 0; depth--)
-//						{
-//							selectedObject = selectedObject.getChild(path[depth]);
-//						}
-//						
-//						//simObject = selectedObject;
-//						updateMenu();
-//					}
-//			
-//				});
 	}
 	
-	@UiHandler("impactFactor")
-	void onimpactFactorClick(ClickEvent event){
-		impactFactor.setText("1");
-		effect.setText("500");
-		volt.setText("230");
-		name.setText("Hus");
-		usagePattern.setText("2");
+
+	public NewObject(Composite parent, SimObject childObject){
+		this();
+		
 	}
+	
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event){
 		
@@ -138,7 +117,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 
 	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
 	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
-	          longtitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
+	          longitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
 
 	    MarkerOptions opt = MarkerOptions.newInstance();
 	    opt.setDraggable(true);
@@ -152,8 +131,8 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	      }
 	    });
 	    
-	    latitude.setEnabled(false);
-	    longtitude.setEnabled(false);
+//	    latitude.setEnabled(false);
+//	    longitude.setEnabled(false);
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
 	}
@@ -168,11 +147,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	public void setText(String text) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	@UiHandler("latitude")
-	void onlatitudeClick(ClickEvent event){
-	 
 	}
 	
 	@UiHandler("showMap")
@@ -196,8 +170,22 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	
 	@UiHandler("saveObject")
 	void onSaveObject(ClickEvent event){
-	
-		
-		databaseService.saveObject(simulatorObject, new StoreObjectCallback());
+		if (name.getValue().equals("Name")){
+			Window.alert("Change Name!");
+		} else {
+			o.name = name.getValue();
+			o.effect = Float.parseFloat(effect.getValue());
+			o.voltage = Float.parseFloat(voltage.getValue());
+			o.current = Float.parseFloat(current.getValue());
+//			o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
+			o.latitude = Double.parseDouble(latitude.getValue());
+			o.longitude = Double.parseDouble(longitude.getValue());
+			o.self_temperature = Double.parseDouble(self_temperature.getValue());
+			o.target_temperature = Double.parseDouble(target_temperature.getValue());
+			o.base_area = Double.parseDouble(base_area.getValue());
+			o.base_height = Double.parseDouble(base_height.getValue());
+			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
+			databaseService.saveObject(o, new SaveObjectCallback());
+		}
 	}
 }

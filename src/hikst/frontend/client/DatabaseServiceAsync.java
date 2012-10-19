@@ -1,6 +1,7 @@
 package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
+import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
@@ -57,5 +58,6 @@ public interface DatabaseServiceAsync {
 	void settingsLoadable(AsyncCallback<Boolean> callback);
 	void loadObject(int id, AsyncCallback<SimObjectTree> callback);
 	void getSimObjects(AsyncCallback<ArrayList<SimObject>> callback);
+	void saveObject(HikstObject simObject, AsyncCallback<Boolean> callback);
 	
 }

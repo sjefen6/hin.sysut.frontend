@@ -3,6 +3,7 @@ package hikst.frontend.client.callback;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.pages.ModifyObjects;
+import hikst.frontend.client.pages.NewObject;
 import hikst.frontend.client.pages.NewSimulation;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
@@ -15,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -24,10 +26,11 @@ public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 	
 	private FlexTable objectTable;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-	
-	public SimObjectsCallback(FlexTable objectTable)
+	private Composite parent;
+	public SimObjectsCallback(FlexTable objectTable, Composite parent)
 	{
 		this.objectTable = objectTable;
+		this.parent = parent;
 	}
 	
 	@Override
@@ -72,6 +75,13 @@ public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 
 						@Override
 						public void onClick(ClickEvent event) {
+							
+							if(parent instanceof NewObject){
+								
+								RootLayoutPanel.get().add(new NewObject(parent,simObject));
+							}else if(parent instanceof NewSimulation){
+								RootLayoutPanel.get().add(new NewSimulation(parent, simObject));
+							}
 							
 							
 						}

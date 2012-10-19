@@ -10,3 +10,4 @@ gwt-unitCache
 war
 .gwt
 .settings
+.DS_Store
