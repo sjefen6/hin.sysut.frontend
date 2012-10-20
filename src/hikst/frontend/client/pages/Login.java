@@ -1,5 +1,6 @@
 package hikst.frontend.client.pages;
 
+import hikst.frontend.server.*;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.Graph;
@@ -36,10 +37,20 @@ public class Login extends Composite implements HasText {
 
 	public Login() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
 	}
 
+	public String getPassword(){
+		return pass.getText();
+	}
+	
+	public String getUsername(){
+		return user.getText();
+	}
+	
 	@UiField Button button;
 	@UiField TextBox user;
+	@UiField TextBox pass;
 
 	@UiHandler("user")
 	void onClick1(ClickEvent event){
@@ -53,10 +64,10 @@ public class Login extends Composite implements HasText {
 
 	@UiHandler("button")
 	void onClick(ClickEvent e) {
-		RootLayoutPanel.get().add(new MainPage());
-		panel = new MainPage();
+		//RootLayoutPanel.get().add(new MainPage());
+		//panel = new MainPage();
 
-		LoginRequest request = new LoginRequest(user1, userpass);
+		LoginRequest request = new LoginRequest(user.getText(), pass.getText());
 
 		databaseService.authenticate(request, new LoginCallback(this));
 
@@ -65,6 +76,8 @@ public class Login extends Composite implements HasText {
 
 	public void GoToMainPage()
 	{
+		RootLayoutPanel.get().add(new MainPage());
+		panel = new MainPage();
 		RootLayoutPanel.get().add(panel);
 	}
 

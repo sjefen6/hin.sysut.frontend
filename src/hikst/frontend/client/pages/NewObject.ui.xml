@@ -31,45 +31,46 @@
          <g:FlowPanel styleName="{style.westPanel}">
          	<g:Label/>
          	<g:Label text="Create New Object" horizontalAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Navn" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Påvirkningsgrad" ui:field="impactFactor" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Effekt" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Volt" ui:field="volt" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Lengdegrader" ui:field="longtitude" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Breddegrader" ui:field="latitude" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Forbrukermønster" ui:field="usagePattern" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Button width="166px" ui:field="addObject">Legg Til Objektet</g:Button>
+         	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
+         	<g:TextBox text="" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Effect" height="12px" ui:field="effectLabel"/>
+         	<g:TextBox text="" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Voltage" height="12px" ui:field="voltageLabel"/>
+         	<g:TextBox text="" ui:field="voltage" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Current" height="12px" ui:field="currentLabel"/>
+         	<g:TextBox text="" ui:field="current" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Latitude" ui:field="latLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="latitude" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Longitude" ui:field="longLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="longitude" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Start temperature" ui:field="starttempLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="self_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Target temperature" height="12px" ui:field="targettempLabel"/>
+         	<g:TextBox text="" ui:field="target_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Base area" height="12px" ui:field="baseareaLabel"/>
+         	<g:TextBox text="" ui:field="base_area" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Base height" height="12px" ui:field="baseheightLabel"/>
+         	<g:TextBox text="" ui:field="base_height" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Heat-loss rate" ui:field="heatlossLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="heat_loss_rate" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
+         	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
          </g:FlowPanel>
        </g:west>
-       <g:center>
-         <g:FlowPanel styleName="{style.centerPanel}">
-         	<g:Tree ui:field="tree"/>
+       <g:center size='25.5'>
+         <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
          </g:FlowPanel>
        </g:center>
-       <g:east size='25.5'>
+       <g:east size='13.5'>
          <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
-         	<g:Label text="Modify" horizontalAlignment="ALIGN_CENTER"/>
-			<g:TextBox/>
-         	<g:TextBox/>
-			<g:TextBox text="Navn" alignment="CENTER"/>
-         	<g:TextBox ui:field="updateNameButton" text="Navn" alignment="CENTER" width="156px"/>
-         	<g:TextBox text="Påvirkningsgrad" ui:field="updateImpactDegreeButton" alignment="CENTER" width="156px"/>
-         	<g:TextBox ui:field="updateEffectButton" text="Effect" alignment="CENTER" width="156px"/>
-         	<g:TextBox ui:field="updateVoltButton" text="Volt" alignment="CENTER" width="156px"/>
-         	<g:TextBox ui:field="updateLongitudeButton" text="Lengdegrader" alignment="CENTER" width="156px"/>
-         	<g:TextBox ui:field="updateLatitudeButton" text="Breddegrader" alignment="CENTER" width="156px"/>
-         	<g:TextBox text="Forbrukermønster" alignment="CENTER" ui:field="updateUsagePatternButton" width="156px"/>
-         	<g:Button width="149px" ui:field="updateObjectButton" text="Oppdater Objekt"/>
-         	<g:Button width="166px" ui:field="slettObjektButton">Slett Objekt</g:Button>
+         	<g:Button width="150px" ui:field="addChildObject">Add Child Object</g:Button>
+         	<g:Button width="150px" ui:field="addUsagePattern">Add Usage Pattern</g:Button>
          	<g:Button width="149px" text="Vis Kart" ui:field="showMap"/>
          	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="328px"/>
          </g:FlowPanel>
        </g:east>     
         <g:south size="12.6">
-         <g:FlowPanel styleName="{style.southPanel}">
-         	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
-         	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
-         </g:FlowPanel>
+         <g:FlowPanel styleName="{style.southPanel}"/>
         </g:south>       
      </g:DockLayoutPanel>
 </ui:UiBinder> 

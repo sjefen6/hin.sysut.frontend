@@ -12,11 +12,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpSession;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.shared.Description;
+import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
@@ -69,12 +72,13 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	}
 
 	@Override
-	public SimulatorObject getSimulatorObject(int simulation_object_id)throws IllegalArgumentException
+	public SimObjectTree getSimulatorObject(int simulation_object_id)throws IllegalArgumentException
 	{
 		Connection connection = Settings.getDBC();
 		
 		try
 		{		
+			
 			String query = "SELECT Name FROM Objects WHERE ID=?";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, simulation_object_id);
@@ -83,9 +87,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			if(set.next())
 			{
 				String name = set.getString(1);
-				return new SimulatorObject(name, new ArrayList<SimulatorObject>());
-				
-				//TODO: hente ut sønn-objekter også
+				SimObjectTree simObjekt = new SimObjectTree();
 			}
 			else
 			{
@@ -149,10 +151,10 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 				long minimumTime = set.getLong(2);
 				long maximumTime = set.getLong(3);
 				
-				SimulatorObject simulator_object = getSimulatorObject(object_id);
-				List<Plot> plots = getData(sim_description_id);
+				//SimulatorObject simulator_object = getSimulatorObject(object_id);
+				//List<Plot> plots = getData(sim_description_id);
 				
-				return new Description(simulator_object,plots,minimumTime,maximumTime);
+				//return new Description(simulator_object,plots,minimumTime,maximumTime);
 			}
 			else
 			{
@@ -166,6 +168,8 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			throw new IllegalArgumentException();
 			
 		}
+		
+		return null;
 	}
 
 	@Override
@@ -186,9 +190,11 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	@Override
 	public boolean authenticate(LoginRequest request) {
 		
-		/*String username = request.getUsername();
-		String password = request.getPassword();
 		
+		//return true;
+		String username = request.getUsername();
+		String password = request.getPassword();
+		System.out.println(password);
 		Connection connection = Settings.getDBC();
 		
 		try
@@ -207,19 +213,22 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 				String salt = set.getString(5);
 				int access_level_id = set.getInt(6);
 				
-				String access_level = AccessLevel.getInstance().getAccessLevel(access_level_id);
+				
+				String access_level = String.valueOf(access_level_id);
+				
 				
 				try
 				{
-					String hashedPassword = getHash(password,salt);
-					
+					String hashedPassword = getHash(password);
+					System.out.println(hashedPassword);
 					//log-in attempt successful!!
 					if(passwordFromDB.equals(hashedPassword))
 					{
 						HttpSession session = getSession();
 						
-						User user = new User(username,firstname,lastname,email,salt,access_level);
-						session.setAttribute(USER_KEY, user);
+						User user = new User(username,firstname,lastname,email,salt, access_level);
+						session.setAttribute(hashedPassword, user);
+						
 						return true;
 					}
 					else
@@ -249,22 +258,27 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			ex.printStackTrace();
 			return false;
 		}
-		catch(AccessLevelNotFoundException ex)
+		/*catch(AccessLevelNotFoundException ex)
 		{
 			ex.printStackTrace();
 			return false;
-		}*/
+		}
+		*/
 		
-		return true;
 	}
 	
-	private String getHash(String key, String salt) throws NoSuchAlgorithmException, UnsupportedEncodingException
+	private String getHash(String key) throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			String text = key + salt;
+			/*
+			String text = key;
 			messageDigest.update(text.getBytes("UTF-8"));
 			byte[] hash = messageDigest.digest();
 			return new String(hash);
+			*/
+			messageDigest.update(key.getBytes());
+			return new sun.misc.BASE64Encoder().encode(messageDigest.digest());
+			
 	}
 	
 	private String generateSalt()
@@ -302,7 +316,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 			statement.setString(4, request.getEmail());
 			
 			String salt = generateSalt();
-			String hashedPassword = getHash(request.getPassword(),salt);
+			String hashedPassword = getHash(request.getPassword());
 			statement.setString(5, hashedPassword);
 			statement.setString(6,salt);
 			//sets to 0 for regular user-access
@@ -414,10 +428,43 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		return object_id;
 	}
 	
+	private SimObject getSimObject(int id) throws SQLException
+	{
+		Connection connection = Settings.getDBC();
+		String query = "SELECT Name, Effect, Voltage, Current, Longitude, Latitude, self_temperature, target_temperature, base_area, base_height WHERE ID=?";
+		PreparedStatement statement = connection.prepareStatement(query);
+		statement.setInt(1, id);
+		
+		ResultSet set = statement.executeQuery();
+		
+		if(set.next()){
+		SimObject simObject = new SimObject(id);
+		simObject.name = set.getString(1);
+		simObject.effect = set.getFloat(2);
+		simObject.volt = set.getFloat(3);
+		//skal egentlig være strøm / ampere
+		simObject.volt = set.getFloat(4);
+		simObject.impactDegree = set.getFloat(5);
+		simObject.longitude = set.getInt(6);
+		simObject.latitude = set.getInt(7);
+		simObject.self_temperature = set.getInt(8);
+		simObject.target_temperature = set.getInt(9);
+		simObject.base_area = set.getInt(10);
+		simObject.base_height = set.getInt(11);
+		return simObject;
+		}else
+		{
+			return null;
+		}
+		
+		
+	}
+	
 	private void updateSimObject(SimObject simObject) throws SQLException
 	{
 		Connection connection = Settings.getDBC();
-		String query = "UPDATE Objects SET Name=?,Effect=?,Voltage=?,Current=?, Longitude=?, Latitude=? WHERE ID=?";
+		String query = "UPDATE Objects SET Name=?,Effect=?,Voltage=?,Current=?, Longitude=?, Latitude=?, self_temperature, target_temperature, base_area" +
+				" base_height,  WHERE ID=?";
 		PreparedStatement statement;
 		
 		statement = connection.prepareStatement(query);
@@ -427,10 +474,13 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		statement.setDouble(2, simObject.effect);
 		statement.setDouble(3, simObject.volt);
 		statement.setDouble(4, simObject.volt);
-		//statement.setFloat(5, simObject.impactDegree);
-		statement.setInt(5, objectID);
+		statement.setFloat(5, simObject.impactDegree);
 		statement.setInt(6, simObject.longitude);
 		statement.setInt(7, simObject.latitude);
+		statement.setDouble(8, simObject.self_temperature);
+		statement.setDouble(9, simObject.target_temperature);
+		statement.setDouble(10, simObject.base_area);
+		statement.setDouble(11, simObject.base_height);
 		statement.executeUpdate();// TODO: PÅL!
 		
 		Iterator<SimObject> children = simObject.getChildIterator();
@@ -756,7 +806,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		return children;
 	}
 	
-	private SimObject getSimObject(int id) throws SQLException
+	/*private SimObject getSimObject(int id) throws SQLException
 	{		
 		Connection connection = Settings.getDBC();
 		
@@ -785,7 +835,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		{
 			return null;
 		}
-	}
+	}*/
 	
 	private ArrayList<Integer> getChildren(int object_id) throws SQLException
 	{
@@ -846,5 +896,14 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		}
 		
 		return simObjects;
+	}
+
+	@Override
+	public boolean saveObject(HikstObject simObject) {
+		
+		String query = "INSERT INTO Objects VALUES";
+//		PreparedStatement = Settings.getDBC().prepareStatem7ent(query):
+		return false;
+		
 	}
 }

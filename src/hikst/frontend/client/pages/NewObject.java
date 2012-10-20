@@ -1,186 +1,316 @@
 package hikst.frontend.client.pages;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.apache.tools.ant.taskdefs.PathConvert.MapEntry;
-
-
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.callback.StoreObjectCallback;
+import hikst.frontend.client.callback.SaveObjectCallback;
+import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimObject;
-import hikst.frontend.shared.SimObjectTree;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.control.MapTypeControl;
-import com.google.gwt.maps.client.geocode.LocationCallback;
-import com.google.gwt.maps.client.geocode.Placemark;
-import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.maps.client.event.MarkerClickHandler;
-import com.google.gwt.maps.client.event.MarkerDragEndHandler;
-import com.google.gwt.maps.client.event.MarkerDragStartHandler;
-import com.google.gwt.maps.client.geom.LatLng;
-import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.maps.client.overlay.Overlay;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.Label;
 
-public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
+public class NewObject extends Composite implements HasText/*
+															 * ,
+															 * LocationCallback
+															 */{
 
-	ObjectMenu panel;
-	SimObjectTree simulatorObject = new SimObjectTree();
-	//SimulationManagementObject simManager = new SimulationManagementObject(this);
-	SimObject selectedSimObject = null;
-	
+	ViewObjects panel;
+	// SimObjectTree simulatorObject = new SimObjectTree();
+	// SimulationManagementObject simManager = new
+	// SimulationManagementObject(this);
+	// SimObject selectedSimObject = null;
+	Composite parent;
+	private HikstObject o = new HikstObject();
+
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
-	@UiField TextBox impactFactor;
-	@UiField TextBox effect;
-	@UiField TextBox volt;
-	@UiField TextBox name;
-	@UiField TextBox longtitude;
-	@UiField TextBox latitude;
-	@UiField TextBox usagePattern;
-	@UiField Button back;
-	@UiField Button addObject;
-	@UiField Button saveObject;
-	@UiField Tree tree;
-	@UiField Button slettObjektButton;
-	@UiField Button updateObjectButton;
-	@UiField TextBox updateNameButton;
-	@UiField TextBox updateImpactDegreeButton;
-	@UiField TextBox updateEffectButton;
-	@UiField TextBox updateVoltButton;
-	@UiField TextBox updateLongitudeButton;
-	@UiField TextBox updateLatitudeButton;
-	@UiField TextBox updateUsagePatternButton;
-	@UiField AbsolutePanel mapsPanel;
-	@UiField Button showMap;
+
+	@UiField
+	TextBox name;
+	@UiField
+	TextBox effect;
+	@UiField
+	TextBox voltage;
+	@UiField
+	TextBox current;
+	@UiField
+	TextBox latitude;
+	@UiField
+	TextBox longitude;
+	@UiField
+	TextBox self_temperature;
+	@UiField
+	TextBox target_temperature;
+	@UiField
+	TextBox base_area;
+	@UiField
+	TextBox base_height;
+	@UiField
+	TextBox heat_loss_rate;
+
+	@UiField
+	Button back;
+	@UiField
+	Button saveObject;
+	@UiField
+	Button addChildObject;
+	@UiField
+	Button addUsagePattern;
+	@UiField
+	Button showMap;
+
+	@UiField
+	AbsolutePanel mapsPanel;
+
+	@UiField
+	FlowPanel eastPanel;
+	@UiField
+	Label effectLabel;
+	@UiField
+	Label nameLabel;
+	@UiField
+	Label voltageLabel;
+	@UiField
+	Label currentLabel;
+	@UiField
+	Label latLabel;
+	@UiField
+	Label longLabel;
+	@UiField
+	Label starttempLabel;
+	@UiField
+	Label targettempLabel;
+	@UiField
+	Label baseareaLabel;
+	@UiField
+	Label baseheightLabel;
+	@UiField
+	Label heatlossLabel;
 
 	MapWidget map;
-	@UiField FlowPanel eastPanel;
 
-	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
+	private DatabaseServiceAsync databaseService = GWT
+			.create(DatabaseService.class);
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
 
-	public NewObject() {
+	/**
+	 * Main constructor
+	 */
+	public NewObject(Composite parent) {
+		this.parent = parent;
+		o = new HikstObject();
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		tree.addSelectionHandler(new SelectionHandler<TreeItem>()
-				{
+	}
 
-					@Override
-					public void onSelection(SelectionEvent<TreeItem> event) {
-						
-						TreeItem treeItem = tree.getSelectedItem();
-						
-						Integer[] path = getPath(treeItem);
-						
-						SimObject selectedObject = simulatorObject.rootObject;
-						
-						for(int depth = path.length - 1; depth>= 0; depth--)
-						{
-							selectedObject = selectedObject.getChild(path[depth]);
-						}
-						
-						//simObject = selectedObject;
-						updateMenu();
-					}
-			
-				});
+	/**
+	 * Constructor used when returning from Objects list with a child object
+	 * 
+	 * @param parent
+	 * @param childObject
+	 */
+	public NewObject(Composite parent, SimObject childObject) {
+		this(parent);
+		o = ((NewObject) parent).getObject();
+		o.sons.add(childObject.getID());
+		setValues();
 	}
-	
-	@UiHandler("impactFactor")
-	void onimpactFactorClick(ClickEvent event){
-		impactFactor.setText("1");
-		effect.setText("500");
-		volt.setText("230");
-		name.setText("Hus");
-		usagePattern.setText("2");
+
+	public HikstObject getObject() {
+		o.name = name.getValue();
+		try {
+			o.effect = Double.parseDouble(effect.getValue());
+		} catch (NumberFormatException e) {
+			o.effect = Double.NaN;
+		}
+		try {
+			o.voltage = Double.parseDouble(voltage.getValue());
+		} catch (NumberFormatException e) {
+			o.voltage = Double.NaN;
+		}
+		try {
+			o.current = Double.parseDouble(current.getValue());
+		} catch (NumberFormatException e) {
+			o.current = Double.NaN;
+		}
+		// o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
+		try {
+			o.latitude = Double.parseDouble(latitude.getValue());
+		} catch (NumberFormatException e) {
+			o.latitude = Double.NaN;
+		}
+		try {
+			o.longitude = Double.parseDouble(longitude.getValue());
+		} catch (NumberFormatException e) {
+			o.longitude = Double.NaN;
+		}
+		try {
+			o.self_temperature = Double
+					.parseDouble(self_temperature.getValue());
+		} catch (NumberFormatException e) {
+			o.self_temperature = Double.NaN;
+		}
+		try {
+			o.target_temperature = Double.parseDouble(target_temperature
+					.getValue());
+		} catch (NumberFormatException e) {
+			o.target_temperature = Double.NaN;
+		}
+		try {
+			o.base_area = Double.parseDouble(base_area.getValue());
+		} catch (NumberFormatException e) {
+			o.base_area = Double.NaN;
+		}
+		try {
+			o.base_height = Double.parseDouble(base_height.getValue());
+		} catch (NumberFormatException e) {
+			o.base_height = Double.NaN;
+		}
+		try {
+			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
+		} catch (NumberFormatException e) {
+			o.heat_loss_rate = Double.NaN;
+		}
+
+		return o;
 	}
+
+	private void setValues() {
+		name.setValue(o.name);
+		if (o.effect == Double.NaN) {
+			effect.setValue("");
+		} else {
+			effect.setValue(o.effect.toString());
+		}
+		if (o.voltage == Double.NaN) {
+			voltage.setValue("");
+		} else {
+			voltage.setValue(o.voltage.toString());
+		}
+		if (o.current == Double.NaN) {
+			current.setValue("");
+		} else {
+			current.setValue(o.current.toString());
+		}
+		if (o.latitude == Double.NaN) {
+			latitude.setValue("");
+		} else {
+			latitude.setValue(o.latitude.toString());
+		}
+		if (o.longitude == Double.NaN) {
+			longitude.setValue("");
+		} else {
+			longitude.setValue(o.longitude.toString());
+		}
+		if (o.self_temperature == Double.NaN) {
+			self_temperature.setValue("");
+		} else {
+			self_temperature.setValue(o.self_temperature.toString());
+		}
+		if (o.target_temperature == Double.NaN) {
+			target_temperature.setValue("");
+		} else {
+			target_temperature.setValue(o.self_temperature.toString());
+		}
+		if (o.base_area == Double.NaN) {
+			base_area.setValue("");
+		} else {
+			base_area.setValue(o.base_area.toString());
+		}
+		if (o.base_height == Double.NaN) {
+			base_height.setValue("");
+		} else {
+			base_height.setValue(o.base_height.toString());
+		}
+		if (o.heat_loss_rate == Double.NaN) {
+			heat_loss_rate.setValue("");
+		} else {
+			heat_loss_rate.setValue(o.heat_loss_rate.toString());
+		}
+	}
+
+	@UiHandler("addChildObject")
+	void onAddObjectClick(ClickEvent event) {
+		// RootLayoutPanel.get().add(new NewObject());
+		panel = new ViewObjects(this);
+		RootLayoutPanel.get().add(panel);
+	}
+
 	@UiHandler("latitude")
-	void onLatitudeClick(ClickEvent event){
-		
+	void onLatitudeClick(ClickEvent event) {
+
 		Maps.loadMapsApi("", "2", false, new Runnable() {
-		      public void run() {
-		        buildUi();
-		      }
-		    });
+			public void run() {
+				buildUi();
+			}
+		});
 	}
-	
+
 	private void buildUi() {
-	    // Open a map centered on Cawker City, KS USA
-	    LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
-	    
-	    final MapWidget map = new MapWidget(startPos, 2);
-	    map.setSize("100%", "100%");
-	    // Add some controls for the zoom level
-	    map.addControl(new LargeMapControl());
-	    map.addControl(new MapTypeControl());
-	    
-	    map.addMapClickHandler(new MapClickHandler() {
-	        public void onClick(MapClickEvent e) {
-	          map.clearOverlays();
-	        	
-	        	MapWidget sender = e.getSender();
-	          Overlay overlay = e.getOverlay();
-	          LatLng point = e.getLatLng();
+		// Open a map centered on Cawker City, KS USA
+		LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
 
-	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
-	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
-	          longtitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
+		final MapWidget map = new MapWidget(startPos, 2);
+		map.setSize("100%", "100%");
+		// Add some controls for the zoom level
+		map.addControl(new LargeMapControl());
+		map.addControl(new MapTypeControl());
 
-	    MarkerOptions opt = MarkerOptions.newInstance();
-	    opt.setDraggable(true);
-	    
-	    if (overlay != null && overlay instanceof Marker) {
-	          sender.removeOverlay(overlay);
-	        } else {
-	          sender.addOverlay(new Marker(point));
-	        }
-	      }
-	    });
-	    
-	    latitude.setEnabled(false);
-	    longtitude.setEnabled(false);
-	    mapsPanel.add(map);
-	    // Add the map to the HTML host page
+		map.addMapClickHandler(new MapClickHandler() {
+			public void onClick(MapClickEvent e) {
+				map.clearOverlays();
+
+				MapWidget sender = e.getSender();
+				Overlay overlay = e.getOverlay();
+				LatLng point = e.getLatLng();
+				map.getInfoWindow().open(point,
+						new InfoWindowContent("Den beste plassen!"));
+
+				// NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
+				latitude.setText(String.valueOf((int) (point.getLatitude() * 1000000f)));
+				longitude.setText(String.valueOf((int) (point.getLongitude() * 1000000f)));
+
+				MarkerOptions opt = MarkerOptions.newInstance();
+				opt.setDraggable(true);
+
+				if (overlay != null && overlay instanceof Marker) {
+					sender.removeOverlay(overlay);
+				} else {
+					sender.addOverlay(new Marker(point));
+
+				}
+			}
+		});
+
+		// latitude.setEnabled(false);
+		// longitude.setEnabled(false);
+		mapsPanel.add(map);
+		// Add the map to the HTML host page
 	}
 
-	
 	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
@@ -190,247 +320,34 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@Override
 	public void setText(String text) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	@UiHandler("latitude")
-	void onlatitudeClick(ClickEvent event){
-	 
-	}
-	
+
 	@UiHandler("showMap")
-	void onshowMapClick(ClickEvent event){
-		
-		  Maps.loadMapsApi("", "2", false, new Runnable() {
-		      public void run() {
-		        buildUi();
-		      }
-		    });
+	void onshowMapClick(ClickEvent event) {
+
+		Maps.loadMapsApi("", "2", false, new Runnable() {
+			public void run() {
+				buildUi();
+			}
+		});
 	}
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
 		mapsPanel.clear();
 		eastPanel.clear();
-		RootLayoutPanel.get().add(new ObjectMenu());
-		panel = new ObjectMenu();
+		RootLayoutPanel.get().add(new NewSimulation());
+		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-	
+
 	@UiHandler("saveObject")
-	void onSaveObject(ClickEvent event){
-	
-		
-		databaseService.saveObject(simulatorObject, new StoreObjectCallback());
-	}
-
-	@SuppressWarnings("deprecation")
-	@UiHandler("addObject")
-	void onAddObject(ClickEvent event){
-		
-		String objectName = name.getText();
-		String impactDegree = impactFactor.getText();
-		String objectEffect = effect.getText();
-		String objectVolt = volt.getText();
-		String objectLongitude = longtitude.getText();
-		String objectLatitude = latitude.getText();
-		String objectUsagePattern = usagePattern.getText();
-		
-		try
-		{
-			float floatEffect = Float.parseFloat(objectEffect);
-			float floatVolt = Float.parseFloat(objectVolt);
-			int intLongitude = Integer.parseInt(objectLongitude);
-			int intLatitude = Integer.parseInt(objectLatitude);
-			int intUsagePattern = Integer.parseInt(objectUsagePattern);
-			float intImpactDegree = Float.parseFloat(impactDegree);
-			
-			SimObject newObject = new SimObject();
-			newObject.name = objectName;
-			newObject.effect = floatEffect;
-			newObject.volt = floatVolt;
-			newObject.longitude = intLongitude;
-			newObject.latitude = intLatitude;
-			newObject.usagePattern = intUsagePattern;
-			newObject.impactDegree = intImpactDegree;
-			
-			if(simulatorObject.isEmpty)
-			{
-				simulatorObject.rootObject = newObject;
-				
-			}
-			else
-			{
-				selectedSimObject.addChild(newObject);
-			}
-			
-			simulatorObject.isEmpty = false;
-			selectedSimObject = newObject;
-			updateTree();
-		}catch(Exception ex)
-		{
-			ex.printStackTrace();
+	void onSaveObject(ClickEvent event) {
+		if (name.getValue().equals("Name")) {
+			Window.alert("Change Name!");
+		} else {
+			databaseService.saveObject(o, new SaveObjectCallback());
 		}
 	}
-	
-	@SuppressWarnings("deprecation")
-	private void updateTree()
-	{
-		tree.clear();
-		
-		CheckBox cb = new CheckBox(simulatorObject.rootObject.name);
-		TreeItem rootItem = new TreeItem(cb);	
-		
-    	cb.setValue(true);
-    	cb.addClickListener(new ClickListener()
-    	{
-			@Override
-			public void onClick(Widget sender) {
-					
-			}
-    	});
-    	
-    	
-    	
-    	
-    	Iterator<SimObject> iterator = simulatorObject.rootObject.getChildIterator();
-    	
-    	while(iterator.hasNext())
-    	{
-    		SimObject entry = iterator.next();
-    		
-    		rootItem.addItem(addChildren(entry));
-    	}
-    	
-    	tree.addItem(rootItem);
-    	
-    	//initWidget(tree);
-	}
-	
-	@SuppressWarnings("deprecation")
-	private TreeItem addChildren(SimObject simObject)
-	{
-		CheckBox cb = new CheckBox(simObject.name);
-		TreeItem rootItem = new TreeItem(cb);
-		
-    	cb.setValue(true);
-    	cb.addClickListener(new ClickListener()
-    	{
-			@Override
-			public void onClick(Widget sender) {
-				
-			}
-    		
-    	});
-    	
-    	//h¯ h¯
-    	Iterator<SimObject> iterator = simObject.getChildIterator();
-    	
-    	if(iterator.hasNext())
-    	{
-    		SimObject entry = iterator.next();
-    		
-    		rootItem.addItem(addChildren(entry));
-    	}
-    	
-    	return rootItem;
-	}
-	
-	private void updateMenu()
-	{
-		updateNameButton.setText(selectedSimObject.name);
-		updateImpactDegreeButton.setText(String.valueOf(selectedSimObject.impactDegree));
-		updateEffectButton.setText(String.valueOf(selectedSimObject.effect));
-		updateVoltButton.setText(String.valueOf(selectedSimObject.volt));
-		updateLongitudeButton.setText(String.valueOf(selectedSimObject.longitude));
-		updateLatitudeButton.setText(String.valueOf(selectedSimObject.latitude));
-		updateUsagePatternButton.setText(String.valueOf(selectedSimObject.usagePattern));
-	}
-	
-	private Integer[] getPath(TreeItem treeItem)
-	{
-		TreeItem parentItem = null;
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		
-		while(treeItem.getParentItem() != null)
-		{
-			parentItem = treeItem.getParentItem();
-			
-			int index = parentItem.getChildIndex(treeItem);
-			
-			path.add(index);
-			
-			treeItem = parentItem;
-		}
-		
-		Integer[] returnPath = new Integer[path.size()];
-		path.toArray(returnPath);
-		//Window.alert(path.toString());
-		return returnPath;
-	}
-	
-	@UiHandler("slettObjektButton")
-	void onSlettObjektButtonClick(ClickEvent event) {
-			
-		simulatorObject.delete(selectedSimObject);
-		updateTree();
-		selectedSimObject = simulatorObject.rootObject;
-		updateMenu();
-	}
-
-	@UiHandler("updateObjectButton")
-	void onUpdateObjectButtonClick(ClickEvent event) {
-		
-		if(selectedSimObject != null)
-		{
-			try
-			{
-				selectedSimObject.name = updateNameButton.getText();
-				selectedSimObject.effect = Float.parseFloat(updateEffectButton.getText());
-				selectedSimObject.volt = Float.parseFloat(updateVoltButton.getText());
-				selectedSimObject.impactDegree = Integer.parseInt(updateImpactDegreeButton.getText());
-				selectedSimObject.latitude = Integer.parseInt(updateLatitudeButton.getText());
-				selectedSimObject.longitude = Integer.parseInt(updateLongitudeButton.getText());
-				selectedSimObject.usagePattern = Integer.parseInt(updateUsagePatternButton.getText());
-			}
-			catch(Exception ex)
-			{
-				Window.alert("Parsing exception :"+ex.getMessage());
-			}
-		}	
-	}
-	
-	
-//	private class SimObject
-//	{	
-//		public String name = "empty";
-//		public float impactDegree = 1;
-//		public float effect = 1;
-//		public float volt = 1;
-//		public int longitude = 1;
-//		public int latitude = 1;
-//		public int usagePattern = 1;
-//		
-//		public SimObject Parent = null;
-//		
-//		private ArrayList<SimObject> simulatorObjects = new ArrayList<SimObject>();
-//		
-//		public boolean hasChildren()
-//		{
-//			return simulatorObjects.isEmpty();
-//		}
-//		
-//		public void clear()
-//		{
-//			name = "Empty";
-//			impactDegree = 0;
-//			effect = 0;
-//			volt = 0;
-//			longitude = 0;
-//			latitude = 0;
-//			usagePattern = 0;
-//			
-//			updateTree();
-//		}
-//	}
 }
