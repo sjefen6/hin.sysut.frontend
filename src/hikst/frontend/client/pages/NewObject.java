@@ -1,34 +1,37 @@
 package hikst.frontend.client.pages;
 
+
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.control.MapTypeControl;
+import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.overlay.Overlay;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 
 public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
@@ -66,6 +69,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	
 
 	MapWidget map;
+	
 
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
@@ -156,9 +160,10 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	        public void onClick(MapClickEvent e) {
 	          map.clearOverlays();
 	        	
-	        	MapWidget sender = e.getSender();
+	          MapWidget sender = e.getSender();
 	          Overlay overlay = e.getOverlay();
 	          LatLng point = e.getLatLng();
+	          map.getInfoWindow().open(point, new InfoWindowContent("Den beste plassen!"));
 
 	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
 	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
@@ -171,6 +176,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	          sender.removeOverlay(overlay);
 	        } else {
 	          sender.addOverlay(new Marker(point));
+	          
 	        }
 	      }
 	    });
@@ -180,7 +186,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
 	}
-
 	
 	@Override
 	public String getText() {
