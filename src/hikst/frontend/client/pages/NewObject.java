@@ -1,6 +1,5 @@
 package hikst.frontend.client.pages;
 
-
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
@@ -34,56 +33,88 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
+public class NewObject extends Composite implements HasText/*
+															 * ,
+															 * LocationCallback
+															 */{
 
 	ViewObjects panel;
-//	SimObjectTree simulatorObject = new SimObjectTree();
-//	SimulationManagementObject simManager = new SimulationManagementObject(this);
-//	SimObject selectedSimObject = null;
+	// SimObjectTree simulatorObject = new SimObjectTree();
+	// SimulationManagementObject simManager = new
+	// SimulationManagementObject(this);
+	// SimObject selectedSimObject = null;
 	Composite parent;
 	private HikstObject o = new HikstObject();
-	
+
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
-	
-	@UiField TextBox name;
-	@UiField TextBox effect;
-	@UiField TextBox voltage;
-	@UiField TextBox current;
-	@UiField TextBox latitude;
-	@UiField TextBox longitude;
-	@UiField TextBox self_temperature;
-	@UiField TextBox target_temperature;
-	@UiField TextBox base_area;
-	@UiField TextBox base_height;
-	@UiField TextBox heat_loss_rate;
-	
-	@UiField Button back;
-	@UiField Button saveObject;
-	@UiField Button addChildObject;
-	@UiField Button addUsagePattern;
-	@UiField Button showMap;
-	
-	@UiField AbsolutePanel mapsPanel;
-	
-	@UiField FlowPanel eastPanel;
-	@UiField Label effectLabel;
-	@UiField Label nameLabel;
-	@UiField Label voltageLabel;
-	@UiField Label currentLabel;
-	@UiField Label latLabel;
-	@UiField Label longLabel;
-	@UiField Label starttempLabel;
-	@UiField Label targettempLabel;
-	@UiField Label baseareaLabel;
-	@UiField Label baseheightLabel;
-	@UiField Label heatlossLabel;
-	
+
+	@UiField
+	TextBox name;
+	@UiField
+	TextBox effect;
+	@UiField
+	TextBox voltage;
+	@UiField
+	TextBox current;
+	@UiField
+	TextBox latitude;
+	@UiField
+	TextBox longitude;
+	@UiField
+	TextBox self_temperature;
+	@UiField
+	TextBox target_temperature;
+	@UiField
+	TextBox base_area;
+	@UiField
+	TextBox base_height;
+	@UiField
+	TextBox heat_loss_rate;
+
+	@UiField
+	Button back;
+	@UiField
+	Button saveObject;
+	@UiField
+	Button addChildObject;
+	@UiField
+	Button addUsagePattern;
+	@UiField
+	Button showMap;
+
+	@UiField
+	AbsolutePanel mapsPanel;
+
+	@UiField
+	FlowPanel eastPanel;
+	@UiField
+	Label effectLabel;
+	@UiField
+	Label nameLabel;
+	@UiField
+	Label voltageLabel;
+	@UiField
+	Label currentLabel;
+	@UiField
+	Label latLabel;
+	@UiField
+	Label longLabel;
+	@UiField
+	Label starttempLabel;
+	@UiField
+	Label targettempLabel;
+	@UiField
+	Label baseareaLabel;
+	@UiField
+	Label baseheightLabel;
+	@UiField
+	Label heatlossLabel;
 
 	MapWidget map;
-	
 
-	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
+	private DatabaseServiceAsync databaseService = GWT
+			.create(DatabaseService.class);
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
@@ -103,31 +134,73 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(Composite parent, SimObject childObject){
+	public NewObject(Composite parent, SimObject childObject) {
 		this(parent);
 		o = ((NewObject) parent).getObject();
 		o.sons.add(childObject.getID());
 		setValues();
 	}
-	
-	public HikstObject getObject(){
+
+	public HikstObject getObject() {
 		o.name = name.getValue();
-		o.effect = Float.parseFloat(effect.getValue());
-		o.voltage = Float.parseFloat(voltage.getValue());
-		o.current = Float.parseFloat(current.getValue());
-//		o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
-		o.latitude = Double.parseDouble(latitude.getValue());
-		o.longitude = Double.parseDouble(longitude.getValue());
-		o.self_temperature = Double.parseDouble(self_temperature.getValue());
-		o.target_temperature = Double.parseDouble(target_temperature.getValue());
-		o.base_area = Double.parseDouble(base_area.getValue());
-		o.base_height = Double.parseDouble(base_height.getValue());
-		o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
-		
+		try {
+			o.effect = Float.parseFloat(effect.getValue());
+		} catch (NumberFormatException e) {
+			o.effect = (Float) null;
+		}
+		try {
+			o.voltage = Float.parseFloat(voltage.getValue());
+		} catch (NumberFormatException e) {
+			o.voltage = (Float) null;
+		}
+		try {
+			o.current = Float.parseFloat(current.getValue());
+		} catch (NumberFormatException e) {
+			o.current = (Float) null;
+		}
+		// o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
+		try {
+			o.latitude = Double.parseDouble(latitude.getValue());
+		} catch (NumberFormatException e) {
+			o.latitude = (Double) null;
+		}
+		try {
+			o.longitude = Double.parseDouble(longitude.getValue());
+		} catch (NumberFormatException e) {
+			o.longitude = (Double) null;
+		}
+		try {
+			o.self_temperature = Double
+					.parseDouble(self_temperature.getValue());
+		} catch (NumberFormatException e) {
+			o.self_temperature = (Double) null;
+		}
+		try {
+			o.target_temperature = Double.parseDouble(target_temperature
+					.getValue());
+		} catch (NumberFormatException e) {
+			o.target_temperature = (Double) null;
+		}
+		try {
+			o.base_area = Double.parseDouble(base_area.getValue());
+		} catch (NumberFormatException e) {
+			o.base_area = (Float) null;
+		}
+		try {
+			o.base_height = Double.parseDouble(base_height.getValue());
+		} catch (NumberFormatException e) {
+			o.base_height = (Double) null;
+		}
+		try {
+			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
+		} catch (NumberFormatException e) {
+			o.heat_loss_rate = (Double) null;
+		}
+
 		return o;
 	}
-	
-	private void setValues(){
+
+	private void setValues() {
 		name.setValue(o.name);
 		effect.setValue(Float.toString(o.effect));
 		voltage.setValue(Float.toString(o.voltage));
@@ -140,65 +213,66 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		base_height.setValue(Double.toString(o.base_height));
 		heat_loss_rate.setValue(Double.toString(o.heat_loss_rate));
 	}
-	
+
 	@UiHandler("addChildObject")
 	void onAddObjectClick(ClickEvent event) {
-		//RootLayoutPanel.get().add(new NewObject());
+		// RootLayoutPanel.get().add(new NewObject());
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-	
+
 	@UiHandler("latitude")
-	void onLatitudeClick(ClickEvent event){
-		
+	void onLatitudeClick(ClickEvent event) {
+
 		Maps.loadMapsApi("", "2", false, new Runnable() {
-		      public void run() {
-		        buildUi();
-		      }
-		    });
+			public void run() {
+				buildUi();
+			}
+		});
 	}
-	
+
 	private void buildUi() {
-	    // Open a map centered on Cawker City, KS USA
-	    LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
-	    
-	    final MapWidget map = new MapWidget(startPos, 2);
-	    map.setSize("100%", "100%");
-	    // Add some controls for the zoom level
-	    map.addControl(new LargeMapControl());
-	    map.addControl(new MapTypeControl());
-	    
-	    map.addMapClickHandler(new MapClickHandler() {
-	        public void onClick(MapClickEvent e) {
-	          map.clearOverlays();
-	        	
-	          MapWidget sender = e.getSender();
-	          Overlay overlay = e.getOverlay();
-	          LatLng point = e.getLatLng();
-	          map.getInfoWindow().open(point, new InfoWindowContent("Den beste plassen!"));
+		// Open a map centered on Cawker City, KS USA
+		LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
 
-	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
-	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
-	          longitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
+		final MapWidget map = new MapWidget(startPos, 2);
+		map.setSize("100%", "100%");
+		// Add some controls for the zoom level
+		map.addControl(new LargeMapControl());
+		map.addControl(new MapTypeControl());
 
-	    MarkerOptions opt = MarkerOptions.newInstance();
-	    opt.setDraggable(true);
-	    
-	    if (overlay != null && overlay instanceof Marker) {
-	          sender.removeOverlay(overlay);
-	        } else {
-	          sender.addOverlay(new Marker(point));
-	          
-	        }
-	      }
-	    });
-	    
-//	    latitude.setEnabled(false);
-//	    longitude.setEnabled(false);
-	    mapsPanel.add(map);
-	    // Add the map to the HTML host page
+		map.addMapClickHandler(new MapClickHandler() {
+			public void onClick(MapClickEvent e) {
+				map.clearOverlays();
+
+				MapWidget sender = e.getSender();
+				Overlay overlay = e.getOverlay();
+				LatLng point = e.getLatLng();
+				map.getInfoWindow().open(point,
+						new InfoWindowContent("Den beste plassen!"));
+
+				// NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
+				latitude.setText(String.valueOf((int) (point.getLatitude() * 1000000f)));
+				longitude.setText(String.valueOf((int) (point.getLongitude() * 1000000f)));
+
+				MarkerOptions opt = MarkerOptions.newInstance();
+				opt.setDraggable(true);
+
+				if (overlay != null && overlay instanceof Marker) {
+					sender.removeOverlay(overlay);
+				} else {
+					sender.addOverlay(new Marker(point));
+
+				}
+			}
+		});
+
+		// latitude.setEnabled(false);
+		// longitude.setEnabled(false);
+		mapsPanel.add(map);
+		// Add the map to the HTML host page
 	}
-	
+
 	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
@@ -208,17 +282,17 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@Override
 	public void setText(String text) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@UiHandler("showMap")
-	void onshowMapClick(ClickEvent event){
-		
-		  Maps.loadMapsApi("", "2", false, new Runnable() {
-		      public void run() {
-		        buildUi();
-		      }
-		    });
+	void onshowMapClick(ClickEvent event) {
+
+		Maps.loadMapsApi("", "2", false, new Runnable() {
+			public void run() {
+				buildUi();
+			}
+		});
 	}
 
 	@UiHandler("back")
@@ -229,10 +303,10 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-	
+
 	@UiHandler("saveObject")
-	void onSaveObject(ClickEvent event){
-		if (name.getValue().equals("Name")){
+	void onSaveObject(ClickEvent event) {
+		if (name.getValue().equals("Name")) {
 			Window.alert("Change Name!");
 		} else {
 			databaseService.saveObject(o, new SaveObjectCallback());
