@@ -78,7 +78,7 @@ public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 							
 							if(parent instanceof NewObject){
 								
-								RootLayoutPanel.get().add(new NewObject(parent,simObject));
+								RootLayoutPanel.get().add(new NewObject(parent, simObject));
 							}else if(parent instanceof NewSimulation){
 								RootLayoutPanel.get().add(new NewSimulation(parent, simObject));
 							}

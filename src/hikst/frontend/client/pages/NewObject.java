@@ -87,8 +87,8 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(NewObject parent, SimObject childObject){
-		this(parent.parent);
+	public NewObject(Composite parent, SimObject childObject){
+		this(parent);
 		o = ((NewObject) parent).getObject();
 		o.sons.add(childObject.getID());
 		setValues();
