@@ -12,17 +12,17 @@ public class HikstObject implements Serializable
 	
 	private int ID;
 	public String name;
-	public float effect;
-	public float voltage;
-	public float current;
+	public Double effect;
+	public Double voltage;
+	public Double current;
 	public int usage_pattern_ID;
-	public double latitude;
-	public double longitude;
-	public double self_temperature;
-	public double target_temperature;
-	public double base_area;
-	public double base_height;
-	public double heat_loss_rate;
+	public Double latitude;
+	public Double longitude;
+	public Double self_temperature;
+	public Double target_temperature;
+	public Double base_area;
+	public Double base_height;
+	public Double heat_loss_rate;
 	public ArrayList<Integer> sons = new ArrayList<Integer>();
 	
 	public HikstObject(){}

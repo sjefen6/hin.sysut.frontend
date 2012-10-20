@@ -5,8 +5,6 @@ import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimObject;
-import hikst.frontend.shared.SimObjectTree;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maps.client.InfoWindowContent;
@@ -144,57 +142,57 @@ public class NewObject extends Composite implements HasText/*
 	public HikstObject getObject() {
 		o.name = name.getValue();
 		try {
-			o.effect = Float.parseFloat(effect.getValue());
+			o.effect = Double.parseDouble(effect.getValue());
 		} catch (NumberFormatException e) {
-			o.effect = (Float) null;
+			o.effect = Double.NaN;
 		}
 		try {
-			o.voltage = Float.parseFloat(voltage.getValue());
+			o.voltage = Double.parseDouble(voltage.getValue());
 		} catch (NumberFormatException e) {
-			o.voltage = (Float) null;
+			o.voltage = Double.NaN;
 		}
 		try {
-			o.current = Float.parseFloat(current.getValue());
+			o.current = Double.parseDouble(current.getValue());
 		} catch (NumberFormatException e) {
-			o.current = (Float) null;
+			o.current = Double.NaN;
 		}
 		// o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
 		try {
 			o.latitude = Double.parseDouble(latitude.getValue());
 		} catch (NumberFormatException e) {
-			o.latitude = (Double) null;
+			o.latitude = Double.NaN;
 		}
 		try {
 			o.longitude = Double.parseDouble(longitude.getValue());
 		} catch (NumberFormatException e) {
-			o.longitude = (Double) null;
+			o.longitude = Double.NaN;
 		}
 		try {
 			o.self_temperature = Double
 					.parseDouble(self_temperature.getValue());
 		} catch (NumberFormatException e) {
-			o.self_temperature = (Double) null;
+			o.self_temperature = Double.NaN;
 		}
 		try {
 			o.target_temperature = Double.parseDouble(target_temperature
 					.getValue());
 		} catch (NumberFormatException e) {
-			o.target_temperature = (Double) null;
+			o.target_temperature = Double.NaN;
 		}
 		try {
 			o.base_area = Double.parseDouble(base_area.getValue());
 		} catch (NumberFormatException e) {
-			o.base_area = (Float) null;
+			o.base_area = Double.NaN;
 		}
 		try {
 			o.base_height = Double.parseDouble(base_height.getValue());
 		} catch (NumberFormatException e) {
-			o.base_height = (Double) null;
+			o.base_height = Double.NaN;
 		}
 		try {
 			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
 		} catch (NumberFormatException e) {
-			o.heat_loss_rate = (Double) null;
+			o.heat_loss_rate = Double.NaN;
 		}
 
 		return o;
@@ -202,16 +200,56 @@ public class NewObject extends Composite implements HasText/*
 
 	private void setValues() {
 		name.setValue(o.name);
-		effect.setValue(Float.toString(o.effect));
-		voltage.setValue(Float.toString(o.voltage));
-		current.setValue(Float.toString(o.current));
-		latitude.setValue(Double.toString(o.latitude));
-		longitude.setValue(Double.toString(o.longitude));
-		self_temperature.setValue(Double.toString(o.self_temperature));
-		target_temperature.setValue(Double.toString(o.self_temperature));
-		base_area.setValue(Double.toString(o.base_area));
-		base_height.setValue(Double.toString(o.base_height));
-		heat_loss_rate.setValue(Double.toString(o.heat_loss_rate));
+		if (o.effect == Double.NaN) {
+			effect.setValue("");
+		} else {
+			effect.setValue(o.effect.toString());
+		}
+		if (o.voltage == Double.NaN) {
+			voltage.setValue("");
+		} else {
+			voltage.setValue(o.voltage.toString());
+		}
+		if (o.current == Double.NaN) {
+			current.setValue("");
+		} else {
+			current.setValue(o.current.toString());
+		}
+		if (o.latitude == Double.NaN) {
+			latitude.setValue("");
+		} else {
+			latitude.setValue(o.latitude.toString());
+		}
+		if (o.longitude == Double.NaN) {
+			longitude.setValue("");
+		} else {
+			longitude.setValue(o.longitude.toString());
+		}
+		if (o.self_temperature == Double.NaN) {
+			self_temperature.setValue("");
+		} else {
+			self_temperature.setValue(o.self_temperature.toString());
+		}
+		if (o.target_temperature == Double.NaN) {
+			target_temperature.setValue("");
+		} else {
+			target_temperature.setValue(o.self_temperature.toString());
+		}
+		if (o.base_area == Double.NaN) {
+			base_area.setValue("");
+		} else {
+			base_area.setValue(o.base_area.toString());
+		}
+		if (o.base_height == Double.NaN) {
+			base_height.setValue("");
+		} else {
+			base_height.setValue(o.base_height.toString());
+		}
+		if (o.heat_loss_rate == Double.NaN) {
+			heat_loss_rate.setValue("");
+		} else {
+			heat_loss_rate.setValue(o.heat_loss_rate.toString());
+		}
 	}
 
 	@UiHandler("addChildObject")
