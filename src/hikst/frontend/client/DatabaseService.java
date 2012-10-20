@@ -5,7 +5,6 @@ import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
-import hikst.frontend.shared.SimulatorObject;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimulationRequest;
@@ -47,6 +46,4 @@ public interface DatabaseService extends RemoteService
 	SimObjectTree loadObject(int id);
 	ArrayList<SimObject> getSimObjects();
 	boolean saveObject(HikstObject simObject);
-	
-	 
 }
