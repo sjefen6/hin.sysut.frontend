@@ -12,7 +12,8 @@ import org.moxieapps.gwt.highcharts.client.plotOptions.*;
 
 public class SplineGraf {
 
-	 public void onModuleLoad() {  
+	
+	public void onModuleLoad() {  
 	        RootPanel.get().add(createChart());  
 	    }  
 	
@@ -21,7 +22,7 @@ public class SplineGraf {
         final Chart chart = new Chart()  
             .setType(Series.Type.SPLINE)  
             .setMarginRight(10)  
-            .setChartTitleText("Live random data")  
+            .setChartTitleText("Strømforbruk")  
             .setBarPlotOptions(new BarPlotOptions()  
                 .setDataLabels(new DataLabels()  
                     .setEnabled(true)  
@@ -59,7 +60,7 @@ public class SplineGraf {
   
         final Series series = chart.createSeries();  
         chart.addSeries(series  
-            .setName("Random data")  
+            .setName("Strømforbruk-data")  
         );  
   
         // Generate an array of random data  

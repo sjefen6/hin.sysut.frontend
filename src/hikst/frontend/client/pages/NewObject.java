@@ -131,6 +131,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		name.setText("Hus");
 		usagePattern.setText("2");
 	}
+	
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event){
 		
