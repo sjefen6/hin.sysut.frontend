@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.Label;
 
 public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
@@ -66,6 +67,17 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@UiField AbsolutePanel mapsPanel;
 	
 	@UiField FlowPanel eastPanel;
+	@UiField Label effectLabel;
+	@UiField Label nameLabel;
+	@UiField Label voltageLabel;
+	@UiField Label currentLabel;
+	@UiField Label latLabel;
+	@UiField Label longLabel;
+	@UiField Label starttempLabel;
+	@UiField Label targettempLabel;
+	@UiField Label baseareaLabel;
+	@UiField Label baseheightLabel;
+	@UiField Label heatlossLabel;
 	
 
 	MapWidget map;

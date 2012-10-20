@@ -31,24 +31,34 @@
          <g:FlowPanel styleName="{style.westPanel}">
          	<g:Label/>
          	<g:Label text="Create New Object" horizontalAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Name" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Effect" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Voltage" ui:field="voltage" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Current" ui:field="current" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Latitude" ui:field="latitude" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Longitude" ui:field="longitude" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Start temperature" ui:field="self_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Target temperature" ui:field="target_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Base area" ui:field="base_area" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Base height" ui:field="base_height" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:TextBox text="Heat loss rate" ui:field="heat_loss_rate" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
+         	<g:TextBox text="" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Effect" height="12px" ui:field="effectLabel"/>
+         	<g:TextBox text="" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Voltage" height="12px" ui:field="voltageLabel"/>
+         	<g:TextBox text="" ui:field="voltage" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Current" height="12px" ui:field="currentLabel"/>
+         	<g:TextBox text="" ui:field="current" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Latitude" ui:field="latLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="latitude" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Longitude" ui:field="longLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="longitude" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Start temperature" ui:field="starttempLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="self_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Target temperature" height="12px" ui:field="targettempLabel"/>
+         	<g:TextBox text="" ui:field="target_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Base area" height="12px" ui:field="baseareaLabel"/>
+         	<g:TextBox text="" ui:field="base_area" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Base height" height="12px" ui:field="baseheightLabel"/>
+         	<g:TextBox text="" ui:field="base_height" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:Label text="Heat-loss rate" ui:field="heatlossLabel" height="12px"/>
+         	<g:TextBox text="" ui:field="heat_loss_rate" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
          	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
          </g:FlowPanel>
        </g:west>
        <g:center size='25.5'>
          <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
-
          </g:FlowPanel>
        </g:center>
        <g:east size='13.5'>
