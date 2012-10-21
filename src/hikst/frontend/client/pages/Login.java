@@ -70,8 +70,6 @@ public class Login extends Composite implements HasText {
 		LoginRequest request = new LoginRequest(user.getText(), pass.getText());
 
 		databaseService.authenticate(request, new LoginCallback(this));
-
-
 	}
 
 	public void GoToMainPage()

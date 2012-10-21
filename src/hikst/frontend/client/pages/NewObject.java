@@ -5,6 +5,7 @@ import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimObject;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maps.client.InfoWindowContent;
@@ -47,67 +48,35 @@ public class NewObject extends Composite implements HasText/*
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
 
-	@UiField
-	TextBox name;
-	@UiField
-	TextBox effect;
-	@UiField
-	TextBox voltage;
-	@UiField
-	TextBox current;
-	@UiField
-	TextBox latitude;
-	@UiField
-	TextBox longitude;
-	@UiField
-	TextBox self_temperature;
-	@UiField
-	TextBox target_temperature;
-	@UiField
-	TextBox base_area;
-	@UiField
-	TextBox base_height;
-	@UiField
-	TextBox heat_loss_rate;
-
-	@UiField
-	Button back;
-	@UiField
-	Button saveObject;
-	@UiField
-	Button addChildObject;
-	@UiField
-	Button addUsagePattern;
-	@UiField
-	Button showMap;
-
-	@UiField
-	AbsolutePanel mapsPanel;
-
-	@UiField
-	FlowPanel eastPanel;
-	@UiField
-	Label effectLabel;
-	@UiField
-	Label nameLabel;
-	@UiField
-	Label voltageLabel;
-	@UiField
-	Label currentLabel;
-	@UiField
-	Label latLabel;
-	@UiField
-	Label longLabel;
-	@UiField
-	Label starttempLabel;
-	@UiField
-	Label targettempLabel;
-	@UiField
-	Label baseareaLabel;
-	@UiField
-	Label baseheightLabel;
-	@UiField
-	Label heatlossLabel;
+	@UiField TextBox name;
+	@UiField TextBox effect;
+	@UiField TextBox voltage;
+	@UiField TextBox current;
+	@UiField TextBox latitude;
+	@UiField TextBox longitude;
+	@UiField TextBox self_temperature;
+	@UiField TextBox target_temperature;
+	@UiField TextBox base_area;
+	@UiField TextBox base_height;
+	@UiField TextBox heat_loss_rate;
+	@UiField Button back;
+	@UiField Button saveObject;
+	@UiField Button addChildObject;
+	@UiField Button addUsagePattern;
+	@UiField Button showMap;
+	@UiField AbsolutePanel mapsPanel;
+	@UiField FlowPanel eastPanel;
+	@UiField Label effectLabel;
+	@UiField Label nameLabel;
+	@UiField Label voltageLabel;
+	@UiField Label currentLabel;
+	@UiField Label latLabel;
+	@UiField Label longLabel;
+	@UiField Label starttempLabel;
+	@UiField Label targettempLabel;
+	@UiField Label baseareaLabel;
+	@UiField Label baseheightLabel;
+	@UiField Label heatlossLabel;
 
 	MapWidget map;
 
@@ -258,6 +227,7 @@ public class NewObject extends Composite implements HasText/*
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
+
 
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event) {
