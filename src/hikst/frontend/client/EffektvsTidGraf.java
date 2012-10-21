@@ -1,14 +1,14 @@
 package hikst.frontend.client;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
+//import java.util.ArrayList;
+//import java.util.Date;
+//import java.util.Random;
 
-import com.google.gwt.user.client.Timer;
-import com.googlecode.gchart.client.GChart;
+//import com.google.gwt.user.client.Timer;
+//import com.googlecode.gchart.client.GChart;
 
 /** Simple time sequence example with date-time x-axis labels */
-public class EffektvsTidGraf extends GChart {
+/*public class EffektvsTidGraf extends GChart {
 	//Objects o = new Objects();
 	Timer t;
 	final int N_EDITABLE_CURVES = 10;
@@ -34,12 +34,12 @@ public class EffektvsTidGraf extends GChart {
    DateStampedValue[] persX1;
    Random rnd = new Random();
    
-   EffektvsTidGraf(ArrayList<Objects> houses) {   	
-    super(900,450);
+  // EffektvsTidGraf(ArrayList<Objects> houses) {   	
+   // super(900,450);
        
     
-     setChartTitle("<b><i><big>Str&oslashmforbruk for lysp&aeligrer</big></i></b>");
-     setPadding("5px");
+    // setChartTitle("<b><i><big>Str&oslashmforbruk for lysp&aeligrer</big></i></b>");
+  //   setPadding("5px");
      //setLineJoin(GWTCanvas.ROUND)
      
      getXAxis().setAxisLabel("<small><b><i>24 Timer</i></b></small>");
@@ -119,4 +119,4 @@ public class EffektvsTidGraf extends GChart {
 
 
    
-}
+}*/
