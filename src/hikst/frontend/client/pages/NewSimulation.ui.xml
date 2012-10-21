@@ -41,6 +41,7 @@
        </g:west>
        <g:center>
          <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
+         	<g:Tree ui:field="tree"/>
          </g:FlowPanel>
        </g:center>
        <g:east size='7.5'>

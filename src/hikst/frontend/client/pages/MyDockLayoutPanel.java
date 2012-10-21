@@ -4,7 +4,6 @@ import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.Graph;
 import hikst.frontend.client.Simulation;
-import hikst.frontend.client.SimulationManagementObject;
 import hikst.frontend.client.callback.DescriptionsCallback;
 import hikst.frontend.client.callback.StatusCallback;
 import hikst.frontend.client.callback.SimulationRequestCallback;
@@ -40,9 +39,6 @@ public class MyDockLayoutPanel extends Composite {
   private String userpass = "Passord";
   Simulation simulation;
 
-  
-	//interface MyUiBinder extends UiBinder<Widget, MyDockLayoutPanel>{}
-	public SimulationManagementObject simManager = new SimulationManagementObject(this);
     Graph g;
 	private static MyDockLayoutPanelUiBinder uiBinder = GWT
     .create(MyDockLayoutPanelUiBinder.class);
@@ -115,9 +111,9 @@ public class MyDockLayoutPanel extends Composite {
     	double watt = Integer.parseInt(wattS);
     	double volt = Integer.parseInt(voltS);
     	
-    	simManager.setEffect(watt);
-    	simManager.setVoltage(volt);
-    	simManager.setName(name);
+    	//simManager.setEffect(watt);
+    	//simManager.setVoltage(volt);
+    	//simManager.setName(name);
     	//simManager.save(this);
     	    	
     	CheckBox cb = new CheckBox("Object "+(objectCounter = objectCounter + 1)+" - "+name);
@@ -150,14 +146,14 @@ public class MyDockLayoutPanel extends Composite {
 			if(this.objectAdded)
 			{	
 				ticket = new SimulationTicket(-1,false,0);
-				databaseService.requestSimulation(
+				/*databaseService.requestSimulation(
 						new SimulationRequest(
-								simManager.getId(),
+								//simManager.getId(),
 								interval,
 								fromDate.getTime(),
 								toDate.getTime()
 								),
-								new SimulationRequestCallback(this));
+								new SimulationRequestCallback(this));*/
 			
 				simulationStarted = true;
 				

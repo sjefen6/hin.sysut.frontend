@@ -1,10 +1,10 @@
 package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
+import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
-import hikst.frontend.shared.SimulatorObject;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimulationRequest;
@@ -22,7 +22,7 @@ public interface DatabaseService extends RemoteService
 	//for getting simulation data
 	List<Integer> getSimulationDescriptionsIDs() throws IllegalArgumentException;
 	List<Plot> getData(int sim_description_id) throws IllegalArgumentException;
-	SimulatorObject getSimulatorObject(int simulation_object_id) throws IllegalArgumentException;
+	SimObjectTree getSimulatorObject(int simulation_object_id) throws IllegalArgumentException;
 	Description getSimulation(int sim_description_id) throws IllegalArgumentException;
 	List<Description> getSimulations() throws IllegalArgumentException;
 	
@@ -44,5 +44,6 @@ public interface DatabaseService extends RemoteService
 	boolean deleteSimulations(int id);
 	int getSimulationStatus(SimulationTicket ticket);
 	SimObjectTree loadObject(int id);
-	ArrayList<SimObject> getSimObjects();	 
+	ArrayList<SimObject> getSimObjects();
+	boolean saveObject(HikstObject simObject);
 }

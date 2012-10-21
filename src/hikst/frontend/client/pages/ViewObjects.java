@@ -1,5 +1,6 @@
 package hikst.frontend.client.pages;
 
+import sun.misc.Compare;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SimObjectsCallback;
@@ -31,7 +32,7 @@ public class ViewObjects extends Composite {
 	//FlexTable objectTable;
 	
 	
-	NewObject newObjectPanel;
+	Composite panel;
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
 
@@ -40,7 +41,10 @@ public class ViewObjects extends Composite {
 	.create(ViewObjectsUiBinder.class);
 	@UiField ScrollPanel centerPanel;
 	@UiField FlexTable flexyTable;
-	@UiField Button buttonSave;
+	@UiField Button newObject;
+	@UiField Button backButton;
+	
+	private Composite parent;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
 	
@@ -56,11 +60,12 @@ public class ViewObjects extends Composite {
 	
 	Button createSimObjectButton = new Button("Create object",createObjectButtonClickHandler);
 	
-	public ViewObjects() {
+	public ViewObjects(Composite parent) {
 		initWidget(uiBinder.createAndBindUi(this));
 		//initWidget(uiBinder.createAndBindUi(this));
 //		initWidget(panel);
 		//initButtons();
+		this.parent = parent;
 		initTable();
 	}
 	
@@ -69,23 +74,21 @@ public class ViewObjects extends Composite {
 		//flexyTable = new FlexTable();
 		
 		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new SimObjectsCallback(flexyTable));
+		databaseService.getSimObjects(new SimObjectsCallback(flexyTable, parent));
 		centerPanel.add(flexyTable);
 		
 	//	centerPanel.add(flexyTable);
 	}
-	@UiHandler("buttonSave")
+	
+	@UiHandler("newObject")
 	void onButtonSave(ClickEvent event){
-		newObjectPanel = new NewObject();
-		RootLayoutPanel.get().add(newObjectPanel);
+		panel = new NewObject(this);
+		RootLayoutPanel.get().add(panel);
 	}
 	
-	//private void initButtons()
-	//{
-		//HorizontalPanel buttonPanel = new HorizontalPanel();
-		//buttonPanel.add(createSimObjectButton);
-
-		//centerPanel.add(buttonPanel);
-	//}
+	@UiHandler("backButton")
+	void onBackButtonClick(ClickEvent event) {
+		this.removeFromParent();
+	}
 }
 
