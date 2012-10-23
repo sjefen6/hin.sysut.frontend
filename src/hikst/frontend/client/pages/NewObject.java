@@ -109,57 +109,57 @@ public class NewObject extends Composite implements HasText/*
 	}
 
 	public HikstObject getObject() {
-		o.name = name.getValue();
+		o.name = name.getText();
 		try {
-			o.effect = Double.parseDouble(effect.getValue());
+			o.effect = Double.parseDouble(effect.getText());
 		} catch (NumberFormatException e) {
 			o.effect = Double.NaN;
 		}
 		try {
-			o.voltage = Double.parseDouble(voltage.getValue());
+			o.voltage = Double.parseDouble(voltage.getText());
 		} catch (NumberFormatException e) {
 			o.voltage = Double.NaN;
 		}
 		try {
-			o.current = Double.parseDouble(current.getValue());
+			o.current = Double.parseDouble(current.getText());
 		} catch (NumberFormatException e) {
 			o.current = Double.NaN;
 		}
 		// o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
 		try {
-			o.latitude = Double.parseDouble(latitude.getValue());
+			o.latitude = Double.parseDouble(latitude.getText());
 		} catch (NumberFormatException e) {
 			o.latitude = Double.NaN;
 		}
 		try {
-			o.longitude = Double.parseDouble(longitude.getValue());
+			o.longitude = Double.parseDouble(longitude.getText());
 		} catch (NumberFormatException e) {
 			o.longitude = Double.NaN;
 		}
 		try {
 			o.self_temperature = Double
-					.parseDouble(self_temperature.getValue());
+					.parseDouble(self_temperature.getText());
 		} catch (NumberFormatException e) {
 			o.self_temperature = Double.NaN;
 		}
 		try {
 			o.target_temperature = Double.parseDouble(target_temperature
-					.getValue());
+					.getText());
 		} catch (NumberFormatException e) {
 			o.target_temperature = Double.NaN;
 		}
 		try {
-			o.base_area = Double.parseDouble(base_area.getValue());
+			o.base_area = Double.parseDouble(base_area.getText());
 		} catch (NumberFormatException e) {
 			o.base_area = Double.NaN;
 		}
 		try {
-			o.base_height = Double.parseDouble(base_height.getValue());
+			o.base_height = Double.parseDouble(base_height.getText());
 		} catch (NumberFormatException e) {
 			o.base_height = Double.NaN;
 		}
 		try {
-			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
+			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getText());
 		} catch (NumberFormatException e) {
 			o.heat_loss_rate = Double.NaN;
 		}
@@ -169,52 +169,52 @@ public class NewObject extends Composite implements HasText/*
 
 	private void setValues() {
 		name.setValue(o.name);
-		if (o.effect == Double.NaN) {
+		if (o.effect.equals(Double.NaN)) {
 			effect.setValue("");
 		} else {
 			effect.setValue(o.effect.toString());
 		}
-		if (o.voltage == Double.NaN) {
+		if (o.voltage.equals(Double.NaN)) {
 			voltage.setValue("");
 		} else {
 			voltage.setValue(o.voltage.toString());
 		}
-		if (o.current == Double.NaN) {
+		if (o.current.equals(Double.NaN)) {
 			current.setValue("");
 		} else {
 			current.setValue(o.current.toString());
 		}
-		if (o.latitude == Double.NaN) {
+		if (o.latitude.equals(Double.NaN)) {
 			latitude.setValue("");
 		} else {
 			latitude.setValue(o.latitude.toString());
 		}
-		if (o.longitude == Double.NaN) {
+		if (o.longitude.equals(Double.NaN)) {
 			longitude.setValue("");
 		} else {
 			longitude.setValue(o.longitude.toString());
 		}
-		if (o.self_temperature == Double.NaN) {
+		if (o.self_temperature.equals(Double.NaN)) {
 			self_temperature.setValue("");
 		} else {
 			self_temperature.setValue(o.self_temperature.toString());
 		}
-		if (o.target_temperature == Double.NaN) {
+		if (o.target_temperature.equals(Double.NaN)) {
 			target_temperature.setValue("");
 		} else {
 			target_temperature.setValue(o.self_temperature.toString());
 		}
-		if (o.base_area == Double.NaN) {
+		if (o.base_area.equals(Double.NaN)) {
 			base_area.setValue("");
 		} else {
 			base_area.setValue(o.base_area.toString());
 		}
-		if (o.base_height == Double.NaN) {
+		if (o.base_height.equals(Double.NaN)) {
 			base_height.setValue("");
 		} else {
 			base_height.setValue(o.base_height.toString());
 		}
-		if (o.heat_loss_rate == Double.NaN) {
+		if (o.heat_loss_rate.equals(Double.NaN)) {
 			heat_loss_rate.setValue("");
 		} else {
 			heat_loss_rate.setValue(o.heat_loss_rate.toString());
