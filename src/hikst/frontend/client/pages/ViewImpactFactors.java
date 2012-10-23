@@ -16,46 +16,50 @@ import com.google.gwt.user.client.ui.FlexTable;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.callback.ImpactFactorsCallback;
 import hikst.frontend.client.callback.SimObjectsCallback;
 import com.google.gwt.user.client.ui.ListBox;
 
 public class ViewImpactFactors extends Composite {
-	
+
 	Composite panel;
 	NewObject NewObpanel;
-	
+
 	interface ViewImpactFactorsUiBinder extends
-	UiBinder<Widget, ViewImpactFactors> {
-}
+			UiBinder<Widget, ViewImpactFactors> {
+	}
 
 	private static ViewImpactFactorsUiBinder uiBinder = GWT
 			.create(ViewImpactFactorsUiBinder.class);
-	@UiField Button createNewButton;
-	@UiField Button tilbakeButton;
-	@UiField ScrollPanel scrollPanel;
-	@UiField FlexTable FactorTable;
-	@UiField ListBox impactFactorType;
-	
+	@UiField
+	Button createNewButton;
+	@UiField
+	Button tilbakeButton;
+	@UiField
+	ScrollPanel scrollPanel;
+	@UiField
+	ListBox impactFactorType;
+
 	private Composite parent;
-	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
+	private DatabaseServiceAsync databaseService = GWT
+			.create(DatabaseService.class);
 
 	public ViewImpactFactors() {
 		initWidget(uiBinder.createAndBindUi(this));
-		impactFactorType.
-		initFactorTable();
+		//impactFactorType.initFactorListBox();
 	}
-	
-	private void initFactorTable()
-	{
-		scrollPanel.remove(FactorTable);
-	//	databaseService.getSimObjects(new --callback skal inn her-- (FactorTable, parent));
-		scrollPanel.add(FactorTable);
+
+	private void initFactorListBox() {
+		scrollPanel.remove(impactFactorType);
+//		databaseService.getImpactTypes(new ImpactFactorsCallback(ImpactTypeBox,
+//				parent));
+		scrollPanel.add(impactFactorType);
 	}
-	
+
 	@UiHandler("tilbakeButton")
-	void onButtontilbake(ClickEvent event){
+	void onButtontilbake(ClickEvent event) {
 		NewObpanel = new NewObject(this);
 		RootLayoutPanel.get().add(NewObpanel);
 	}
-	
+
 }

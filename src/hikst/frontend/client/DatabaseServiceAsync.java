@@ -2,6 +2,7 @@ package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
+import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
