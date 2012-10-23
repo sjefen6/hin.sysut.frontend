@@ -15,7 +15,7 @@
             background-color: grey;
         }
         .centerPanel {
-            background-color: white;
+            background-color: grey;
         }       
     </ui:style>
      <g:DockLayoutPanel unit='EM' width="1024" height="768">
@@ -34,7 +34,7 @@
          	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
          	<g:TextBox text="" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Label text="Effect" height="12px" ui:field="effectLabel"/>
-         	<g:TextBox text="" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:DoubleBox text="" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Label text="Voltage" height="12px" ui:field="voltageLabel"/>
          	<g:TextBox text="" ui:field="voltage" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Label text="Current" height="12px" ui:field="currentLabel"/>

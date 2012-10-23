@@ -25,6 +25,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -49,7 +50,7 @@ public class NewObject extends Composite implements HasText/*
 			.create(NewObjectUiBinder.class);
 
 	@UiField TextBox name;
-	@UiField TextBox effect;
+	@UiField DoubleBox effect;
 	@UiField TextBox voltage;
 	@UiField TextBox current;
 	@UiField TextBox latitude;
@@ -110,11 +111,12 @@ public class NewObject extends Composite implements HasText/*
 
 	public HikstObject getObject() {
 		o.name = name.getText();
-		try {
-			o.effect = Double.parseDouble(effect.getText());
-		} catch (NumberFormatException e) {
-			o.effect = Double.NaN;
-		}
+		o.effect = effect.getValue();
+//		try {
+//			o.effect = Double.parseDouble(effect.getText());
+//		} catch (NumberFormatException e) {
+//			o.effect = Double.NaN;
+//		}
 		try {
 			o.voltage = Double.parseDouble(voltage.getText());
 		} catch (NumberFormatException e) {
@@ -161,7 +163,7 @@ public class NewObject extends Composite implements HasText/*
 		try {
 			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getText());
 		} catch (NumberFormatException e) {
-			o.heat_loss_rate = null;
+			o.heat_loss_rate = Double.NaN;
 		}
 
 		return o;
@@ -318,6 +320,8 @@ public class NewObject extends Composite implements HasText/*
 		if (name.getValue().equals("Name")) {
 			Window.alert("Change Name!");
 		} else {
+			getObject();
+			o.effect.isNaN();
 			databaseService.saveObject(o, new SaveObjectCallback(o));
 		}
 	}
