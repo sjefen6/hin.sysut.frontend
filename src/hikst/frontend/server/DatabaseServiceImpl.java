@@ -899,11 +899,72 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 	}
 
 	@Override
-	public boolean saveObject(HikstObject simObject) {
+	public int saveObject(HikstObject simObject) {
 		
-		String query = "INSERT INTO Objects VALUES";
-//		PreparedStatement = Settings.getDBC().prepareStatem7ent(query):
+		
+		try {
+			if(existsInDatabase(simObject))
+			{
+				String query = "UPDATE Objects set Name=?, Effect=?, Voltage=?, Current=?," +
+						" Usage_Pattern=?, Latitude=?, Longitude=?, Self_Temperature=?" +
+						", Target_Temperature=?, Base_Area=?, Base_Heat=?,Heat_Loss=? where ID=?";
+				PreparedStatement preparedStatement = Settings.getDBC().prepareStatement(query);
+				preparedStatement.setString(1,simObject.name);
+				preparedStatement.setDouble(2, simObject.effect);
+				preparedStatement.setDouble(3, simObject.voltage);
+				preparedStatement.setDouble(4, simObject.current);
+				preparedStatement.setInt(5, simObject.usage_pattern_ID);
+				preparedStatement.setDouble(6, simObject.latitude);
+				preparedStatement.setDouble(7, simObject.longitude);
+				preparedStatement.setDouble(8, simObject.self_temperature);
+				preparedStatement.setDouble(9, simObject.target_temperature);
+				preparedStatement.setDouble(9, simObject.base_area);
+				preparedStatement.setDouble(10, simObject.base_height);
+				preparedStatement.setDouble(11, simObject.heat_loss_rate);
+				preparedStatement.setInt(12, simObject.getID());
+				preparedStatement.executeUpdate();
+				
+				//returning the existing object-id
+				return simObject.getID();
+			}
+			else
+			{
+				String query = "INSERT INTO Objects VALUES(?,?,?,?,?,?,?,?,?,?,?,?) Returning *";
+				PreparedStatement  preparedStatement = Settings.getDBC().prepareStatement(query);
+				preparedStatement.setString(1,simObject.name);
+		
+				preparedStatement.setDouble(2, (simObject.effect.isNaN()? null : simObject.effect) );
+				preparedStatement.setDouble(3, (simObject.voltage.isNaN()? null : simObject.voltage) );
+				preparedStatement.setDouble(4, (simObject.current.isNaN()? null : simObject.current) );
+				preparedStatement.setInt(5, simObject.usage_pattern_ID);
+				preparedStatement.setDouble(6, (simObject.latitude.isNaN()? null : simObject.latitude) );
+				preparedStatement.setDouble(7, (simObject.longitude.isNaN()? null : simObject.longitude) );
+				preparedStatement.setDouble(8, (simObject.self_temperature.isNaN()? null : simObject.self_temperature) );
+				preparedStatement.setDouble(9, (simObject.target_temperature.isNaN()? null : simObject.target_temperature) );
+				preparedStatement.setDouble(9, (simObject.base_area.isNaN()? null : simObject.base_area) );
+				preparedStatement.setDouble(10, (simObject.base_height.isNaN()? null : simObject.base_height) );
+				preparedStatement.setDouble(11, (simObject.heat_loss_rate.isNaN()? null : simObject.heat_loss_rate) );
+				ResultSet set = preparedStatement.executeQuery();
+				
+				if(set.next()){
+					
+					//returning the new id of the object
+					return set.getInt(1);
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		
+		}	
+		//returning -1 to indicate that the server couldnt save the object,
+		//something must then be wrong with the code
+		return -1;
+	}
+	
+	private boolean existsInDatabase(HikstObject simObject)
+	{
 		return false;
-		
 	}
 }

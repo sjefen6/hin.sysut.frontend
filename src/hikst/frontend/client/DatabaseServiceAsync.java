@@ -58,6 +58,6 @@ public interface DatabaseServiceAsync {
 	void settingsLoadable(AsyncCallback<Boolean> callback);
 	void loadObject(int id, AsyncCallback<SimObjectTree> callback);
 	void getSimObjects(AsyncCallback<ArrayList<SimObject>> callback);
-	void saveObject(HikstObject simObject, AsyncCallback<Boolean> callback);
+	void saveObject(HikstObject simObject, AsyncCallback<Integer> callback);
 	
 }

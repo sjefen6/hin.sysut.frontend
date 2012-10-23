@@ -161,7 +161,7 @@ public class NewObject extends Composite implements HasText/*
 		try {
 			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getText());
 		} catch (NumberFormatException e) {
-			o.heat_loss_rate = Double.NaN;
+			o.heat_loss_rate = null;
 		}
 
 		return o;
@@ -311,13 +311,14 @@ public class NewObject extends Composite implements HasText/*
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
+	
 
 	@UiHandler("saveObject")
 	void onSaveObject(ClickEvent event) {
 		if (name.getValue().equals("Name")) {
 			Window.alert("Change Name!");
 		} else {
-			databaseService.saveObject(o, new SaveObjectCallback());
+			databaseService.saveObject(o, new SaveObjectCallback(o));
 		}
 	}
 }

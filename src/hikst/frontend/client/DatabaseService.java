@@ -45,5 +45,5 @@ public interface DatabaseService extends RemoteService
 	int getSimulationStatus(SimulationTicket ticket);
 	SimObjectTree loadObject(int id);
 	ArrayList<SimObject> getSimObjects();
-	boolean saveObject(HikstObject simObject);
+	int saveObject(HikstObject simObject);
 }
