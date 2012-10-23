@@ -7,6 +7,7 @@
 	<classpathentry kind="lib" path="lib/gwt-maps.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-8.4-703.jdbc4.jar"/>
 	<classpathentry kind="lib" path="lib/org.moxieapps.gwt.highcharts-1.4.0.jar"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080122-rel-r36"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.Label;
 public class NewObject extends Composite implements HasText/*, LocationCallback*/ {
 
 	ViewObjects panel;
+	ViewImpactFactors viewImpPanel;
 //	SimObjectTree simulatorObject = new SimObjectTree();
 //	SimulationManagementObject simManager = new SimulationManagementObject(this);
 //	SimObject selectedSimObject = null;
@@ -63,6 +64,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@UiField Button addChildObject;
 	@UiField Button addUsagePattern;
 	@UiField Button showMap;
+	@UiField Button addImpactButton;
 	
 	@UiField AbsolutePanel mapsPanel;
 	
@@ -78,6 +80,7 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	@UiField Label baseareaLabel;
 	@UiField Label baseheightLabel;
 	@UiField Label heatlossLabel;
+	
 	
 
 	MapWidget map;
@@ -148,6 +151,12 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 		RootLayoutPanel.get().add(panel);
 	}
 	
+	@UiHandler("addImpactButton")
+	void onAddImpactClick(ClickEvent event) {
+		viewImpPanel = new ViewImpactFactors();
+		RootLayoutPanel.get().add(viewImpPanel);
+	}
+	
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event){
 		
@@ -175,7 +184,6 @@ public class NewObject extends Composite implements HasText/*, LocationCallback*
 	          MapWidget sender = e.getSender();
 	          Overlay overlay = e.getOverlay();
 	          LatLng point = e.getLatLng();
-	          map.getInfoWindow().open(point, new InfoWindowContent("Den beste plassen!"));
 
 	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
 	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));

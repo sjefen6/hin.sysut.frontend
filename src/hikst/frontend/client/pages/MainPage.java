@@ -127,7 +127,7 @@ public class MainPage extends Composite implements HasText {
             .setName("Random data")  
         );  
   
-        // Generate an array of random data  
+    //     Generate an array of random data  
         long time = new Date().getTime();  
         for(int i = -19; i <= 0; i++) {  
             series.addPoint(time + i * 1000, com.google.gwt.user.client.Random.nextDouble());  
