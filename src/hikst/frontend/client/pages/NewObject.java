@@ -102,7 +102,7 @@ public class NewObject extends Composite implements HasText/*
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(Composite parent, SimObject childObject) {
+	public NewObject(Composite parent, HikstObject childObject) {
 		this(parent);
 		o = ((NewObject) parent).getObject();
 		o.sons.add(childObject.getID());
@@ -308,9 +308,6 @@ public class NewObject extends Composite implements HasText/*
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		mapsPanel.clear();
-		eastPanel.clear();
-		RootLayoutPanel.get().add(new NewSimulation());
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
@@ -324,6 +321,7 @@ public class NewObject extends Composite implements HasText/*
 			getObject();
 			o.effect.isNaN();
 			databaseService.saveObject(o, new SaveObjectCallback(o));
+			onBackClick(event);
 		}
 	}
 }

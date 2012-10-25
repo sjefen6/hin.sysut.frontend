@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
+import hikst.frontend.shared.HikstObjectTree;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
@@ -33,6 +34,7 @@ import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
 
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
@@ -318,194 +320,36 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 
-	// private Integer saveImpactDegree(ImpactDegree impactDegree)
-	// {
-	// if(impactDegree == null)
-	// return null;
-	//
-	// try
-	// {
-	// Connection connection = Settings.getDBC();
-	//
-	// String query =
-	// "INSERT INTO Impact_Degrees(Percent, Type_ID) VALUES(?,?);";
-	// PreparedStatement statement = connection.prepareStatement(query);
-	// statement.setDouble(1, impactDegree.getPercent());
-	// statement.setInt(2, impactDegree.getTypeID());
-	//
-	// return statement.executeUpdate();
-	// }
-	// catch(SQLException ex)
-	// {
-	// ex.printStackTrace();
-	// return null;
-	// }
-	// }
 
-	private int saveSimObject(SimObject simObject) throws SQLException {
+	private HikstObject getHikstObject(int id) throws SQLException {
 		Connection connection = Settings.getDBC();
-		String query = "INSERT INTO Objects(Name,Effect,Voltage,Current, Longitude, Latitude) VALUES(?,?,?,?,?,?) RETURNING ID";
-		PreparedStatement statement;
-
-		statement = connection.prepareStatement(query);
-
-		statement.setString(1, simObject.name);
-		statement.setDouble(2, simObject.effect);
-		statement.setDouble(3, simObject.volt);
-		statement.setDouble(4, simObject.volt);
-		statement.setInt(5, simObject.longitude);
-		statement.setInt(6, simObject.latitude);
-		// statement.setFloat(5, simObject.impactDegree);
-		ResultSet set = statement.executeQuery();
-		set.next();
-		int object_id = set.getInt(1);
-
-		Iterator<SimObject> children = simObject.getChildIterator();
-
-		while (children.hasNext()) {
-			SimObject child = children.next();
-			int child_id = child.getID();
-
-			if (child.isFromDatabase()) {
-				updateSimObject(child);
-			} else {
-				child_id = saveSimObject(child);
-			}
-
-			saveChildLink(object_id, child_id);
-		}
-
-		return object_id;
-	}
-
-	private SimObject getSimObject(int id) throws SQLException {
-		Connection connection = Settings.getDBC();
-		String query = "SELECT Name, Effect, Voltage, Current, Longitude, Latitude, self_temperature, target_temperature, base_area, base_height WHERE ID=?";
+		String query = "SELECT Id,Name, Effect, Voltage, Current, Longitude, Latitude, self_temperature, target_temperature, base_area, base_height WHERE ID=?";
 		PreparedStatement statement = connection.prepareStatement(query);
 		statement.setInt(1, id);
 
 		ResultSet set = statement.executeQuery();
 
 		if (set.next()) {
-			SimObject simObject = new SimObject(id);
-			simObject.name = set.getString(1);
-			simObject.effect = set.getFloat(2);
-			simObject.volt = set.getFloat(3);
-			// skal egentlig være strøm / ampere
-			simObject.volt = set.getFloat(4);
-			simObject.impactDegree = set.getFloat(5);
-			simObject.longitude = set.getInt(6);
-			simObject.latitude = set.getInt(7);
-			simObject.self_temperature = set.getInt(8);
-			simObject.target_temperature = set.getInt(9);
-			simObject.base_area = set.getInt(10);
-			simObject.base_height = set.getInt(11);
-			return simObject;
+			HikstObject hikstObject = new HikstObject();
+			hikstObject.setID(set.getInt(1));
+			hikstObject.name = set.getString(1);
+			hikstObject.effect = set.getDouble(2);
+			hikstObject.voltage = set.getDouble(3);
+			hikstObject.current = set.getDouble(5);
+			hikstObject.longitude = set.getDouble(6);
+			hikstObject.latitude = set.getDouble(7);
+			hikstObject.self_temperature = set.getDouble(8);
+			hikstObject.target_temperature = set.getDouble(9);
+			hikstObject.base_area = set.getDouble(10);
+			hikstObject.base_height = set.getDouble(11);
+			return hikstObject;
 		} else {
 			return null;
 		}
 
 	}
 
-	private void updateSimObject(SimObject simObject) throws SQLException {
-		Connection connection = Settings.getDBC();
-		String query = "UPDATE Objects SET Name=?,Effect=?,Voltage=?,Current=?, Longitude=?, Latitude=?, self_temperature, target_temperature, base_area"
-				+ " base_height,  WHERE ID=?";
-		PreparedStatement statement;
 
-		statement = connection.prepareStatement(query);
-
-		int objectID = simObject.getID();
-		statement.setString(1, simObject.name);
-		statement.setDouble(2, simObject.effect);
-		statement.setDouble(3, simObject.volt);
-		statement.setDouble(4, simObject.volt);
-		statement.setFloat(5, simObject.impactDegree);
-		statement.setInt(6, simObject.longitude);
-		statement.setInt(7, simObject.latitude);
-		statement.setDouble(8, simObject.self_temperature);
-		statement.setDouble(9, simObject.target_temperature);
-		statement.setDouble(10, simObject.base_area);
-		statement.setDouble(11, simObject.base_height);
-		statement.executeUpdate();// TODO: PÅL!
-
-		Iterator<SimObject> children = simObject.getChildIterator();
-
-		while (children.hasNext()) {
-			SimObject child = children.next();
-			int child_id = child.getID();
-
-			if (child.isFromDatabase()) {
-				updateSimObject(child);
-			} else {
-				child_id = saveSimObject(child);
-			}
-
-			saveChildLink(objectID, child_id);
-		}
-	}
-
-	private void saveChildLink(int object_id, int child_id) throws SQLException {
-		Connection connection = Settings.getDBC();
-
-		String anotherQuery = "INSERT INTO Part_Objects(Father_ID,Son_ID) VALUES(?,?)";
-		PreparedStatement anotherStatement = connection
-				.prepareStatement(anotherQuery);
-		anotherStatement.setInt(1, object_id);
-		anotherStatement.setInt(2, child_id);
-		anotherStatement.executeUpdate();
-	}
-
-	// saves the simulator object in the database and returns the ID in the
-	// database
-	@Override
-	public int saveObject(SimObjectTree simulatorObject) {
-
-		try {
-			if (simulatorObject.rootObject.isFromDatabase()) {
-				// returns the id of the object if object saved
-				updateSimObject(simulatorObject.rootObject);
-			} else {
-
-				return saveSimObject(simulatorObject.rootObject);
-			}
-
-			// returns -1 if just updating
-			return -1;
-		} catch (SQLException ex) {
-			// returns -2 for sql-exception
-			ex.printStackTrace();
-			return -2;
-		}
-
-	}
-
-	/*
-	 * @Override public boolean updateObject(int id,SimulatorObject object) {
-	 * 
-	 * Connection connection = Settings.getDBC();
-	 * 
-	 * try { String query =
-	 * "UPDATE Objects SET Name=?, Effect=?, Voltage=?, Current=?, Impact_Degree_ID=? WHERE ID=?"
-	 * ; PreparedStatement statement = connection.prepareStatement(query);
-	 * statement.setString(1, object.getName()); statement.setDouble(2,
-	 * object.getEffect()); statement.setDouble(3, object.getVoltage());
-	 * statement.setDouble(4, object.getCurrent()); //use impact id in the
-	 * simulator-object-class instead statement.setInt(5, object.get)
-	 * statement.setInt(6, id);
-	 * 
-	 * List<SimulatorObject> sons = object.getSons();
-	 * 
-	 * for(int i = 0; i<sons.size(); i++) { if(updateObject(id, object)); }
-	 * 
-	 * statement.executeUpdate(); } catch(SQLException ex) {
-	 * ex.printStackTrace(); return false; } return false; //TODO
-	 * 
-	 * }
-	 */
-
-	// only delete objects that hasnt been used in a simulation!
-	// will throw SQLException if it has been used in a simulation!
 	@Override
 	public boolean deleteObject(int object_id) {
 
@@ -671,15 +515,11 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public SimObjectTree loadObject(int id) {
+	public HikstObjectTree loadObject(int id) {
 
 		try {
-			SimObjectTree tree = new SimObjectTree();
-			tree.rootObject = getSimObject(id);
-
-			tree.rootObject.addChildren(getChildObjects(id));
-
-			return tree;
+			
+			return getTree(id);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -687,111 +527,127 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 
 		return null;
 	}
-
-	private ArrayList<SimObject> getChildObjects(int id) throws SQLException {
-		ArrayList<SimObject> children = new ArrayList<SimObject>();
-
-		ArrayList<Integer> childrenIDs = getChildren(id);
-
-		for (int i = 0; i < childrenIDs.size(); i++) {
-			SimObject child = getSimObject(childrenIDs.get(i));
-			// TODO: feil her en plass (feil i rekursiviteten)
-			// ArrayList<SimObject> grandChildren =
-			// getChildObjects(childrenIDs.get(i));
-
-			// child.addChildren(grandChildren);
-
-			children.add(child);
-		}
-
-		return children;
+	
+	private HikstObjectTree getTree(int id) throws SQLException
+	{
+			HikstObjectTree treeItem = new HikstObjectTree();
+			HikstObject hikstObject = getObject(id);
+			
+			treeItem.setItem(hikstObject);
+			
+			ArrayList<Integer> sons = hikstObject.sons;
+			
+			for(int index = 0; index<sons.size(); index++)
+			{
+				treeItem.addSon(getTree(sons.get(index)));
+			}
+			
+			return treeItem;
 	}
-
-	/*
-	 * private SimObject getSimObject(int id) throws SQLException { Connection
-	 * connection = Settings.getDBC();
-	 * 
-	 * String query =
-	 * "SELECT id, name, effect, voltage, current, usage_pattern_id,latitude, longitude from objects where id=?"
-	 * ;
-	 * 
-	 * PreparedStatement preparedStatement = connection.prepareStatement(query);
-	 * preparedStatement.setInt(1, id);
-	 * 
-	 * ResultSet set = preparedStatement.executeQuery();
-	 * 
-	 * if(set.next()) { SimObject simObject = new SimObject(id); simObject.name
-	 * = set.getString(2); simObject.effect = set.getFloat(3); simObject.volt =
-	 * set.getFloat(4); //simObjectTree.rootObject.current = set.getFloat(5);
-	 * simObject.usagePattern = set.getInt(6); simObject.latitude =
-	 * set.getInt(7); simObject.longitude = set.getInt(8);
-	 * 
-	 * return simObject; } //if it doesnt exist in the database else { return
-	 * null; } }
-	 */
-
-	private ArrayList<Integer> getChildren(int object_id) throws SQLException {
+	
+	private HikstObject getObject(int id){
 		Connection connection = Settings.getDBC();
-
-		ArrayList<Integer> sonIDs = new ArrayList<Integer>();
-
-		String query = "select son_id from part_objects where father_id = ?";
-		PreparedStatement preparedStatement = connection
-				.prepareStatement(query);
-		preparedStatement.setInt(1, object_id);
-		ResultSet set = preparedStatement.executeQuery();
-		while (set.next()) {
-			sonIDs.add(object_id);
+		
+		String query = "SELECT name, effect, voltage, current, usage_pattern_id,latitude, longitude," +
+		"self_temperature, target_temperature, base_area, base_height, heat_loss_rate from objects where id=?";
+		
+		try{
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, id);
+			ResultSet set = statement.executeQuery();
+			
+			if(set.next()){
+				HikstObject hikstObject = new HikstObject();
+				hikstObject.setID(id);
+				hikstObject.name = set.getString(1);
+				hikstObject.effect = set.getDouble(2);
+				hikstObject.voltage = set.getDouble(3);
+				hikstObject.current = set.getDouble(4);
+				hikstObject.usage_pattern_ID = set.getInt(5);
+				hikstObject.latitude = set.getDouble(6);
+				hikstObject.longitude = set.getDouble(7);
+				hikstObject.self_temperature = set.getDouble(8);
+				hikstObject.target_temperature = set.getDouble(9);
+				hikstObject.base_area = set.getDouble(10);
+				hikstObject.base_height = set.getDouble(11);
+				hikstObject.heat_loss_rate = set.getDouble(12);
+				hikstObject.sons = getHikstObjectChildren(hikstObject.getID());	
+				return hikstObject;
+			}
 		}
-
-		return sonIDs;
+		catch(SQLException ex){
+			ex.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	@Override
-	public ArrayList<SimObject> getSimObjects() {
+	public ArrayList<HikstObject> getSimObjects() {
 
-		ArrayList<SimObject> simObjects = new ArrayList<SimObject>();
+		ArrayList<HikstObject> hikstObjects = new ArrayList<HikstObject>();
 
 		try {
 			Connection connection = Settings.getDBC();
-			String query = "SELECT id, name, effect, voltage, current, usage_pattern_id,latitude, longitude from objects";
+			String query = "SELECT id, name, effect, voltage, current, usage_pattern_id,latitude, longitude," +
+					"self_temperature, target_temperature, base_area, base_height, heat_loss_rate from objects";
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(query);
 			ResultSet set = preparedStatement.executeQuery();
 
 			while (set.next()) {
-				SimObject simObject = new SimObject(set.getInt(1));
-				simObject.name = set.getString(2);
-				simObject.effect = set.getFloat(3);
-				simObject.volt = set.getFloat(4);
-				// simObjectTree.rootObject.current = set.getFloat(5);
-				simObject.usagePattern = set.getInt(6);
-				simObject.latitude = set.getInt(7);
-				simObject.longitude = set.getInt(8);
-				simObjects.add(simObject);
-
-			}
-
-			for (int i = 0; i < simObjects.size(); i++) {
-				SimObject simObject = simObjects.get(i);
-				simObject.addChildren(this.getChildObjects(simObject.getID()));
-			}
-
+				HikstObject hikstObject = new HikstObject();
+				hikstObject.setID(set.getInt(1));
+				hikstObject.name = set.getString(2);
+				hikstObject.effect = set.getDouble(3);
+				hikstObject.voltage = set.getDouble(4);
+				hikstObject.current = set.getDouble(5);
+				hikstObject.usage_pattern_ID = set.getInt(6);
+				hikstObject.latitude = set.getDouble(7);
+				hikstObject.longitude = set.getDouble(8);
+				hikstObject.self_temperature = set.getDouble(9);
+				hikstObject.target_temperature = set.getDouble(10);
+				hikstObject.base_area = set.getDouble(11);
+				hikstObject.base_height = set.getDouble(12);
+				hikstObject.heat_loss_rate = set.getDouble(13);
+				hikstObject.sons = getHikstObjectChildren(hikstObject.getID());
+				hikstObjects.add(hikstObject);
+			}		
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 
-		return simObjects;
+		return hikstObjects;
 	}
 
+	private ArrayList<Integer> getHikstObjectChildren(int ObjectID) throws SQLException
+	{
+		ArrayList<Integer> children = new ArrayList<Integer>();
+		
+		Connection connection = Settings.getDBC();
+		
+		String query = "select son_id from part_objects where father_id=?";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setInt(1, ObjectID);
+		ResultSet set = preparedStatement.executeQuery();
+		
+		while(set.next())
+		{
+			children.add(set.getInt(1));
+		}
+		
+		return children;
+	}
+	
 	@Override
 	public int saveObject(HikstObject simObject) {
 
 		try {
-			if (existsInDatabase(simObject)) {
+			if (simObject.getID() != null) {
 				String query = "UPDATE Objects set Name=?, Effect=?, Voltage=?, Current=?,"
-						+ " Usage_Pattern=?, Latitude=?, Longitude=?, Self_Temperature=?"
-						+ ", Target_Temperature=?, Base_Area=?, Base_Heat=?,Heat_Loss=? where ID=?";
+						+ " Usage_Pattern_ID=?, Latitude=?, Longitude=?, Self_Temperature=?"
+						+ ", Target_Temperature=?, Base_Area=?, Base_Heat=?,Heat_Loss_Rate=? where ID=?";
 				PreparedStatement preparedStatement = Settings.getDBC()
 						.prepareStatement(query);
 				preparedStatement.setString(1, simObject.name);
@@ -812,7 +668,8 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 				// returning the existing object-id
 				return simObject.getID();
 			} else {
-				String query = "INSERT INTO Objects VALUES(?,?,?,?,?,?,?,?,?,?,?,?) Returning *";
+				String query = "INSERT INTO Objects (Name,Effect,Voltage,Current,Usage_Pattern_ID,Latitude,Longitude" +
+						",Self_Temperature,Target_Temperature,Base_Area,Base_Height,Heat_Loss_Rate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) Returning *";
 				PreparedStatement preparedStatement = Settings.getDBC()
 						.prepareStatement(query);
 				preparedStatement.setString(1, simObject.name);
@@ -823,35 +680,77 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 				else{
 					preparedStatement.setNull(2, java.sql.Types.DOUBLE);
 				}
-					
-				if (!simObject.voltage.isNaN()) {
+				
+				if(simObject.voltage != null){
 					preparedStatement.setDouble(3, simObject.voltage);
 				}
-				if (!simObject.current.isNaN()) {
+				else{
+					preparedStatement.setNull(3, java.sql.Types.DOUBLE);
+				}
+				
+				if(simObject.current != null){
 					preparedStatement.setDouble(4, simObject.current);
 				}
+				else{
+					preparedStatement.setNull(4, java.sql.Types.DOUBLE);
+				}
 				
-				if(simObject.usage_pattern_ID != null)
-				preparedStatement.setDouble(5, simObject.usage_pattern_ID);
+				if(simObject.usage_pattern_ID != null){
+					preparedStatement.setDouble(5, simObject.usage_pattern_ID);
+				}
+				else{
+					preparedStatement.setNull(5, java.sql.Types.INTEGER);
+				}
 				
-				if (!simObject.latitude.isNaN()) {
+				if(simObject.latitude != null){
 					preparedStatement.setDouble(6, simObject.latitude);
 				}
-				if (!simObject.longitude.isNaN()) {
+				else{
+					preparedStatement.setNull(6, java.sql.Types.DOUBLE);
+				}
+				
+				if(simObject.longitude != null){
 					preparedStatement.setDouble(7, simObject.longitude);
 				}
-				if (!simObject.self_temperature.isNaN()) {
+				else{
+					preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+				}
+				
+				if(simObject.self_temperature != null){
 					preparedStatement.setDouble(8, simObject.self_temperature);
 				}
-				if (!simObject.target_temperature.isNaN()) {
+				else{
+					preparedStatement.setNull(8, java.sql.Types.DOUBLE);
+				}
+
+				if(simObject.target_temperature != null){
 					preparedStatement.setDouble(9, simObject.target_temperature);
 				}
-				if (!simObject.base_height.isNaN()) {
-					preparedStatement.setDouble(10, simObject.base_height);
+				else{
+					preparedStatement.setNull(9, java.sql.Types.DOUBLE);
 				}
-				if (!simObject.heat_loss_rate.isNaN()) {
-					preparedStatement.setDouble(11, simObject.heat_loss_rate);
+				
+				if(simObject.base_area != null){
+					preparedStatement.setDouble(10, simObject.base_area);
 				}
+				else{
+					preparedStatement.setNull(10, java.sql.Types.DOUBLE);
+				}
+				
+				if(simObject.base_height != null){
+					preparedStatement.setDouble(11, simObject.base_height);
+				}
+				else{
+					preparedStatement.setNull(11, java.sql.Types.DOUBLE);
+				}
+
+				if(simObject.heat_loss_rate != null){
+					preparedStatement.setDouble(12, simObject.heat_loss_rate);
+				}
+				else{
+					preparedStatement.setNull(12, java.sql.Types.DOUBLE);
+				}
+
 
 				ResultSet set = preparedStatement.executeQuery();
 
@@ -870,9 +769,5 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		// returning -1 to indicate that the server couldnt save the object,
 		// something must then be wrong with the code
 		return -1;
-	}
-
-	private boolean existsInDatabase(HikstObject simObject) {
-		return false;
 	}
 }

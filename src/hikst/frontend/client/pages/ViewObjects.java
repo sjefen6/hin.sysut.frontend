@@ -3,7 +3,7 @@ package hikst.frontend.client.pages;
 import sun.misc.Compare;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.callback.SimObjectsCallback;
+import hikst.frontend.client.callback.HikstObjectsCallback;
 import hikst.frontend.client.pages.NewObject.NewObjectUiBinder;
 
 import com.google.gwt.core.client.GWT;
@@ -74,7 +74,7 @@ public class ViewObjects extends Composite {
 		//flexyTable = new FlexTable();
 		
 		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new SimObjectsCallback(flexyTable, parent));
+		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, parent));
 		centerPanel.add(flexyTable);
 		
 	//	centerPanel.add(flexyTable);

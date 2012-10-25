@@ -2,6 +2,7 @@ package hikst.frontend.client;
 
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
+import hikst.frontend.shared.HikstObjectTree;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.TreeItem;
 
 /**
  * The async counterpart of <code>DatabaseService</code>.
@@ -39,7 +41,6 @@ public interface DatabaseServiceAsync {
 	throws IllegalArgumentException;
 	void exists(String username, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
-	void saveObject(SimObjectTree simobject, AsyncCallback<Integer> callback);
 	void requestSimulation(SimulationRequest request,
 			AsyncCallback<SimulationTicket> callback);
 	void deleteObject(int object_id, AsyncCallback<Boolean> callback)
@@ -56,8 +57,8 @@ public interface DatabaseServiceAsync {
 	void setUp(String hostname, String port, String name, String user,
 			String password, AsyncCallback<Boolean> callback);
 	void settingsLoadable(AsyncCallback<Boolean> callback);
-	void loadObject(int id, AsyncCallback<SimObjectTree> callback);
-	void getSimObjects(AsyncCallback<ArrayList<SimObject>> callback);
+	void loadObject(int id, AsyncCallback<HikstObjectTree> callback);
+	void getSimObjects(AsyncCallback<ArrayList<HikstObject>> callback);
 	void saveObject(HikstObject simObject, AsyncCallback<Integer> callback);
 	
 }

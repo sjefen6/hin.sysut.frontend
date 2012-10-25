@@ -8,7 +8,8 @@ import javax.swing.plaf.RootPaneUI;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.SplineGraf;
-import hikst.frontend.client.callback.SimObjectTreeCallback;
+import hikst.frontend.client.callback.TreeCallback;
+import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 
@@ -49,154 +50,42 @@ public class NewSimulation extends Composite implements HasText {
 	@UiField Button buttonShowSpline;
 	@UiField FlowPanel eastPanel;
 	@UiField FlowPanel centerPanel;
-	@UiField Tree tree;
-	SimObjectTree simulatorObject = new SimObjectTree();
-	//SimulationManagementObject simManager = new SimulationManagementObject(this);
-	SimObject selectedObject = null;
-	//@UiField Button printIt;
+	public @UiField Tree tree;
+	private TreeCallback treeCallback;
 	
 	DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 	
 	interface NewSimulationUiBinder extends UiBinder<Widget, NewSimulation> {
 	}
 
-	private SimObjectTree simObjectTree;
-	
-	
-	public void setSimObject(SimObjectTree simObject)
-	{
-		simObjectTree = simObject;
-		updateView();
-	}
-	
-	private void updateView(){
-		
-	}
-	
 	public NewSimulation() {
 		initWidget(uiBinder.createAndBindUi(this));
-		tree.addSelectionHandler(new SelectionHandler<TreeItem>()
-				{
-
-					@Override
-					public void onSelection(SelectionEvent<TreeItem> event) {
-						
-						TreeItem treeItem = tree.getSelectedItem();
-						
-						Integer[] path = getPath(treeItem);
-						
-						SimObject selectedObject = simulatorObject.rootObject;
-						
-						for(int depth = path.length - 1; depth>= 0; depth--)
-						{
-							selectedObject = selectedObject.getChild(path[depth]);
-						}
-						
-						
-					}
-			
-				});
 	}
 	
-	public NewSimulation(Composite parent, SimObject simObject){
+	private void updateTree(int id)
+	{
+		
+		databaseService.loadObject(id, treeCallback);
+	}
+	
+	public NewSimulation(Composite parent, HikstObject simObject){
 		this();
 		fromDate.setValue(((NewSimulation) parent).fromDate.getValue());
 		toDate.setValue(((NewSimulation) parent).toDate.getValue());
 		intervall.setValue(((NewSimulation) parent).intervall.getValue());
-		simObjectTree = new SimObjectTree();
-		selectedObject = simObject;
-		simObjectTree.rootObject = simObject;
 		
-		updateTree();
+		treeCallback = new TreeCallback(this);
+		
+		updateTree(simObject.getID());
 		
 	}
 	
-	@SuppressWarnings("deprecation")
-	private void updateTree()
-	{
-//		tree.clear();
-		
-		CheckBox cb = new CheckBox(simulatorObject.rootObject.name);
-		TreeItem rootItem = new TreeItem(cb);	
-		rootItem.setText(simulatorObject.rootObject.name);
-    	cb.setValue(true);
-    	cb.addClickListener(new ClickListener()
-    	{
-			@Override
-			public void onClick(Widget sender) {
-					
-			}
-    	});
-    	
-    	
-    	
-    	
-    	Iterator<SimObject> iterator = simulatorObject.rootObject.getChildIterator();
-    	
-    	while(iterator.hasNext())
-    	{
-    		SimObject entry = iterator.next();
-    		
-    		rootItem.addItem(addChildren(entry));
-    	}
-    	tree.addItem(rootItem);
-	}
-	
-	@SuppressWarnings("deprecation")
-	private TreeItem addChildren(SimObject simObject)
-	{
-		CheckBox cb = new CheckBox(simObject.name);
-		TreeItem rootItem = new TreeItem(cb);
-		
-    	cb.setValue(true);
-    	cb.addClickListener(new ClickListener()
-    	{
-			@Override
-			public void onClick(Widget sender) {
-				
-			}
-    		
-    	});
-    	
-    	Iterator<SimObject> iterator = simObject.getChildIterator();
-    	
-    	if(iterator.hasNext())
-    	{
-    		SimObject entry = iterator.next();
-    		
-    		rootItem.addItem(addChildren(entry));
-    	}
-    	
-    	return rootItem;
-	}
-
-	
-	private Integer[] getPath(TreeItem treeItem)
-	{
-		TreeItem parentItem = null;
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		
-		while(treeItem.getParentItem() != null)
-		{
-			parentItem = treeItem.getParentItem();
-			
-			int index = parentItem.getChildIndex(treeItem);
-			
-			path.add(index);
-			
-			treeItem = parentItem;
-		}
-		
-		Integer[] returnPath = new Integer[path.size()];
-		path.toArray(returnPath);
-		//Window.alert(path.toString());
-		return returnPath;
-	}
-	
-	public NewSimulation(int id)
-	{
-		databaseService.loadObject(id, new SimObjectTreeCallback(this));
-	}
+//	public NewSimulation(int id)
+//	{
+//		this();
+//		treeCallback = new TreeCallback(this);
+//		updateTree(id);
+//	}
 
 	@UiHandler("addObject")
 	void onAddObjectClick(ClickEvent event) {

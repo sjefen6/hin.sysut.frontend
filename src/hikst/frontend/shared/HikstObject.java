@@ -10,7 +10,7 @@ public class HikstObject implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int ID;
+	private Integer ID;
 	public String name;
 	public Double effect;
 	public Double voltage;
@@ -26,7 +26,7 @@ public class HikstObject implements Serializable
 	public Double heat_loss_rate;
 	public ArrayList<Integer> sons = new ArrayList<Integer>();
 	
-	public int getID(){
+	public Integer getID(){
 		return ID;
 	}
 	
