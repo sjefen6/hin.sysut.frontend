@@ -15,7 +15,7 @@
             background-color: grey;
         }
         .centerPanel {
-            background-color: white;
+            background-color: grey;
         }       
     </ui:style>
      <g:DockLayoutPanel unit='EM' width="1024" height="768">

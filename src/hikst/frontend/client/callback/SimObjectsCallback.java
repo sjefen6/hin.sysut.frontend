@@ -2,7 +2,6 @@ package hikst.frontend.client.callback;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.pages.ModifyObjects;
 import hikst.frontend.client.pages.NewObject;
 import hikst.frontend.client.pages.NewSimulation;
 import hikst.frontend.shared.SimObject;
@@ -20,7 +19,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 
 public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 	
@@ -104,7 +102,7 @@ public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							RootPanel.get().add(new ModifyObjects(simObject));
+//							RootPanel.get().add(new NewObject(simObject));
 							
 						}
 						
