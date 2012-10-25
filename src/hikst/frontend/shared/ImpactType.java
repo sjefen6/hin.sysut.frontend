@@ -12,9 +12,7 @@ public class ImpactType implements Serializable {
 	
 	public int ID;
 	public String name;
-	
-	public ArrayList<Integer> types = new ArrayList<Integer>();
-	
+
 	public ImpactType(){}
 
 }

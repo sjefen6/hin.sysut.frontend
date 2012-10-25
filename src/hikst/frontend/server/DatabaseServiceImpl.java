@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
+import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
@@ -446,6 +447,37 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements Databas
 		}
 		
 		
+	}
+	
+	public ArrayList<ImpactType> getImpactTypes() 
+	{
+		Connection connection = Settings.getDBC();
+		ArrayList<ImpactType> impactTypes = new ArrayList<ImpactType>();
+		
+		try
+		{
+			String query = "SELECT ID, Name FROM Type";
+			PreparedStatement statement = connection.prepareStatement(query);
+			ResultSet set = statement.executeQuery();
+	
+			while(set.next())
+			{
+				int id = set.getInt(1);
+				String key = set.getString(2);
+		
+				ImpactType type = new ImpactType();
+				type.ID = id;
+				type.name = key;
+		
+				impactTypes.add(type);
+			}	
+		}
+		catch(SQLException ex)
+		{
+		ex.printStackTrace();
+		}
+		
+		return impactTypes;
 	}
 	
 	private void updateSimObject(SimObject simObject) throws SQLException
