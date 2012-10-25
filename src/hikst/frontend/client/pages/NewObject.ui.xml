@@ -34,7 +34,7 @@
          	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
          	<g:TextBox text="" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Label text="Effect" height="12px" ui:field="effectLabel"/>
-         	<g:DoubleBox text="" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
+         	<g:TextBox text="" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Label text="Voltage" height="12px" ui:field="voltageLabel"/>
          	<g:TextBox text="" ui:field="voltage" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Label text="Current" height="12px" ui:field="currentLabel"/>

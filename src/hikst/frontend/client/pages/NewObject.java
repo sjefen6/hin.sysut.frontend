@@ -50,7 +50,7 @@ public class NewObject extends Composite implements HasText/*
 			.create(NewObjectUiBinder.class);
 
 	@UiField TextBox name;
-	@UiField DoubleBox effect;
+	@UiField TextBox effect;
 	@UiField TextBox voltage;
 	@UiField TextBox current;
 	@UiField TextBox latitude;
@@ -111,23 +111,24 @@ public class NewObject extends Composite implements HasText/*
 
 	public HikstObject getObject() {
 		o.name = name.getText();
-		o.effect = effect.getValue();
-//		try {
-//			o.effect = Double.parseDouble(effect.getText());
-//		} catch (NumberFormatException e) {
-//			o.effect = Double.NaN;
-//		}
+//		o.effect = effect.getValue();
+		try {
+			o.effect = Double.parseDouble(effect.getText());
+		} catch (NumberFormatException e) {
+			o.effect = Double.NaN;
+		}
 		try {
 			o.voltage = Double.parseDouble(voltage.getText());
 		} catch (NumberFormatException e) {
 			o.voltage = Double.NaN;
 		}
+		
 		try {
 			o.current = Double.parseDouble(current.getText());
 		} catch (NumberFormatException e) {
 			o.current = Double.NaN;
 		}
-		// o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
+		
 		try {
 			o.latitude = Double.parseDouble(latitude.getText());
 		} catch (NumberFormatException e) {
@@ -174,7 +175,7 @@ public class NewObject extends Composite implements HasText/*
 		if (o.effect.equals(Double.NaN)) {
 			effect.setValue("");
 		} else {
-			effect.setValue(o.effect.toString());
+			//effect.setValue(o.effect.toString());
 		}
 		if (o.voltage.equals(Double.NaN)) {
 			voltage.setValue("");
