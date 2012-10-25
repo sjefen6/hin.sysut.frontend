@@ -1,10 +1,6 @@
 package hikst.frontend.client.callback;
 
-import hikst.frontend.client.pages.NewObject;
-import hikst.frontend.client.pages.NewSimulation;
 import hikst.frontend.shared.SimObject;
-import hikst.frontend.shared.SimObjectTree;
-
 import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,8 +10,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 
 public class ObjectChildrenCallback implements AsyncCallback<ArrayList<SimObject>>{
 

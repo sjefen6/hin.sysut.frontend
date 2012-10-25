@@ -2,9 +2,6 @@ package hikst.frontend.client.pages;
 
 import java.util.Date;
 
-import hikst.frontend.client.SplineGraph;
-import hikst.frontend.shared.Description;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -30,7 +27,7 @@ public class MainPage extends Composite implements HasText {
 
 	NewSimulation panel;
 	MyDockLayoutPanel oldPanel;
-	SimResoults simPanel;
+	SimResults simPanel;
 	private static MainPageUiBinder uiBinder = GWT
 			.create(MainPageUiBinder.class);
 	@UiField Button buttonLogout;
@@ -141,7 +138,7 @@ public class MainPage extends Composite implements HasText {
 	
 	@UiHandler("simResoult")
 	void onSimResoultClick(ClickEvent event){
-		simPanel = new SimResoults();
+		simPanel = new SimResults();
 		RootLayoutPanel.get().add(simPanel);
 	}
 }

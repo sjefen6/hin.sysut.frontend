@@ -2,7 +2,8 @@ package hikst.frontend.client.pages;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.callback.SimObjectsCallback;
+import hikst.frontend.client.callback.HikstObjectsCallback;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -10,7 +11,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -52,7 +52,7 @@ public class ViewUsagePatterns extends HikstComposite {
 	private void initTable()
 	{		
 		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new SimObjectsCallback(flexyTable, parent));
+		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, parent));
 		centerPanel.add(flexyTable);
 	}
 	

@@ -18,9 +18,9 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 
-public class ViewImpactFactors extends Composite {
+public class ViewImpactFactors extends HikstComposite {
 
-	Composite panel;
+	HikstComposite panel;
 	NewObject NewObpanel;
 
 	interface ViewImpactFactorsUiBinder extends

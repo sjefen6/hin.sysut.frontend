@@ -1,8 +1,6 @@
 package hikst.frontend.client.callback;
 
 import hikst.frontend.client.pages.Login;
-import hikst.frontend.client.pages.MainPage;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootLayoutPanel;

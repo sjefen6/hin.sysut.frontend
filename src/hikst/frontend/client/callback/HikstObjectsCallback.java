@@ -27,7 +27,7 @@ public class HikstObjectsCallback implements AsyncCallback<ArrayList<HikstObject
 	private FlexTable objectTable;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 	private HikstComposite parent;
-	public HikstObjectsCallback(FlexTable objectTable, Composite parent)
+	public HikstObjectsCallback(FlexTable objectTable, HikstComposite parent)
 	{
 		this.objectTable = objectTable;
 		this.parent = parent;

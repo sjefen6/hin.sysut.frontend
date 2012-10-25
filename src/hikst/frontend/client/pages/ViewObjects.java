@@ -3,7 +3,7 @@ package hikst.frontend.client.pages;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.HikstObjectsCallback;
-import hikst.frontend.client.pages.NewObject.NewObjectUiBinder;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
