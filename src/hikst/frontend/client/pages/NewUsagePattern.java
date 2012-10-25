@@ -33,59 +33,32 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewUsagePattern extends Composite implements HasText/*
-															 * ,
-															 * LocationCallback
-															 */{
+public class NewUsagePattern extends Composite implements HasText {
 
 	ViewObjects panel;
-	// SimObjectTree simulatorObject = new SimObjectTree();
-	// SimulationManagementObject simManager = new
-	// SimulationManagementObject(this);
-	// SimObject selectedSimObject = null;
+
 	Composite parent;
 	private UsagePattern u = new UsagePattern();
 
-	private static NewObjectUiBinder uiBinder = GWT
-			.create(NewObjectUiBinder.class);
+	interface NewUsagePatternUiBinder extends UiBinder<Widget, NewUsagePattern> {
+	}
+	
+	private static NewUsagePatternUiBinder uiBinder = GWT
+			.create(NewUsagePatternUiBinder.class);
 
 	@UiField TextBox name;
-	@UiField TextBox effect;
-	@UiField TextBox voltage;
-	@UiField TextBox current;
-	@UiField TextBox latitude;
-	@UiField TextBox longitude;
-	@UiField TextBox self_temperature;
-	@UiField TextBox target_temperature;
-	@UiField TextBox base_area;
-	@UiField TextBox base_height;
-	@UiField TextBox heat_loss_rate;
+	@UiField TextBox c00;
+
 	@UiField Button back;
 	@UiField Button saveObject;
-	@UiField Button addChildObject;
-	@UiField Button addUsagePattern;
-	@UiField Button showMap;
-	@UiField AbsolutePanel mapsPanel;
 	@UiField FlowPanel eastPanel;
-	@UiField Label effectLabel;
 	@UiField Label nameLabel;
-	@UiField Label voltageLabel;
-	@UiField Label currentLabel;
-	@UiField Label latLabel;
-	@UiField Label longLabel;
-	@UiField Label starttempLabel;
-	@UiField Label targettempLabel;
-	@UiField Label baseareaLabel;
-	@UiField Label baseheightLabel;
-	@UiField Label heatlossLabel;
+
 
 	MapWidget map;
 
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
-
-	interface NewUsagePatternUiBinder extends UiBinder<Widget, NewUsagePattern> {
-	}
 
 	/**
 	 * Main constructor
@@ -94,6 +67,17 @@ public class NewUsagePattern extends Composite implements HasText/*
 		this.parent = parent;
 		u = new UsagePattern();
 		initWidget(uiBinder.createAndBindUi(this));
+		setToRange();
+	}
+	
+	/**
+	 * Sets all clock inputs to ranges
+	 */
+	private void setToRange(){
+		c00.getElement().setAttribute("type", "range");
+		c00.getElement().setAttribute("min", "0");
+		c00.getElement().setAttribute("max", "100");
+		c00.getElement().setAttribute("step", "1");
 	}
 
 	/**
@@ -104,182 +88,26 @@ public class NewUsagePattern extends Composite implements HasText/*
 	 */
 	public NewUsagePattern(Composite parent, SimObject childObject) {
 		this(parent);
-		o = ((NewUsagePattern) parent).getObject();
-		o.sons.add(childObject.getID());
-		setValues();
 	}
 
-	public HikstObject getObject() {
-		o.name = name.getValue();
-		try {
-			o.effect = Double.parseDouble(effect.getValue());
-		} catch (NumberFormatException e) {
-			o.effect = Double.NaN;
-		}
-		try {
-			o.voltage = Double.parseDouble(voltage.getValue());
-		} catch (NumberFormatException e) {
-			o.voltage = Double.NaN;
-		}
-		try {
-			o.current = Double.parseDouble(current.getValue());
-		} catch (NumberFormatException e) {
-			o.current = Double.NaN;
-		}
-		// o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
-		try {
-			o.latitude = Double.parseDouble(latitude.getValue());
-		} catch (NumberFormatException e) {
-			o.latitude = Double.NaN;
-		}
-		try {
-			o.longitude = Double.parseDouble(longitude.getValue());
-		} catch (NumberFormatException e) {
-			o.longitude = Double.NaN;
-		}
-		try {
-			o.self_temperature = Double
-					.parseDouble(self_temperature.getValue());
-		} catch (NumberFormatException e) {
-			o.self_temperature = Double.NaN;
-		}
-		try {
-			o.target_temperature = Double.parseDouble(target_temperature
-					.getValue());
-		} catch (NumberFormatException e) {
-			o.target_temperature = Double.NaN;
-		}
-		try {
-			o.base_area = Double.parseDouble(base_area.getValue());
-		} catch (NumberFormatException e) {
-			o.base_area = Double.NaN;
-		}
-		try {
-			o.base_height = Double.parseDouble(base_height.getValue());
-		} catch (NumberFormatException e) {
-			o.base_height = Double.NaN;
-		}
-		try {
-			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
-		} catch (NumberFormatException e) {
-			o.heat_loss_rate = Double.NaN;
-		}
+	public UsagePattern getObject() {
+		u.name = name.getText();
+//		try {
+//			o.effect = Double.parseDouble(effect.getValue());
+//		} catch (NumberFormatException e) {
+//			o.effect = Double.NaN;
+//		}
 
-		return o;
+		return u;
 	}
 
 	private void setValues() {
-		name.setValue(o.name);
-		if (o.effect == Double.NaN) {
-			effect.setValue("");
-		} else {
-			effect.setValue(o.effect.toString());
-		}
-		if (o.voltage == Double.NaN) {
-			voltage.setValue("");
-		} else {
-			voltage.setValue(o.voltage.toString());
-		}
-		if (o.current == Double.NaN) {
-			current.setValue("");
-		} else {
-			current.setValue(o.current.toString());
-		}
-		if (o.latitude == Double.NaN) {
-			latitude.setValue("");
-		} else {
-			latitude.setValue(o.latitude.toString());
-		}
-		if (o.longitude == Double.NaN) {
-			longitude.setValue("");
-		} else {
-			longitude.setValue(o.longitude.toString());
-		}
-		if (o.self_temperature == Double.NaN) {
-			self_temperature.setValue("");
-		} else {
-			self_temperature.setValue(o.self_temperature.toString());
-		}
-		if (o.target_temperature == Double.NaN) {
-			target_temperature.setValue("");
-		} else {
-			target_temperature.setValue(o.self_temperature.toString());
-		}
-		if (o.base_area == Double.NaN) {
-			base_area.setValue("");
-		} else {
-			base_area.setValue(o.base_area.toString());
-		}
-		if (o.base_height == Double.NaN) {
-			base_height.setValue("");
-		} else {
-			base_height.setValue(o.base_height.toString());
-		}
-		if (o.heat_loss_rate == Double.NaN) {
-			heat_loss_rate.setValue("");
-		} else {
-			heat_loss_rate.setValue(o.heat_loss_rate.toString());
-		}
-	}
-
-	@UiHandler("addChildObject")
-	void onAddObjectClick(ClickEvent event) {
-		// RootLayoutPanel.get().add(new NewObject());
-		panel = new ViewObjects(this);
-		RootLayoutPanel.get().add(panel);
-	}
-
-
-	@UiHandler("latitude")
-	void onLatitudeClick(ClickEvent event) {
-
-		Maps.loadMapsApi("", "2", false, new Runnable() {
-			public void run() {
-				buildUi();
-			}
-		});
-	}
-
-	private void buildUi() {
-		// Open a map centered on Cawker City, KS USA
-		LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
-
-		final MapWidget map = new MapWidget(startPos, 2);
-		map.setSize("100%", "100%");
-		// Add some controls for the zoom level
-		map.addControl(new LargeMapControl());
-		map.addControl(new MapTypeControl());
-
-		map.addMapClickHandler(new MapClickHandler() {
-			public void onClick(MapClickEvent e) {
-				map.clearOverlays();
-
-				MapWidget sender = e.getSender();
-				Overlay overlay = e.getOverlay();
-				LatLng point = e.getLatLng();
-				map.getInfoWindow().open(point,
-						new InfoWindowContent("Den beste plassen!"));
-
-				// NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
-				latitude.setText(String.valueOf((int) (point.getLatitude() * 1000000f)));
-				longitude.setText(String.valueOf((int) (point.getLongitude() * 1000000f)));
-
-				MarkerOptions opt = MarkerOptions.newInstance();
-				opt.setDraggable(true);
-
-				if (overlay != null && overlay instanceof Marker) {
-					sender.removeOverlay(overlay);
-				} else {
-					sender.addOverlay(new Marker(point));
-
-				}
-			}
-		});
-
-		// latitude.setEnabled(false);
-		// longitude.setEnabled(false);
-		mapsPanel.add(map);
-		// Add the map to the HTML host page
+		name.setValue(u.name);
+//		if (o.effect == Double.NaN) {
+//			effect.setValue("");
+//		} else {
+//			effect.setValue(o.effect.toString());
+//		}
 	}
 
 	@Override
@@ -294,31 +122,31 @@ public class NewUsagePattern extends Composite implements HasText/*
 
 	}
 
-	@UiHandler("showMap")
-	void onshowMapClick(ClickEvent event) {
-
-		Maps.loadMapsApi("", "2", false, new Runnable() {
-			public void run() {
-				buildUi();
-			}
-		});
-	}
-
-	@UiHandler("back")
-	void onBackClick(ClickEvent event) {
-		mapsPanel.clear();
-		eastPanel.clear();
-		RootLayoutPanel.get().add(new NewSimulation());
-		panel = new ViewObjects(this);
-		RootLayoutPanel.get().add(panel);
-	}
-
-	@UiHandler("saveObject")
-	void onSaveObject(ClickEvent event) {
-		if (name.getValue().equals("Name")) {
-			Window.alert("Change Name!");
-		} else {
-			databaseService.saveObject(o, new SaveObjectCallback());
-		}
-	}
+//	@UiHandler("showMap")
+//	void onshowMapClick(ClickEvent event) {
+//
+//		Maps.loadMapsApi("", "2", false, new Runnable() {
+//			public void run() {
+//				buildUi();
+//			}
+//		});
+//	}
+//
+//	@UiHandler("back")
+//	void onBackClick(ClickEvent event) {
+//		mapsPanel.clear();
+//		eastPanel.clear();
+//		RootLayoutPanel.get().add(new NewSimulation());
+//		panel = new ViewObjects(this);
+//		RootLayoutPanel.get().add(panel);
+//	}
+//
+//	@UiHandler("saveObject")
+//	void onSaveObject(ClickEvent event) {
+//		if (name.getValue().equals("Name")) {
+//			Window.alert("Change Name!");
+//		} else {
+//			databaseService.saveObject(o, new SaveObjectCallback());
+//		}
+//	}
 }
