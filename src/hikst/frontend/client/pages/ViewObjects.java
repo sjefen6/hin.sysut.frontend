@@ -1,41 +1,26 @@
 package hikst.frontend.client.pages;
 
-import sun.misc.Compare;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SimObjectsCallback;
-import hikst.frontend.client.pages.NewObject.NewObjectUiBinder;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FlowPanel;
 
-public class ViewObjects extends Composite {
-
-	//VerticalPanel panel = new VerticalPanel();
-	//FlexTable objectTable;
+public class ViewObjects extends HikstComposite {	
 	
+	private HikstComposite panel;
 	
-	Composite panel;
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
-
 
 	private static ViewObjectsUiBinder uiBinder = GWT
 	.create(ViewObjectsUiBinder.class);
@@ -44,10 +29,17 @@ public class ViewObjects extends Composite {
 	@UiField Button newObject;
 	@UiField Button backButton;
 	
-	private Composite parent;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
-	
+	public ViewObjects(HikstComposite parent) {
+			initWidget(uiBinder.createAndBindUi(this));
+			//initWidget(uiBinder.createAndBindUi(this));
+	//		initWidget(panel);
+			//initButtons();
+			this.parent = parent;
+			initTable();
+		}
+
 	ClickHandler createObjectButtonClickHandler = new ClickHandler()
 	{
 
@@ -59,15 +51,6 @@ public class ViewObjects extends Composite {
 	};
 	
 	Button createSimObjectButton = new Button("Create object",createObjectButtonClickHandler);
-	
-	public ViewObjects(Composite parent) {
-		initWidget(uiBinder.createAndBindUi(this));
-		//initWidget(uiBinder.createAndBindUi(this));
-//		initWidget(panel);
-		//initButtons();
-		this.parent = parent;
-		initTable();
-	}
 	
 	private void initTable()
 	{

@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewUsagePattern extends Composite implements HasText {
+public class NewUsagePattern extends HikstComposite implements HasText {
 
 	ViewObjects panel;
 
@@ -63,13 +63,23 @@ public class NewUsagePattern extends Composite implements HasText {
 	/**
 	 * Main constructor
 	 */
-	public NewUsagePattern(Composite parent) {
+	public NewUsagePattern(HikstComposite parent) {
 		this.parent = parent;
 		u = new UsagePattern();
 		initWidget(uiBinder.createAndBindUi(this));
 		setToRange();
 	}
 	
+	/**
+	 * Constructor used when returning from Objects list with a child object
+	 * 
+	 * @param parent
+	 * @param childObject
+	 */
+	public NewUsagePattern(HikstComposite parent, SimObject childObject) {
+		this(parent);
+	}
+
 	/**
 	 * Sets all clock inputs to ranges
 	 */
@@ -78,16 +88,6 @@ public class NewUsagePattern extends Composite implements HasText {
 		c00.getElement().setAttribute("min", "0");
 		c00.getElement().setAttribute("max", "100");
 		c00.getElement().setAttribute("step", "1");
-	}
-
-	/**
-	 * Constructor used when returning from Objects list with a child object
-	 * 
-	 * @param parent
-	 * @param childObject
-	 */
-	public NewUsagePattern(Composite parent, SimObject childObject) {
-		this(parent);
 	}
 
 	public UsagePattern getObject() {

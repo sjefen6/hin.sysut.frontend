@@ -2,6 +2,7 @@ package hikst.frontend.client.callback;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.pages.HikstComposite;
 import hikst.frontend.client.pages.NewObject;
 import hikst.frontend.client.pages.NewSimulation;
 import hikst.frontend.shared.SimObject;
@@ -24,8 +25,8 @@ public class SimObjectsCallback implements AsyncCallback<ArrayList<SimObject>>{
 	
 	private FlexTable objectTable;
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-	private Composite parent;
-	public SimObjectsCallback(FlexTable objectTable, Composite parent)
+	private HikstComposite parent;
+	public SimObjectsCallback(FlexTable objectTable, HikstComposite parent)
 	{
 		this.objectTable = objectTable;
 		this.parent = parent;

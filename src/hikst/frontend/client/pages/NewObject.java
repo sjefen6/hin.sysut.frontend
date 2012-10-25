@@ -25,7 +25,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -33,17 +32,14 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewObject extends Composite implements HasText/*
-															 * ,
-															 * LocationCallback
-															 */{
+public class NewObject extends HikstComposite implements HasText{
 
-	ViewObjects panel;
+	private Composite panel;
 	// SimObjectTree simulatorObject = new SimObjectTree();
 	// SimulationManagementObject simManager = new
 	// SimulationManagementObject(this);
 	// SimObject selectedSimObject = null;
-	Composite parent;
+
 	private HikstObject o = new HikstObject();
 
 	private static NewObjectUiBinder uiBinder = GWT
@@ -90,7 +86,7 @@ public class NewObject extends Composite implements HasText/*
 	/**
 	 * Main constructor
 	 */
-	public NewObject(Composite parent) {
+	public NewObject(HikstComposite parent) {
 		this.parent = parent;
 		o = new HikstObject();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -102,10 +98,23 @@ public class NewObject extends Composite implements HasText/*
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(Composite parent, SimObject childObject) {
-		this(parent);
+	public NewObject(HikstComposite parent, SimObject childObject) {
+		this(parent.getParent());
 		o = ((NewObject) parent).getObject();
 		o.sons.add(childObject.getID());
+		setValues();
+	}
+	
+	/**
+	 * Constructor used when returning from NewUsagePattern with a usagePatternID
+	 * 
+	 * @param parent
+	 * @param childObject
+	 */
+	public NewObject(HikstComposite parent, int usagePatternID) {
+		this(parent.getParent());
+		o = ((NewObject) parent).getObject();
+		o.usage_pattern_ID = usagePatternID;
 		setValues();
 	}
 
@@ -226,8 +235,13 @@ public class NewObject extends Composite implements HasText/*
 
 	@UiHandler("addChildObject")
 	void onAddObjectClick(ClickEvent event) {
-		// RootLayoutPanel.get().add(new NewObject());
 		panel = new ViewObjects(this);
+		RootLayoutPanel.get().add(panel);
+	}
+	
+	@UiHandler("addUsagePattern")
+	void onNewUsagePatternClick(ClickEvent event) {
+		panel = new NewUsagePattern(this);
 		RootLayoutPanel.get().add(panel);
 	}
 

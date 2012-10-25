@@ -2,7 +2,6 @@ package hikst.frontend.client.callback;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.pages.ModifyObjects;
 import hikst.frontend.client.pages.NewObject;
 import hikst.frontend.client.pages.NewSimulation;
 import hikst.frontend.shared.SimObject;

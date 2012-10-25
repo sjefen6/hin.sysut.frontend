@@ -35,9 +35,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 
-public class NewSimulation extends Composite implements HasText {
+public class NewSimulation extends HikstComposite {
 
-	ViewObjects panel;
+	Composite panel;
 	MainPage panelBack;
 	private static NewSimulationUiBinder uiBinder = GWT
 			.create(NewSimulationUiBinder.class);
@@ -98,7 +98,7 @@ public class NewSimulation extends Composite implements HasText {
 				});
 	}
 	
-	public NewSimulation(Composite parent, SimObject simObject){
+	public NewSimulation(HikstComposite parent, SimObject simObject){
 		this();
 		fromDate.setValue(((NewSimulation) parent).fromDate.getValue());
 		toDate.setValue(((NewSimulation) parent).toDate.getValue());
@@ -204,18 +204,7 @@ public class NewSimulation extends Composite implements HasText {
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-
-	@Override
-	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-
-	}
+	
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
 		RootLayoutPanel.get().add(new MainPage());
