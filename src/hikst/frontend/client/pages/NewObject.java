@@ -25,7 +25,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DoubleBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -33,17 +32,13 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewObject extends Composite implements HasText/*
-															 * ,
-															 * LocationCallback
-															 */{
+public class NewObject extends HikstComposite{
 
-	ViewObjects panel;
 	ViewImpactFactors viewImpPanel;
-//	SimObjectTree simulatorObject = new SimObjectTree();
-//	SimulationManagementObject simManager = new SimulationManagementObject(this);
-//	SimObject selectedSimObject = null;
-	Composite parent;
+
+	private HikstComposite parent;
+	private HikstComposite panel;
+
 	private HikstObject o = new HikstObject();
 
 	private static NewObjectUiBinder uiBinder = GWT
@@ -91,7 +86,7 @@ public class NewObject extends Composite implements HasText/*
 	/**
 	 * Main constructor
 	 */
-	public NewObject(Composite parent) {
+	public NewObject(HikstComposite parent) {
 		this.parent = parent;
 		o = new HikstObject();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -103,10 +98,23 @@ public class NewObject extends Composite implements HasText/*
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(Composite parent, HikstObject childObject) {
-		this(parent);
+	public NewObject(HikstComposite parent, HikstObject childObject) {
+		this(parent.getParent());
 		o = ((NewObject) parent).getObject();
 		o.sons.add(childObject.getID());
+		setValues();
+	}
+	
+	/**
+	 * Constructor used when returning from NewUsagePattern with a usagePatternID
+	 * 
+	 * @param parent
+	 * @param childObject
+	 */
+	public NewObject(HikstComposite parent, int usagePatternID) {
+		this(parent.getParent());
+		o = ((NewObject) parent).getObject();
+		o.usage_pattern_ID = usagePatternID;
 		setValues();
 	}
 
@@ -227,7 +235,6 @@ public class NewObject extends Composite implements HasText/*
 
 	@UiHandler("addChildObject")
 	void onAddObjectClick(ClickEvent event) {
-		// RootLayoutPanel.get().add(new NewObject());
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
@@ -238,6 +245,12 @@ public class NewObject extends Composite implements HasText/*
 		RootLayoutPanel.get().add(viewImpPanel);
 	}
 	
+	@UiHandler("addUsagePattern")
+	void onNewUsagePatternClick(ClickEvent event) {
+		panel = new NewUsagePattern(this);
+		RootLayoutPanel.get().add(panel);
+	}
+
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event) {
 
@@ -286,18 +299,6 @@ public class NewObject extends Composite implements HasText/*
 //	    longitude.setEnabled(false);
 	    mapsPanel.add(map);
 	    // Add the map to the HTML host page
-	}
-
-	@Override
-	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@UiHandler("showMap")
