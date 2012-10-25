@@ -3,6 +3,7 @@ package hikst.frontend.client;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.HikstObjectTree;
+import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
@@ -47,4 +48,5 @@ public interface DatabaseService extends RemoteService
 	HikstObjectTree loadObject(int id);
 	ArrayList<HikstObject> getSimObjects();
 	int saveObject(HikstObject simObject);
+	public ArrayList<ImpactType> getImpactTypes();
 }

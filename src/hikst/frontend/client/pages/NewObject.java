@@ -39,10 +39,10 @@ public class NewObject extends Composite implements HasText/*
 															 */{
 
 	ViewObjects panel;
-	// SimObjectTree simulatorObject = new SimObjectTree();
-	// SimulationManagementObject simManager = new
-	// SimulationManagementObject(this);
-	// SimObject selectedSimObject = null;
+	ViewImpactFactors viewImpPanel;
+//	SimObjectTree simulatorObject = new SimObjectTree();
+//	SimulationManagementObject simManager = new SimulationManagementObject(this);
+//	SimObject selectedSimObject = null;
 	Composite parent;
 	private HikstObject o = new HikstObject();
 
@@ -65,6 +65,7 @@ public class NewObject extends Composite implements HasText/*
 	@UiField Button addChildObject;
 	@UiField Button addUsagePattern;
 	@UiField Button showMap;
+	@UiField Button addImpactButton;
 	@UiField AbsolutePanel mapsPanel;
 	@UiField FlowPanel eastPanel;
 	@UiField Label effectLabel;
@@ -230,8 +231,13 @@ public class NewObject extends Composite implements HasText/*
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-
-
+	
+	@UiHandler("addImpactButton")
+	void onAddImpactClick(ClickEvent event) {
+		viewImpPanel = new ViewImpactFactors();
+		RootLayoutPanel.get().add(viewImpPanel);
+	}
+	
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event) {
 
@@ -243,45 +249,43 @@ public class NewObject extends Composite implements HasText/*
 	}
 
 	private void buildUi() {
-		// Open a map centered on Cawker City, KS USA
-		LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
+	    // Open a map centered on Cawker City, KS USA
+	    LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
+	    
+	    final MapWidget map = new MapWidget(startPos, 2);
+	    map.setSize("100%", "100%");
+	    // Add some controls for the zoom level
+	    map.addControl(new LargeMapControl());
+	    map.addControl(new MapTypeControl());
+	    
+	    map.addMapClickHandler(new MapClickHandler() {
+	        public void onClick(MapClickEvent e) {
+	          map.clearOverlays();
+	        	
+	          MapWidget sender = e.getSender();
+	          Overlay overlay = e.getOverlay();
+	          LatLng point = e.getLatLng();
 
-		final MapWidget map = new MapWidget(startPos, 2);
-		map.setSize("100%", "100%");
-		// Add some controls for the zoom level
-		map.addControl(new LargeMapControl());
-		map.addControl(new MapTypeControl());
+	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
+	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
+	          longitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
 
-		map.addMapClickHandler(new MapClickHandler() {
-			public void onClick(MapClickEvent e) {
-				map.clearOverlays();
-
-				MapWidget sender = e.getSender();
-				Overlay overlay = e.getOverlay();
-				LatLng point = e.getLatLng();
-				map.getInfoWindow().open(point,
-						new InfoWindowContent("Den beste plassen!"));
-
-				// NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
-				latitude.setText(String.valueOf((int) (point.getLatitude() * 1000000f)));
-				longitude.setText(String.valueOf((int) (point.getLongitude() * 1000000f)));
-
-				MarkerOptions opt = MarkerOptions.newInstance();
-				opt.setDraggable(true);
-
-				if (overlay != null && overlay instanceof Marker) {
-					sender.removeOverlay(overlay);
-				} else {
-					sender.addOverlay(new Marker(point));
-
-				}
-			}
-		});
-
-		// latitude.setEnabled(false);
-		// longitude.setEnabled(false);
-		mapsPanel.add(map);
-		// Add the map to the HTML host page
+	    MarkerOptions opt = MarkerOptions.newInstance();
+	    opt.setDraggable(true);
+	    
+	    if (overlay != null && overlay instanceof Marker) {
+	          sender.removeOverlay(overlay);
+	        } else {
+	          sender.addOverlay(new Marker(point));
+	          
+	        }
+	      }
+	    });
+	    
+//	    latitude.setEnabled(false);
+//	    longitude.setEnabled(false);
+	    mapsPanel.add(map);
+	    // Add the map to the HTML host page
 	}
 
 	@Override

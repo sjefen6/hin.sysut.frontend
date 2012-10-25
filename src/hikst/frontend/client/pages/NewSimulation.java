@@ -115,6 +115,7 @@ public class NewSimulation extends Composite implements HasText {
 
 	@UiHandler("buttonShowSpline")
 	void onButtonShowSplineClick(ClickEvent event) {
+		centerPanel.clear();
 		centerPanel.add(SplineGraf.createChart());
 		System.out.println("Should show spline!!!");
 	}
