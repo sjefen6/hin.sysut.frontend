@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewObject extends HikstComposite{
+public class NewObject extends HikstComposite {
 
 	ViewImpactFactors viewImpPanel;
 
@@ -41,37 +41,66 @@ public class NewObject extends HikstComposite{
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
 
-	@UiField TextBox name;
-	@UiField TextBox effect;
-	@UiField TextBox voltage;
-	@UiField TextBox current;
-	@UiField TextBox latitude;
-	@UiField TextBox longitude;
-	@UiField TextBox self_temperature;
-	@UiField TextBox target_temperature;
-	@UiField TextBox base_area;
-	@UiField TextBox base_height;
-	@UiField TextBox heat_loss_rate;
-	@UiField Button back;
-	@UiField Button saveObject;
-	@UiField Button addChildObject;
-	@UiField Button addUsagePattern;
-	@UiField Button showMap;
-	@UiField Button addImpactButton;
-	@UiField AbsolutePanel mapsPanel;
-	@UiField FlowPanel eastPanel;
-	@UiField Label effectLabel;
-	@UiField Label nameLabel;
-	@UiField Label voltageLabel;
-	@UiField Label currentLabel;
-	@UiField Label latLabel;
-	@UiField Label longLabel;
-	@UiField Label starttempLabel;
-	@UiField Label targettempLabel;
-	@UiField Label baseareaLabel;
-	@UiField Label baseheightLabel;
-	@UiField Label heatlossLabel;
-	
+	@UiField
+	TextBox name;
+	@UiField
+	TextBox effect;
+	@UiField
+	TextBox voltage;
+	@UiField
+	TextBox current;
+	@UiField
+	TextBox latitude;
+	@UiField
+	TextBox longitude;
+	@UiField
+	TextBox self_temperature;
+	@UiField
+	TextBox target_temperature;
+	@UiField
+	TextBox base_area;
+	@UiField
+	TextBox base_height;
+	@UiField
+	TextBox heat_loss_rate;
+	@UiField
+	Button back;
+	@UiField
+	Button saveObject;
+	@UiField
+	Button addChildObject;
+	@UiField
+	Button addUsagePattern;
+	@UiField
+	Button showMap;
+	@UiField
+	Button addImpactButton;
+	@UiField
+	AbsolutePanel mapsPanel;
+	@UiField
+	FlowPanel eastPanel;
+	@UiField
+	Label effectLabel;
+	@UiField
+	Label nameLabel;
+	@UiField
+	Label voltageLabel;
+	@UiField
+	Label currentLabel;
+	@UiField
+	Label latLabel;
+	@UiField
+	Label longLabel;
+	@UiField
+	Label starttempLabel;
+	@UiField
+	Label targettempLabel;
+	@UiField
+	Label baseareaLabel;
+	@UiField
+	Label baseheightLabel;
+	@UiField
+	Label heatlossLabel;
 
 	MapWidget map;
 
@@ -94,17 +123,18 @@ public class NewObject extends HikstComposite{
 	 * Constructor used when returning from Objects list with a child object
 	 * 
 	 * @param parent
-	 * @param usagePattern
+	 * @param childObject
 	 */
-	public NewObject(Composite parent, UsagePattern usagePattern) {
-		//this(parent.getParent());
+	public NewObject(HikstComposite parent, HikstObject childObject) {
+		this(parent.getParent());
 		o = ((NewObject) parent).getObject();
-		o.sons.add(usagePattern.getID());
+		o.sons.add(childObject.getID());
 		setValues();
 	}
-	
+
 	/**
-	 * Constructor used when returning from NewUsagePattern with a usagePatternID
+	 * Constructor used when returning from NewUsagePattern with a
+	 * usagePatternID
 	 * 
 	 * @param parent
 	 * @param childObject
@@ -118,7 +148,7 @@ public class NewObject extends HikstComposite{
 
 	public HikstObject getObject() {
 		o.name = name.getText();
-//		o.effect = effect.getValue();
+		// o.effect = effect.getValue();
 		try {
 			o.effect = Double.parseDouble(effect.getText());
 		} catch (NumberFormatException e) {
@@ -129,13 +159,13 @@ public class NewObject extends HikstComposite{
 		} catch (NumberFormatException e) {
 			o.voltage = Double.NaN;
 		}
-		
+
 		try {
 			o.current = Double.parseDouble(current.getText());
 		} catch (NumberFormatException e) {
 			o.current = Double.NaN;
 		}
-		
+
 		try {
 			o.latitude = Double.parseDouble(latitude.getText());
 		} catch (NumberFormatException e) {
@@ -147,8 +177,7 @@ public class NewObject extends HikstComposite{
 			o.longitude = Double.NaN;
 		}
 		try {
-			o.self_temperature = Double
-					.parseDouble(self_temperature.getText());
+			o.self_temperature = Double.parseDouble(self_temperature.getText());
 		} catch (NumberFormatException e) {
 			o.self_temperature = Double.NaN;
 		}
@@ -182,7 +211,7 @@ public class NewObject extends HikstComposite{
 		if (o.effect.equals(Double.NaN)) {
 			effect.setValue("");
 		} else {
-			//effect.setValue(o.effect.toString());
+			// effect.setValue(o.effect.toString());
 		}
 		if (o.voltage.equals(Double.NaN)) {
 			voltage.setValue("");
@@ -236,13 +265,13 @@ public class NewObject extends HikstComposite{
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-	
+
 	@UiHandler("addImpactButton")
 	void onAddImpactClick(ClickEvent event) {
 		viewImpPanel = new ViewImpactFactors();
 		RootLayoutPanel.get().add(viewImpPanel);
 	}
-	
+
 	@UiHandler("addUsagePattern")
 	void onNewUsagePatternClick(ClickEvent event) {
 		panel = new NewUsagePattern(this);
@@ -260,43 +289,43 @@ public class NewObject extends HikstComposite{
 	}
 
 	private void buildUi() {
-	    // Open a map centered on Cawker City, KS USA
-	    LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
-	    
-	    final MapWidget map = new MapWidget(startPos, 2);
-	    map.setSize("100%", "100%");
-	    // Add some controls for the zoom level
-	    map.addControl(new LargeMapControl());
-	    map.addControl(new MapTypeControl());
-	    
-	    map.addMapClickHandler(new MapClickHandler() {
-	        public void onClick(MapClickEvent e) {
-	          map.clearOverlays();
-	        	
-	          MapWidget sender = e.getSender();
-	          Overlay overlay = e.getOverlay();
-	          LatLng point = e.getLatLng();
+		// Open a map centered on Cawker City, KS USA
+		LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
 
-	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
-	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
-	          longitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
+		final MapWidget map = new MapWidget(startPos, 2);
+		map.setSize("100%", "100%");
+		// Add some controls for the zoom level
+		map.addControl(new LargeMapControl());
+		map.addControl(new MapTypeControl());
 
-	    MarkerOptions opt = MarkerOptions.newInstance();
-	    opt.setDraggable(true);
-	    
-	    if (overlay != null && overlay instanceof Marker) {
-	          sender.removeOverlay(overlay);
-	        } else {
-	          sender.addOverlay(new Marker(point));
-	          
-	        }
-	      }
-	    });
-	    
-//	    latitude.setEnabled(false);
-//	    longitude.setEnabled(false);
-	    mapsPanel.add(map);
-	    // Add the map to the HTML host page
+		map.addMapClickHandler(new MapClickHandler() {
+			public void onClick(MapClickEvent e) {
+				map.clearOverlays();
+
+				MapWidget sender = e.getSender();
+				Overlay overlay = e.getOverlay();
+				LatLng point = e.getLatLng();
+
+				// NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
+				latitude.setText(String.valueOf((int) (point.getLatitude() * 1000000f)));
+				longitude.setText(String.valueOf((int) (point.getLongitude() * 1000000f)));
+
+				MarkerOptions opt = MarkerOptions.newInstance();
+				opt.setDraggable(true);
+
+				if (overlay != null && overlay instanceof Marker) {
+					sender.removeOverlay(overlay);
+				} else {
+					sender.addOverlay(new Marker(point));
+
+				}
+			}
+		});
+
+		// latitude.setEnabled(false);
+		// longitude.setEnabled(false);
+		mapsPanel.add(map);
+		// Add the map to the HTML host page
 	}
 
 	@UiHandler("showMap")
@@ -314,7 +343,6 @@ public class NewObject extends HikstComposite{
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-	
 
 	@UiHandler("saveObject")
 	void onSaveObject(ClickEvent event) {
@@ -327,5 +355,4 @@ public class NewObject extends HikstComposite{
 			onBackClick(event);
 		}
 	}
-
 }

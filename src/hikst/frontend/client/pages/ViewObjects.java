@@ -16,63 +16,67 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ViewObjects extends HikstComposite {	
-	
+public class ViewObjects extends HikstComposite {
+
 	private HikstComposite panel;
-	
+
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
 
 	private static ViewObjectsUiBinder uiBinder = GWT
-	.create(ViewObjectsUiBinder.class);
-	@UiField ScrollPanel centerPanel;
-	@UiField FlexTable flexyTable;
-	@UiField Button newObject;
-	@UiField Button backButton;
-	
-	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
+			.create(ViewObjectsUiBinder.class);
+	@UiField
+	ScrollPanel centerPanel;
+	@UiField
+	FlexTable flexyTable;
+	@UiField
+	Button newObject;
+	@UiField
+	Button backButton;
+
+	private DatabaseServiceAsync databaseService = GWT
+			.create(DatabaseService.class);
 
 	public ViewObjects(HikstComposite parent) {
-			initWidget(uiBinder.createAndBindUi(this));
-			//initWidget(uiBinder.createAndBindUi(this));
-	//		initWidget(panel);
-			//initButtons();
-			this.parent = parent;
-			initTable();
-		}
+		initWidget(uiBinder.createAndBindUi(this));
+		// initWidget(uiBinder.createAndBindUi(this));
+		// initWidget(panel);
+		// initButtons();
+		this.parent = parent;
+		initTable();
+	}
 
-	ClickHandler createObjectButtonClickHandler = new ClickHandler()
-	{
+	ClickHandler createObjectButtonClickHandler = new ClickHandler() {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			
+
 		}
-		
+
 	};
-	
-	Button createSimObjectButton = new Button("Create object",createObjectButtonClickHandler);
-	
-	private void initTable()
-	{
-		//flexyTable = new FlexTable();
-		
+
+	Button createSimObjectButton = new Button("Create object",
+			createObjectButtonClickHandler);
+
+	private void initTable() {
+		// flexyTable = new FlexTable();
+
 		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, parent));
+		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable,
+				parent));
 		centerPanel.add(flexyTable);
-		
-	//	centerPanel.add(flexyTable);
+
+		// centerPanel.add(flexyTable);
 	}
-	
+
 	@UiHandler("newObject")
-	void onButtonSave(ClickEvent event){
+	void onButtonSave(ClickEvent event) {
 		panel = new NewObject(this);
 		RootLayoutPanel.get().add(panel);
 	}
-	
+
 	@UiHandler("backButton")
 	void onBackButtonClick(ClickEvent event) {
 		this.removeFromParent();
 	}
 }
-
