@@ -8,6 +8,7 @@ import javax.swing.plaf.RootPaneUI;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.SplineGraf;
+import hikst.frontend.client.SplineGraph;
 import hikst.frontend.client.callback.SimObjectTreeCallback;
 import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
@@ -226,7 +227,7 @@ public class NewSimulation extends Composite implements HasText {
 
 	@UiHandler("buttonShowSpline")
 	void onButtonShowSplineClick(ClickEvent event) {
-		centerPanel.add(SplineGraf.createChart());
+		centerPanel.add(SplineGraph.createChart());
 		System.out.println("Should show spline!!!");
 	}
 	
