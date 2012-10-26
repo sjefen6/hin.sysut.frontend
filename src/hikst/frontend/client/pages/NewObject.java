@@ -4,11 +4,10 @@ import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
-import hikst.frontend.shared.SimObject;
+import hikst.frontend.shared.UsagePattern;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
@@ -26,23 +25,17 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewObject extends Composite implements HasText/*
-															 * ,
-															 * LocationCallback
-															 */{
+public class NewObject extends HikstComposite{
 
-	ViewObjects panel;
-	// SimObjectTree simulatorObject = new SimObjectTree();
-	// SimulationManagementObject simManager = new
-	// SimulationManagementObject(this);
-	// SimObject selectedSimObject = null;
-	Composite parent;
+	ViewImpactFactors viewImpPanel;
+
+	private HikstComposite panel;
+
 	private HikstObject o = new HikstObject();
 
 	private static NewObjectUiBinder uiBinder = GWT
@@ -64,6 +57,7 @@ public class NewObject extends Composite implements HasText/*
 	@UiField Button addChildObject;
 	@UiField Button addUsagePattern;
 	@UiField Button showMap;
+	@UiField Button addImpactButton;
 	@UiField AbsolutePanel mapsPanel;
 	@UiField FlowPanel eastPanel;
 	@UiField Label effectLabel;
@@ -77,6 +71,7 @@ public class NewObject extends Composite implements HasText/*
 	@UiField Label baseareaLabel;
 	@UiField Label baseheightLabel;
 	@UiField Label heatlossLabel;
+	
 
 	MapWidget map;
 
@@ -89,7 +84,7 @@ public class NewObject extends Composite implements HasText/*
 	/**
 	 * Main constructor
 	 */
-	public NewObject(Composite parent) {
+	public NewObject(HikstComposite parent) {
 		this.parent = parent;
 		o = new HikstObject();
 		initWidget(uiBinder.createAndBindUi(this));
@@ -99,67 +94,82 @@ public class NewObject extends Composite implements HasText/*
 	 * Constructor used when returning from Objects list with a child object
 	 * 
 	 * @param parent
+	 * @param usagePattern
+	 */
+	public NewObject(Composite parent, UsagePattern usagePattern) {
+		//this(parent.getParent());
+		o = ((NewObject) parent).getObject();
+		o.sons.add(usagePattern.getID());
+		setValues();
+	}
+	
+	/**
+	 * Constructor used when returning from NewUsagePattern with a usagePatternID
+	 * 
+	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(Composite parent, SimObject childObject) {
-		this(parent);
+	public NewObject(HikstComposite parent, int usagePatternID) {
+		this(parent.getParent());
 		o = ((NewObject) parent).getObject();
-		o.sons.add(childObject.getID());
+		o.usage_pattern_ID = usagePatternID;
 		setValues();
 	}
 
 	public HikstObject getObject() {
-		o.name = name.getValue();
+		o.name = name.getText();
+//		o.effect = effect.getValue();
 		try {
-			o.effect = Double.parseDouble(effect.getValue());
+			o.effect = Double.parseDouble(effect.getText());
 		} catch (NumberFormatException e) {
 			o.effect = Double.NaN;
 		}
 		try {
-			o.voltage = Double.parseDouble(voltage.getValue());
+			o.voltage = Double.parseDouble(voltage.getText());
 		} catch (NumberFormatException e) {
 			o.voltage = Double.NaN;
 		}
+		
 		try {
-			o.current = Double.parseDouble(current.getValue());
+			o.current = Double.parseDouble(current.getText());
 		} catch (NumberFormatException e) {
 			o.current = Double.NaN;
 		}
-		// o.usage_pattern_ID = Integer.parseInt(usage_pattern_ID.getValue());
+		
 		try {
-			o.latitude = Double.parseDouble(latitude.getValue());
+			o.latitude = Double.parseDouble(latitude.getText());
 		} catch (NumberFormatException e) {
 			o.latitude = Double.NaN;
 		}
 		try {
-			o.longitude = Double.parseDouble(longitude.getValue());
+			o.longitude = Double.parseDouble(longitude.getText());
 		} catch (NumberFormatException e) {
 			o.longitude = Double.NaN;
 		}
 		try {
 			o.self_temperature = Double
-					.parseDouble(self_temperature.getValue());
+					.parseDouble(self_temperature.getText());
 		} catch (NumberFormatException e) {
 			o.self_temperature = Double.NaN;
 		}
 		try {
 			o.target_temperature = Double.parseDouble(target_temperature
-					.getValue());
+					.getText());
 		} catch (NumberFormatException e) {
 			o.target_temperature = Double.NaN;
 		}
 		try {
-			o.base_area = Double.parseDouble(base_area.getValue());
+			o.base_area = Double.parseDouble(base_area.getText());
 		} catch (NumberFormatException e) {
 			o.base_area = Double.NaN;
 		}
 		try {
-			o.base_height = Double.parseDouble(base_height.getValue());
+			o.base_height = Double.parseDouble(base_height.getText());
 		} catch (NumberFormatException e) {
 			o.base_height = Double.NaN;
 		}
 		try {
-			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getValue());
+			o.heat_loss_rate = Double.parseDouble(heat_loss_rate.getText());
 		} catch (NumberFormatException e) {
 			o.heat_loss_rate = Double.NaN;
 		}
@@ -169,52 +179,52 @@ public class NewObject extends Composite implements HasText/*
 
 	private void setValues() {
 		name.setValue(o.name);
-		if (o.effect == Double.NaN) {
+		if (o.effect.equals(Double.NaN)) {
 			effect.setValue("");
 		} else {
-			effect.setValue(o.effect.toString());
+			//effect.setValue(o.effect.toString());
 		}
-		if (o.voltage == Double.NaN) {
+		if (o.voltage.equals(Double.NaN)) {
 			voltage.setValue("");
 		} else {
 			voltage.setValue(o.voltage.toString());
 		}
-		if (o.current == Double.NaN) {
+		if (o.current.equals(Double.NaN)) {
 			current.setValue("");
 		} else {
 			current.setValue(o.current.toString());
 		}
-		if (o.latitude == Double.NaN) {
+		if (o.latitude.equals(Double.NaN)) {
 			latitude.setValue("");
 		} else {
 			latitude.setValue(o.latitude.toString());
 		}
-		if (o.longitude == Double.NaN) {
+		if (o.longitude.equals(Double.NaN)) {
 			longitude.setValue("");
 		} else {
 			longitude.setValue(o.longitude.toString());
 		}
-		if (o.self_temperature == Double.NaN) {
+		if (o.self_temperature.equals(Double.NaN)) {
 			self_temperature.setValue("");
 		} else {
 			self_temperature.setValue(o.self_temperature.toString());
 		}
-		if (o.target_temperature == Double.NaN) {
+		if (o.target_temperature.equals(Double.NaN)) {
 			target_temperature.setValue("");
 		} else {
 			target_temperature.setValue(o.self_temperature.toString());
 		}
-		if (o.base_area == Double.NaN) {
+		if (o.base_area.equals(Double.NaN)) {
 			base_area.setValue("");
 		} else {
 			base_area.setValue(o.base_area.toString());
 		}
-		if (o.base_height == Double.NaN) {
+		if (o.base_height.equals(Double.NaN)) {
 			base_height.setValue("");
 		} else {
 			base_height.setValue(o.base_height.toString());
 		}
-		if (o.heat_loss_rate == Double.NaN) {
+		if (o.heat_loss_rate.equals(Double.NaN)) {
 			heat_loss_rate.setValue("");
 		} else {
 			heat_loss_rate.setValue(o.heat_loss_rate.toString());
@@ -223,11 +233,21 @@ public class NewObject extends Composite implements HasText/*
 
 	@UiHandler("addChildObject")
 	void onAddObjectClick(ClickEvent event) {
-		// RootLayoutPanel.get().add(new NewObject());
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
-
+	
+	@UiHandler("addImpactButton")
+	void onAddImpactClick(ClickEvent event) {
+		viewImpPanel = new ViewImpactFactors();
+		RootLayoutPanel.get().add(viewImpPanel);
+	}
+	
+	@UiHandler("addUsagePattern")
+	void onNewUsagePatternClick(ClickEvent event) {
+		panel = new NewUsagePattern(this);
+		RootLayoutPanel.get().add(panel);
+	}
 
 	@UiHandler("latitude")
 	void onLatitudeClick(ClickEvent event) {
@@ -240,57 +260,43 @@ public class NewObject extends Composite implements HasText/*
 	}
 
 	private void buildUi() {
-		// Open a map centered on Cawker City, KS USA
-		LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
+	    // Open a map centered on Cawker City, KS USA
+	    LatLng startPos = LatLng.newInstance(68.4384404, 17.4260552);
+	    
+	    final MapWidget map = new MapWidget(startPos, 2);
+	    map.setSize("100%", "100%");
+	    // Add some controls for the zoom level
+	    map.addControl(new LargeMapControl());
+	    map.addControl(new MapTypeControl());
+	    
+	    map.addMapClickHandler(new MapClickHandler() {
+	        public void onClick(MapClickEvent e) {
+	          map.clearOverlays();
+	        	
+	          MapWidget sender = e.getSender();
+	          Overlay overlay = e.getOverlay();
+	          LatLng point = e.getLatLng();
 
-		final MapWidget map = new MapWidget(startPos, 2);
-		map.setSize("100%", "100%");
-		// Add some controls for the zoom level
-		map.addControl(new LargeMapControl());
-		map.addControl(new MapTypeControl());
+	          //NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
+	          latitude.setText(String.valueOf((int)(point.getLatitude() * 1000000f)));
+	          longitude.setText(String.valueOf((int)(point.getLongitude() * 1000000f)));
 
-		map.addMapClickHandler(new MapClickHandler() {
-			public void onClick(MapClickEvent e) {
-				map.clearOverlays();
-
-				MapWidget sender = e.getSender();
-				Overlay overlay = e.getOverlay();
-				LatLng point = e.getLatLng();
-				map.getInfoWindow().open(point,
-						new InfoWindowContent("Den beste plassen!"));
-
-				// NumberFormat fmt = NumberFormat.getFormat("#.0000000#");
-				latitude.setText(String.valueOf((int) (point.getLatitude() * 1000000f)));
-				longitude.setText(String.valueOf((int) (point.getLongitude() * 1000000f)));
-
-				MarkerOptions opt = MarkerOptions.newInstance();
-				opt.setDraggable(true);
-
-				if (overlay != null && overlay instanceof Marker) {
-					sender.removeOverlay(overlay);
-				} else {
-					sender.addOverlay(new Marker(point));
-
-				}
-			}
-		});
-
-		// latitude.setEnabled(false);
-		// longitude.setEnabled(false);
-		mapsPanel.add(map);
-		// Add the map to the HTML host page
-	}
-
-	@Override
-	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-
+	    MarkerOptions opt = MarkerOptions.newInstance();
+	    opt.setDraggable(true);
+	    
+	    if (overlay != null && overlay instanceof Marker) {
+	          sender.removeOverlay(overlay);
+	        } else {
+	          sender.addOverlay(new Marker(point));
+	          
+	        }
+	      }
+	    });
+	    
+//	    latitude.setEnabled(false);
+//	    longitude.setEnabled(false);
+	    mapsPanel.add(map);
+	    // Add the map to the HTML host page
 	}
 
 	@UiHandler("showMap")
@@ -305,19 +311,21 @@ public class NewObject extends Composite implements HasText/*
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		mapsPanel.clear();
-		eastPanel.clear();
-		RootLayoutPanel.get().add(new NewSimulation());
 		panel = new ViewObjects(this);
 		RootLayoutPanel.get().add(panel);
 	}
+	
 
 	@UiHandler("saveObject")
 	void onSaveObject(ClickEvent event) {
 		if (name.getValue().equals("Name")) {
 			Window.alert("Change Name!");
 		} else {
-			databaseService.saveObject(o, new SaveObjectCallback());
+			getObject();
+			o.effect.isNaN();
+			databaseService.saveObject(o, new SaveObjectCallback(o));
+			onBackClick(event);
 		}
 	}
+
 }

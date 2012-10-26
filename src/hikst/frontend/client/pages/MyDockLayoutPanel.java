@@ -6,9 +6,7 @@ import hikst.frontend.client.Graph;
 import hikst.frontend.client.Simulation;
 import hikst.frontend.client.callback.DescriptionsCallback;
 import hikst.frontend.client.callback.StatusCallback;
-import hikst.frontend.client.callback.SimulationRequestCallback;
 import hikst.frontend.shared.Description;
-import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 
 import java.util.Date;

@@ -16,30 +16,20 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ViewObjects extends HikstComposite {	
+public class ViewUsagePatterns extends HikstComposite {
 	
 	private HikstComposite panel;
-	
-	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
+	interface ViewUsagePatternsUiBinder extends UiBinder<Widget, ViewUsagePatterns> {
 	}
 
-	private static ViewObjectsUiBinder uiBinder = GWT
-	.create(ViewObjectsUiBinder.class);
+	private static ViewUsagePatternsUiBinder uiBinder = GWT
+	.create(ViewUsagePatternsUiBinder.class);
 	@UiField ScrollPanel centerPanel;
 	@UiField FlexTable flexyTable;
-	@UiField Button newObject;
+	@UiField Button newUsagePattern;
 	@UiField Button backButton;
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-
-	public ViewObjects(HikstComposite parent) {
-			initWidget(uiBinder.createAndBindUi(this));
-			//initWidget(uiBinder.createAndBindUi(this));
-	//		initWidget(panel);
-			//initButtons();
-			this.parent = parent;
-			initTable();
-		}
 
 	ClickHandler createObjectButtonClickHandler = new ClickHandler()
 	{
@@ -53,18 +43,20 @@ public class ViewObjects extends HikstComposite {
 	
 	Button createSimObjectButton = new Button("Create object",createObjectButtonClickHandler);
 	
+	public ViewUsagePatterns(HikstComposite parent) {
+		initWidget(uiBinder.createAndBindUi(this));
+		this.parent = parent;
+		initTable();
+	}
+	
 	private void initTable()
-	{
-		//flexyTable = new FlexTable();
-		
+	{		
 		centerPanel.remove(flexyTable);
 		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, parent));
 		centerPanel.add(flexyTable);
-		
-	//	centerPanel.add(flexyTable);
 	}
 	
-	@UiHandler("newObject")
+	@UiHandler("newUsagePattern")
 	void onButtonSave(ClickEvent event){
 		panel = new NewObject(this);
 		RootLayoutPanel.get().add(panel);
