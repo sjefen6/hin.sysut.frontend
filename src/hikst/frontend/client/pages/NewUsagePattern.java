@@ -47,8 +47,8 @@ public class NewUsagePattern extends HikstComposite implements HasText {
 	/**
 	 * Main constructor
 	 */
-	public NewUsagePattern(HikstComposite parent) {
-		this.parent = parent;
+	public NewUsagePattern(HikstComposite parent2) {
+		//this.parent = usagePattern;
 		u = new UsagePattern();
 		initWidget(uiBinder.createAndBindUi(this));
 		setToRange();

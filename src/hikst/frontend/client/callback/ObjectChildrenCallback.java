@@ -10,13 +10,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 
 public class ObjectChildrenCallback implements AsyncCallback<ArrayList<SimObject>>{
 
 	private FlexTable objectTable;
 	
 	public ObjectChildrenCallback(FlexTable objectTable){
-//		this.objectTable = objectTable 
+		this.objectTable = objectTable ;
 	}
 	
 	@Override

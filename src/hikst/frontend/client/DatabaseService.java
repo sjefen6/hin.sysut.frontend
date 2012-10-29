@@ -5,7 +5,6 @@ import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.HikstObjectTree;
 import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.Plot;
-import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.google.gwt.user.client.ui.TreeItem;
 
 @RemoteServiceRelativePath("database")
 public interface DatabaseService extends RemoteService
