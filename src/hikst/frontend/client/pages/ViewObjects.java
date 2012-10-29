@@ -16,9 +16,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ViewObjects extends HikstComposite {	
-	
-	private HikstComposite panel;
+public class ViewObjects extends HikstComposite {
 	
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
@@ -34,9 +32,6 @@ public class ViewObjects extends HikstComposite {
 
 	public ViewObjects(HikstComposite parent) {
 			initWidget(uiBinder.createAndBindUi(this));
-			//initWidget(uiBinder.createAndBindUi(this));
-	//		initWidget(panel);
-			//initButtons();
 			this.parent = parent;
 			initTable();
 		}
@@ -55,19 +50,14 @@ public class ViewObjects extends HikstComposite {
 	
 	private void initTable()
 	{
-		//flexyTable = new FlexTable();
-		
 		centerPanel.remove(flexyTable);
 		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, parent));
 		centerPanel.add(flexyTable);
-		
-	//	centerPanel.add(flexyTable);
 	}
 	
 	@UiHandler("newObject")
 	void onButtonSave(ClickEvent event){
-		panel = new NewObject(this);
-		RootLayoutPanel.get().add(panel);
+		RootLayoutPanel.get().add(new NewObject(this));
 	}
 	
 	@UiHandler("backButton")

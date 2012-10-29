@@ -66,8 +66,9 @@ public class NewSimulation extends HikstComposite {
 	
 	@UiHandler("addObject")
 	void onAddObjectClick(ClickEvent event) {
-		panel = new ViewObjects(this);
-		RootLayoutPanel.get().add(panel);
+		
+//		panel = new ViewObjects(this);
+		RootLayoutPanel.get().add(new ViewObjects(this));
 	}
 	
 	@UiHandler("back")
