@@ -17,13 +17,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ViewObjects extends HikstComposite {
-<<<<<<< HEAD
-	
-=======
 
-	private HikstComposite panel;
-
->>>>>>> alex/master
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
 
