@@ -47,6 +47,7 @@ public class ViewImpactFactors extends Composite {
 	@UiField
 	ListBox impactFactorType;
 	@UiField Label ImpLabel;
+	@UiField TextBox inputBox;
 
 
 
@@ -57,6 +58,7 @@ public class ViewImpactFactors extends Composite {
 	public ViewImpactFactors() {
 		initWidget(uiBinder.createAndBindUi(this));
 		initFactorListBox();
+		
 		centerPanel.add(impactFactorType);
 	}
 
@@ -66,21 +68,26 @@ public class ViewImpactFactors extends Composite {
 				impactFactorType, parent));
 
 		centerPanel.add(impactFactorType);
+		inputBox.getElement().setAttribute("placeHolder", "ImpactFactor % ");
 
 		impactFactorType.addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
 				// TODO Auto-generated method stub
+				
+				int itemSelected = impactFactorType.getSelectedIndex();
+				String itemStringSelected = impactFactorType.getValue(itemSelected);
+				
+				inputBox.setText(itemStringSelected);
 
 //				int selectedIndex = impactFactorType.getSelectedIndex();
 //				if (selectedIndex > 0)
 //					
-					
-					
 			}
 		});
 	}
+	
 
 	@UiHandler("tilbakeButton")
 	void onButtontilbake(ClickEvent event) {
@@ -90,7 +97,8 @@ public class ViewImpactFactors extends Composite {
 	
 	@UiHandler("addImpButton")
 	void onAddClick(ClickEvent event) {
-		//kode her
+		
+		inputBox.getText();
 		
 	}
 
