@@ -35,9 +35,9 @@ public class ViewObjects extends HikstComposite {
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
 
-	public ViewObjects(HikstComposite parent) {
+	public ViewObjects(HikstComposite hikstCompositeParent) {
 			initWidget(uiBinder.createAndBindUi(this));
-			this.parent = parent;
+			this.hikstCompositeParent = hikstCompositeParent;
 			initTable();
 		}
 
@@ -58,7 +58,7 @@ public class ViewObjects extends HikstComposite {
 
 		centerPanel.remove(flexyTable);
 		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable,
-				parent));
+				hikstCompositeParent));
 		centerPanel.add(flexyTable);
 
 		// centerPanel.add(flexyTable);
@@ -71,6 +71,6 @@ public class ViewObjects extends HikstComposite {
 
 	@UiHandler("backButton")
 	void onBackButtonClick(ClickEvent event) {
-		this.removeFromParent();
+		RootLayoutPanel.get().add(new NewSimulation(this));
 	}
 }

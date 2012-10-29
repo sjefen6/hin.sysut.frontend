@@ -34,8 +34,6 @@ public class NewObject extends HikstComposite {
 
 	ViewImpactFactors viewImpPanel;
 
-	private HikstComposite panel;
-
 	private HikstObject o = new HikstObject();
 
 	private static NewObjectUiBinder uiBinder = GWT
@@ -113,8 +111,8 @@ public class NewObject extends HikstComposite {
 	/**
 	 * Main constructor
 	 */
-	public NewObject(HikstComposite parent) {
-		this.parent = parent;
+	public NewObject(HikstComposite hikstCompositeParent) {
+		this.hikstCompositeParent = hikstCompositeParent;
 		o = new HikstObject();
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -125,9 +123,9 @@ public class NewObject extends HikstComposite {
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(HikstComposite parent, HikstObject childObject) {
-		this(parent.getParent());
-		o = ((NewObject) parent).getObject();
+	public NewObject(HikstComposite hikstCompositeParent, HikstObject childObject) {
+		this(hikstCompositeParent.getHikstCompositeParent());
+		o = ((NewObject) hikstCompositeParent).getObject();
 		o.sons.add(childObject.getID());
 		setValues();
 	}
@@ -139,9 +137,9 @@ public class NewObject extends HikstComposite {
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(HikstComposite parent, int usagePatternID) {
-		this(parent.getParent());
-		o = ((NewObject) parent).getObject();
+	public NewObject(HikstComposite hikstCompositeParent, int usagePatternID) {
+		this(hikstCompositeParent.getHikstCompositeParent());
+		o = ((NewObject) hikstCompositeParent).getObject();
 		o.usage_pattern_ID = usagePatternID;
 		setValues();
 	}
@@ -262,20 +260,17 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("addChildObject")
 	void onAddObjectClick(ClickEvent event) {
-		panel = new ViewObjects(this);
-		RootLayoutPanel.get().add(panel);
+		RootLayoutPanel.get().add(new ViewObjects(this));
 	}
 
 	@UiHandler("addImpactButton")
 	void onAddImpactClick(ClickEvent event) {
-		viewImpPanel = new ViewImpactFactors();
-		RootLayoutPanel.get().add(viewImpPanel);
+		RootLayoutPanel.get().add(new ViewImpactFactors());
 	}
 
 	@UiHandler("addUsagePattern")
 	void onNewUsagePatternClick(ClickEvent event) {
-		panel = new NewUsagePattern(this);
-		RootLayoutPanel.get().add(panel);
+		RootLayoutPanel.get().add(new NewUsagePattern(this));
 	}
 
 	@UiHandler("latitude")
@@ -340,8 +335,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		panel = new ViewObjects(this);
-		RootLayoutPanel.get().add(panel);
+		RootLayoutPanel.get().add(new ViewObjects(this));
 	}
 
 	@UiHandler("saveObject")

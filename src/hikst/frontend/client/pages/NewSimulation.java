@@ -11,7 +11,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
@@ -20,9 +19,9 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class NewSimulation extends HikstComposite {
-
-	Composite panel;
+	
 	MainPage panelBack;
+	private HikstObject simObject;
 	private static NewSimulationUiBinder uiBinder = GWT
 			.create(NewSimulationUiBinder.class);
 	@UiField
@@ -53,22 +52,27 @@ public class NewSimulation extends HikstComposite {
 	public NewSimulation() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
-	private void updateTree(int id) {
-
-		databaseService.loadObject(id, treeCallback);
+	
+	public NewSimulation(HikstComposite hikstCompositeParent) {
+		fromDate.setValue(((NewSimulation) hikstCompositeParent).fromDate.getValue());
+		toDate.setValue(((NewSimulation) hikstCompositeParent).toDate.getValue());
+		intervall.setValue(((NewSimulation) hikstCompositeParent).intervall.getValue());
 	}
 
-	public NewSimulation(HikstComposite parent, HikstObject simObject) {
-		this();
-		fromDate.setValue(((NewSimulation) parent).fromDate.getValue());
-		toDate.setValue(((NewSimulation) parent).toDate.getValue());
-		intervall.setValue(((NewSimulation) parent).intervall.getValue());
+	public NewSimulation(HikstComposite hikstCompositeParent, HikstObject simObject) {
+		this(hikstCompositeParent);
+		
+		this.simObject = simObject;
 
 		treeCallback = new TreeCallback(this);
 
 		updateTree(simObject.getID());
 
+	}
+	
+	private void updateTree(int id) {
+
+		databaseService.loadObject(id, treeCallback);
 	}
 
 	@UiHandler("addObject")

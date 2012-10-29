@@ -17,11 +17,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 
-public class NewUsagePattern extends HikstComposite implements HasText {
+public class NewUsagePattern extends HikstComposite {
 
-	ViewObjects panel;
-
-	Composite parent;
 	private UsagePattern u = new UsagePattern();
 
 	interface NewUsagePatternUiBinder extends UiBinder<Widget, NewUsagePattern> {
@@ -41,14 +38,14 @@ public class NewUsagePattern extends HikstComposite implements HasText {
 
 	MapWidget map;
 
-	private DatabaseServiceAsync databaseService = GWT
-			.create(DatabaseService.class);
+//	private DatabaseServiceAsync databaseService = GWT
+//			.create(DatabaseService.class);
 
 	/**
 	 * Main constructor
 	 */
-	public NewUsagePattern(HikstComposite parent2) {
-		//this.parent = usagePattern;
+	public NewUsagePattern(HikstComposite hikstCompositeParent) {
+		this.hikstCompositeParent = hikstCompositeParent;
 		u = new UsagePattern();
 		initWidget(uiBinder.createAndBindUi(this));
 		setToRange();
@@ -92,18 +89,6 @@ public class NewUsagePattern extends HikstComposite implements HasText {
 //		} else {
 //			effect.setValue(o.effect.toString());
 //		}
-	}
-
-	@Override
-	public String getText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-
 	}
 
 //	@UiHandler("showMap")
