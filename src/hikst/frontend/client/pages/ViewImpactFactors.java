@@ -17,13 +17,12 @@ import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.ImpactFactorsCallback;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.DoubleBox;
 
-public class ViewImpactFactors extends Composite {
+public class ViewImpactFactors extends HikstComposite {
 
-	Composite panel;
+	HikstComposite panel;
 	NewObject NewObpanel;
 	public double impFactor;
 

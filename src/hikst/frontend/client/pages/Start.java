@@ -7,11 +7,10 @@ import hikst.frontend.client.callback.SettingsLoadableCallback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class Start extends Composite implements HasText {
+public class Start extends Composite {
 
 	private static StartUiBinder uiBinder = GWT.create(StartUiBinder.class);
 	private DatabaseServiceAsync databaseService = GWT
@@ -36,12 +35,5 @@ public class Start extends Composite implements HasText {
 
 	public Start(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-
-	public void setText(String text) {
-	}
-
-	public String getText() {
-		return null;
 	}
 }

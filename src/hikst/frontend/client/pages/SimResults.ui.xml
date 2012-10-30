@@ -18,12 +18,12 @@
             background-color: grey;
         }       
     </ui:style>
-     <g:SplitLayoutPanel>
-       <g:north size='60' unit='EM'>
+     <g:DockLayoutPanel unit='EM'>
+       <g:north size='60'>
          <g:FlowPanel styleName="{style.northPanel}">
          </g:FlowPanel>
        </g:north>
-       <g:west size='200' unit='EM'>
+       <g:west size='200'>
          <g:FlowPanel styleName="{style.westPanel}">
          </g:FlowPanel>
        </g:west>
@@ -31,13 +31,13 @@
          <g:FlowPanel styleName="{style.centerPanel}">
          </g:FlowPanel>
        </g:center>
-       <g:east size='200' unit='EM'>
+       <g:east size='200'>
          <g:FlowPanel styleName="{style.eastPanel}">
          </g:FlowPanel>
        </g:east>     
-        <g:south size="60" unit='EM'>
+        <g:south size="60">
          <g:FlowPanel styleName="{style.southPanel}">
          </g:FlowPanel>
         </g:south>       
-     </g:SplitLayoutPanel>
+     </g:DockLayoutPanel>
 </ui:UiBinder> 

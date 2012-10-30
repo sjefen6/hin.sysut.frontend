@@ -1,13 +1,16 @@
 package hikst.frontend.client.callback;
 
-import hikst.frontend.client.pages.Login;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+
+import hikst.frontend.client.pages.Login;
+
 
 public class LoginCallback implements AsyncCallback<Boolean> 
 {
 	Login login;
+	
 
 	public LoginCallback(Login login)
 	{
@@ -17,7 +20,9 @@ public class LoginCallback implements AsyncCallback<Boolean>
 	@Override
 	public void onFailure(Throwable caught) {
 
-		Window.alert("status code 403");
+		RootLayoutPanel.get().add(new Login());
+		login = new Login();
+		Window.alert("status code 403"+ "Something wrong happend on the serverside, try again later");
 
 	}
 
@@ -27,12 +32,15 @@ public class LoginCallback implements AsyncCallback<Boolean>
 
 		if(access_granted)
 		{
-			Window.alert("Access granted");
+			Window.alert("Welkommen hikst");
+			System.out.println("LoginCallback / access granted");
 			login.GoToMainPage();
 		}
 		else
 		{
-			Window.alert("Access not granted");
+			RootLayoutPanel.get().add(new Login());
+			login = new Login();
+			Window.alert("Feil brukernavn eller passord");
 		}
 	}
 
