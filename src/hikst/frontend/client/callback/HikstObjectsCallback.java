@@ -3,6 +3,7 @@ package hikst.frontend.client.callback;
 import hikst.frontend.client.pages.HikstComposite;
 import hikst.frontend.client.pages.NewObject;
 import hikst.frontend.client.pages.NewSimulation;
+import hikst.frontend.client.pages.ViewObjects;
 import hikst.frontend.shared.HikstObject;
 import java.util.ArrayList;
 
@@ -21,9 +22,9 @@ public class HikstObjectsCallback implements
 	private FlexTable objectTable;
 //	private DatabaseServiceAsync databaseService = GWT
 //			.create(DatabaseService.class);
-	private HikstComposite hikstCompositeParent;
+	private ViewObjects hikstCompositeParent;
 
-	public HikstObjectsCallback(FlexTable objectTable, HikstComposite hikstCompositeParent) {
+	public HikstObjectsCallback(FlexTable objectTable, ViewObjects hikstCompositeParent) {
 		this.objectTable = objectTable;
 		this.hikstCompositeParent = hikstCompositeParent;
 	}
@@ -60,13 +61,12 @@ public class HikstObjectsCallback implements
 						@Override
 						public void onClick(ClickEvent event) {
 
-							if (hikstCompositeParent instanceof NewObject) {
-
+							if (hikstCompositeParent.getHikstCompositeParent() instanceof NewObject) {
 								RootLayoutPanel.get().add(
-										new NewObject(hikstCompositeParent, simObject));
-							} else if (hikstCompositeParent instanceof NewSimulation) {
+										new NewObject(hikstCompositeParent.getHikstCompositeParent(), simObject));
+							} else if (hikstCompositeParent.getHikstCompositeParent() instanceof NewSimulation) {
 								RootLayoutPanel.get().add(
-										new NewSimulation(hikstCompositeParent, simObject));
+										new NewSimulation(hikstCompositeParent.getHikstCompositeParent(), simObject));
 							}
 
 						}

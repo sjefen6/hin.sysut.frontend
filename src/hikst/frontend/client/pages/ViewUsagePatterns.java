@@ -46,15 +46,15 @@ public class ViewUsagePatterns extends HikstComposite {
 	public ViewUsagePatterns(HikstComposite hikstCompositeParent) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.hikstCompositeParent = hikstCompositeParent;
-		initTable();
+//		initTable();
 	}
 	
-	private void initTable()
-	{		
-		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, hikstCompositeParent));
-		centerPanel.add(flexyTable);
-	}
+//	private void initTable()
+//	{		
+//		centerPanel.remove(flexyTable);
+//		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, hikstCompositeParent));
+//		centerPanel.add(flexyTable);
+//	}
 	
 	@UiHandler("newUsagePattern")
 	void onButtonSave(ClickEvent event){

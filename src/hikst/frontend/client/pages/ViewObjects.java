@@ -58,7 +58,7 @@ public class ViewObjects extends HikstComposite {
 
 		centerPanel.remove(flexyTable);
 		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable,
-				hikstCompositeParent));
+				this));
 		centerPanel.add(flexyTable);
 
 		// centerPanel.add(flexyTable);

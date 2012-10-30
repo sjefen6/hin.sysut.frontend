@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 
 public class NewSimulation extends HikstComposite {
 	
@@ -54,6 +56,13 @@ public class NewSimulation extends HikstComposite {
 	}
 	
 	public NewSimulation(HikstComposite hikstCompositeParent) {
+		this();
+//		if(((NewSimulation) hikstCompositeParent).fromDate == null)
+//		Window.alert("date is null");
+//		
+//		if(((NewSimulation) hikstCompositeParent).fromDate.getValue() == null)
+//			Window.alert("date value is null");
+		
 		fromDate.setValue(((NewSimulation) hikstCompositeParent).fromDate.getValue());
 		toDate.setValue(((NewSimulation) hikstCompositeParent).toDate.getValue());
 		intervall.setValue(((NewSimulation) hikstCompositeParent).intervall.getValue());
@@ -93,5 +102,4 @@ public class NewSimulation extends HikstComposite {
 		centerPanel.add(SplineGraf.createChart());
 		System.out.println("Should show spline!!!");
 	}
-
 }
