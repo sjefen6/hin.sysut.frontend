@@ -40,7 +40,7 @@ public interface DatabaseService extends RemoteService
 
 	//boolean updateObject(int id,SimulatorObject object);
 	boolean deleteObject(int object_id);
-	SimulationTicket requestSimulation(SimulationRequest request);
+	Integer requestSimulation(SimulationRequest request);
 	boolean deleteSimulations(int id);
 	int getSimulationStatus(SimulationTicket ticket);
 	HikstObjectTree loadObject(int id);

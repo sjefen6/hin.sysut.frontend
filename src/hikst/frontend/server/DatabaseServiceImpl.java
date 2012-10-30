@@ -411,7 +411,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public SimulationTicket requestSimulation(SimulationRequest request) {
+	public Integer requestSimulation(SimulationRequest request) {
 
 		try {
 			Connection connection = Settings.getDBC();
@@ -432,12 +432,14 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			} else {
 				description_id = Integer.MAX_VALUE;
 			}
-
-			String anotherQuery = "INSERT INTO Simulator_Queue_Objects(Simulator_ID,Status_ID,Simulation_Descriptions_ID) VALUES(11,?,?) RETURNING ID";
+			
+			String anotherQuery = "INSERT INTO Simulator_Queue_Objects(Simulator_ID,Status_ID,Simulation_Descriptions_ID) VALUES(?,?,?) RETURNING ID";
 			PreparedStatement anotherStatement = connection
 					.prepareStatement(anotherQuery);
-			anotherStatement.setInt(1, 2);
-			anotherStatement.setInt(2, description_id);
+			anotherStatement.setNull(1, java.sql.Types.INTEGER);
+			//5 er id`en til "Pending" i Status-tabellen
+			anotherStatement.setInt(2, 5);
+			anotherStatement.setInt(3, description_id);
 			ResultSet anotherSet = anotherStatement.executeQuery();
 
 			int queue_id = 0;
@@ -448,7 +450,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 				queue_id = Integer.MAX_VALUE;
 			}
 
-			return new SimulationTicket(queue_id, true, description_id);
+			return queue_id;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			return null;
@@ -680,21 +682,95 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 						+ ", Target_Temperature=?, Base_Area=?, Base_Heat=?,Heat_Loss_Rate=? where ID=?";
 				PreparedStatement preparedStatement = Settings.getDBC()
 						.prepareStatement(query);
+				
 				preparedStatement.setString(1, simObject.name);
-				preparedStatement.setDouble(2, simObject.effect);
-				preparedStatement.setDouble(3, simObject.voltage);
-				preparedStatement.setDouble(4, simObject.current);
-				preparedStatement.setInt(5, simObject.usage_pattern_ID);
-				preparedStatement.setDouble(6, simObject.latitude);
-				preparedStatement.setDouble(7, simObject.longitude);
-				preparedStatement.setDouble(8, simObject.self_temperature);
-				preparedStatement.setDouble(9, simObject.target_temperature);
-				preparedStatement.setDouble(9, simObject.base_area);
-				preparedStatement.setDouble(10, simObject.base_height);
-				preparedStatement.setDouble(11, simObject.heat_loss_rate);
-				preparedStatement.setInt(12, simObject.getID());
-				preparedStatement.executeUpdate();
+				
+				if(simObject.effect != null){
+					preparedStatement.setDouble(2, simObject.effect);
+					}
+					else{
+						preparedStatement.setNull(2, java.sql.Types.DOUBLE);
+					}
+					
+					if(simObject.voltage != null){
+						preparedStatement.setDouble(3, simObject.voltage);
+					}
+					else{
+						preparedStatement.setNull(3, java.sql.Types.DOUBLE);
+					}
+					
+					if(simObject.current != null){
+						preparedStatement.setDouble(4, simObject.current);
+					}
+					else{
+						preparedStatement.setNull(4, java.sql.Types.DOUBLE);
+					}
+					
+					if(simObject.usage_pattern_ID != null){
+						preparedStatement.setDouble(5, simObject.usage_pattern_ID);
+					}
+					else{
+						preparedStatement.setNull(5, java.sql.Types.INTEGER);
+					}
+					
+					if(simObject.latitude != null){
+						preparedStatement.setDouble(6, simObject.latitude);
+					}
+					else{
+						preparedStatement.setNull(6, java.sql.Types.DOUBLE);
+					}
+					
+					if(simObject.longitude != null){
+						preparedStatement.setDouble(7, simObject.longitude);
+					}
+					else{
+						preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+					}
+					
+					if(simObject.self_temperature != null){
+						preparedStatement.setDouble(8, simObject.self_temperature);
+					}
+					else{
+						preparedStatement.setNull(8, java.sql.Types.DOUBLE);
+					}
 
+					if(simObject.target_temperature != null){
+						preparedStatement.setDouble(9, simObject.target_temperature);
+					}
+					else{
+						preparedStatement.setNull(9, java.sql.Types.DOUBLE);
+					}
+					
+					if(simObject.base_area != null){
+						preparedStatement.setDouble(10, simObject.base_area);
+					}
+					else{
+						preparedStatement.setNull(10, java.sql.Types.DOUBLE);
+					}
+					
+					if(simObject.base_height != null){
+						preparedStatement.setDouble(11, simObject.base_height);
+					}
+					else{
+						preparedStatement.setNull(11, java.sql.Types.DOUBLE);
+					}
+
+					if(simObject.heat_loss_rate != null){
+						preparedStatement.setDouble(12, simObject.heat_loss_rate);
+					}
+					else{
+						preparedStatement.setNull(12, java.sql.Types.DOUBLE);
+					}
+				
+				preparedStatement.setInt(13, simObject.getID());
+
+				preparedStatement.executeUpdate();
+				
+				for(int childIndex = 0; childIndex < simObject.sons.size(); childIndex++){
+					
+					saveChild(simObject.getID(),simObject.sons.get(childIndex));
+					
+				}
 				// returning the existing object-id
 				return simObject.getID();
 			} else {
@@ -787,7 +863,15 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 				if (set.next()) {
 
 					// returning the new id of the object
-					return set.getInt(1);
+					int simObjectId = set.getInt(1);
+					
+					for(int childIndex = 0; childIndex < simObject.sons.size(); childIndex++){
+						
+						saveChild(simObjectId,simObject.sons.get(childIndex));
+						
+					}
+					
+					return simObjectId;
 				}
 			}
 
@@ -799,5 +883,22 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		// returning -1 to indicate that the server couldnt save the object,
 		// something must then be wrong with the code
 		return -1;
+	}
+	
+	public void saveChild(int fatherID,int childID)
+	{
+		try
+		{
+			String query = "INSERT INTO Part_Objects(father_id,son_id) VALUES(?,?);";
+			Connection connection = Settings.getDBC(); 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1,fatherID);
+			preparedStatement.setInt(2, childID);
+			preparedStatement.executeUpdate();
+		}
+		catch(SQLException ex)
+		{
+			
+		}
 	}
 }

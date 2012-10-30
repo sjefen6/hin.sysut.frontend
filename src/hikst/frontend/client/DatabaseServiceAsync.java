@@ -43,7 +43,7 @@ public interface DatabaseServiceAsync {
 	void exists(String username, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
 	void requestSimulation(SimulationRequest request,
-			AsyncCallback<SimulationTicket> callback);
+			AsyncCallback<Integer> callback);
 	void deleteObject(int object_id, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
 	void deleteSimulations(int id, AsyncCallback<Boolean> callback)
