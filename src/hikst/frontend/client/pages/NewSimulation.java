@@ -3,8 +3,11 @@ package hikst.frontend.client.pages;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.SplineGraf;
+import hikst.frontend.client.callback.SimulationRequestCallback;
 import hikst.frontend.client.callback.TreeCallback;
 import hikst.frontend.shared.HikstObject;
+import hikst.frontend.shared.SimulationRequest;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -44,6 +47,7 @@ public class NewSimulation extends HikstComposite {
 	FlowPanel centerPanel;
 	public @UiField
 	Tree tree;
+	@UiField Button button;
 	private TreeCallback treeCallback;
 
 	DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
@@ -101,5 +105,9 @@ public class NewSimulation extends HikstComposite {
 		centerPanel.clear();
 		centerPanel.add(SplineGraf.createChart());
 		System.out.println("Should show spline!!!");
+	}
+	@UiHandler("button")
+	void onButtonClick(ClickEvent event) {
+		databaseService.requestSimulation(new SimulationRequest(simObject.getID(),Long.parseLong(intervall.getValue()),fromDate.getValue().getTime(),toDate.getValue().getTime()), new SimulationRequestCallback());
 	}
 }
