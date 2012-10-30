@@ -1,6 +1,9 @@
 package hikst.frontend.client;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+import java_cup.internal_error;
 
 import org.moxieapps.gwt.highcharts.client.Axis;
 import org.moxieapps.gwt.highcharts.client.Chart;
@@ -21,6 +24,7 @@ public class SplineGraph {
 
 	public static Chart createChart() {  
 		  
+		
         final Chart chart = new Chart()  
             .setType(Series.Type.SPLINE)  
             .setMarginRight(10)  
@@ -65,20 +69,36 @@ public class SplineGraph {
             .setName("Random data")  
         );  
   
+        final ArrayList<Integer> arr = new ArrayList<Integer>();
+        Integer r;
+        for (r = 1; r<20; r++){
+        	arr.add(r);
+        	series.addPoint(r,arr.size());
+        }
+        
+      
+        
         // Generate an array of random data  
         long time = new Date().getTime();  
         for(int i = -19; i <= 0; i++) {  
-            series.addPoint(time + i * 1000, com.google.gwt.user.client.Random.nextDouble());  
+            //series.addPoint(time + i * 1000, arr.iterator().next());  
         }  
-  
-        Timer tempTimer = new Timer() {  
+      
+       //System.out.println(arr.contains(r));
+    System.out.println(arr.toString());
+       
+       Timer tempTimer = new Timer() {  
+    
             @Override  
             public void run() {  
                 series.addPoint(  
                     new Date().getTime(),  
-                    com.google.gwt.user.client.Random.nextDouble(),  
+                    
+                    arr.iterator().next()* com.google.gwt.user.client.Random.nextDouble(),  
+                    
                     true, true, true  
                 );  
+                
             }  
         };  
         tempTimer.scheduleRepeating(1000);  

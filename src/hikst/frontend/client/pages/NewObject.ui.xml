@@ -15,7 +15,7 @@
             background-color: grey;
         }
         .centerPanel {
-            background-color: white;
+            background-color: grey;
         }       
     </ui:style>
      <g:DockLayoutPanel unit='EM' width="1024" height="768">
@@ -61,10 +61,11 @@
          <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
          </g:FlowPanel>
        </g:center>
-       <g:east size='13.5'>
+       <g:east size='18.3'>
          <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
          	<g:Button width="150px" ui:field="addChildObject">Add Child Object</g:Button>
          	<g:Button width="150px" ui:field="addUsagePattern">Add Usage Pattern</g:Button>
+         	<g:Button width="150px" text="Add ImpactFactor" height="30px" ui:field="addImpactButton"/>
          	<g:Button width="149px" text="Vis Kart" ui:field="showMap"/>
          	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="328px"/>
          </g:FlowPanel>
