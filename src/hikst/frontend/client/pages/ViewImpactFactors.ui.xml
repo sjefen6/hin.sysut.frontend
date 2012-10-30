@@ -44,7 +44,7 @@
 			<g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel" >
 				<g:Label text="Du har valgt:" ui:field="ImpLabel"/>
 				<g:ListBox width="264px" height="50px" ui:field="impactFactorType"/>
-				<g:TextBox ui:field="inputBox"/>
+				<g:DoubleBox ui:field="inputBox"/>
 			</g:FlowPanel>
 		</g:center>
 	</g:DockLayoutPanel>
