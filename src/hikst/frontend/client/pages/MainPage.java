@@ -1,7 +1,9 @@
 package hikst.frontend.client.pages;
 
-import java.util.Date;
+import hikst.frontend.client.MyService;
+import hikst.frontend.client.MyServiceAsync;
 
+import java.util.Date;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -10,10 +12,17 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.InsertPanel.ForIsWidget;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlowPanel;
 
@@ -27,6 +36,7 @@ public class MainPage extends Composite implements HasText {
 
 	NewSimulation panel;
 	MyDockLayoutPanel oldPanel;
+	EmailAdmin mailPanel;
 	SimResults simPanel;
 	private static MainPageUiBinder uiBinder = GWT
 			.create(MainPageUiBinder.class);
@@ -42,6 +52,7 @@ public class MainPage extends Composite implements HasText {
 
 	public MainPage() {
 		initWidget(uiBinder.createAndBindUi(this));
+
 	}
 
 	@Override
@@ -69,76 +80,42 @@ public class MainPage extends Composite implements HasText {
 		RootLayoutPanel.get().add(oldPanel);	
 	}
 
-	public Chart createChart() {  
-		  
-        final Chart chart = new Chart()  
-            .setType(Series.Type.SPLINE)  
-            .setMarginRight(10)  
-            .setChartTitleText("Live random data")  
-            .setBarPlotOptions(new BarPlotOptions()  
-                .setDataLabels(new DataLabels()  
-                    .setEnabled(true)  
-                )  
-            )  
-            .setLegend(new Legend()  
-                .setEnabled(false)  
-            )  
-            .setCredits(new Credits()  
-                .setEnabled(false)  
-            )  
-            .setToolTip(new ToolTip()  
-                .setFormatter(new ToolTipFormatter() {  
-                    public String format(ToolTipData toolTipData) {  
-                        return "<b>" + toolTipData.getSeriesName() + "</b><br/>" +  
-                            DateTimeFormat.getFormat("yyyy-MM-dd HH:mm:ss")  
-                                .format(new Date(toolTipData.getXAsLong())) + "<br/>" +  
-                            NumberFormat.getFormat("0.00").format(toolTipData.getYAsDouble());  
-                    }  
-                })  
-            );  
-  
-        chart.getXAxis()  
-            .setType(Axis.Type.DATE_TIME)  
-            .setTickPixelInterval(150);  
-  
-        chart.getYAxis()  
-            .setAxisTitleText("Value")  
-            .setPlotLines(  
-                chart.getYAxis().createPlotLine()  
-                    .setValue(0)  
-                    .setWidth(1)  
-                    .setColor("#808080")  
-            );  
-  
-        final Series series = chart.createSeries();  
-        chart.addSeries(series  
-            .setName("Random data")  
-        );  
-  
-    //     Generate an array of random data  
-        long time = new Date().getTime();  
-        for(int i = -19; i <= 0; i++) {  
-            series.addPoint(time + i * 1000, com.google.gwt.user.client.Random.nextDouble());  
-        }  
-  
-        Timer tempTimer = new Timer() {  
-            @Override  
-            public void run() {  
-                series.addPoint(  
-                    new Date().getTime(),  
-                    com.google.gwt.user.client.Random.nextDouble(),  
-                    true, true, true  
-                );  
-            }  
-        };  
-        tempTimer.scheduleRepeating(1000);  
-  
-        return chart;  
-    }
+	
 	
 	@UiHandler("simResoult")
 	void onSimResoultClick(ClickEvent event){
 		simPanel = new SimResults();
 		RootLayoutPanel.get().add(simPanel);
 	}
+	@UiHandler("emailAdmin")
+	void onEmailAdminClick(ClickEvent event) {
+		
+		//MailCallback mail = new 
+		//MyServiceAsync svc = (MyServiceAsync) GWT.create(MyService.class);
+        //ServiceDefTarget endpoint = (ServiceDefTarget) svc;
+        //endpoint.setServiceEntryPoint("/myService");
+       // svc.myMethod("Do Stuff", callback);
+		mailPanel = new EmailAdmin();
+		RootLayoutPanel.get().add(mailPanel);
+	}
+	
+
+	AsyncCallback callback = new AsyncCallback()
+	{
+	    public void onFailure(Throwable caught)
+	    {
+	        Window.alert("fail!" + caught.getMessage());
+
+	    }
+	
+	    public void onSuccess(Object result)
+	    {
+	        Window.alert("success!");
+	        mailPanel = new EmailAdmin();
+			RootLayoutPanel.get().add(mailPanel);
+	    }
+	    
+	    
+	};
+	
 }

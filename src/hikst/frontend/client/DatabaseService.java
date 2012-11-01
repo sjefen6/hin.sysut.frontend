@@ -37,6 +37,7 @@ public interface DatabaseService extends RemoteService
 	boolean register(RegisterRequest request);
 	boolean exists(String username);
 	boolean changeAccessLevel(String username,String access_level);
+	
 
 	//boolean updateObject(int id,SimulatorObject object);
 	boolean deleteObject(int object_id);

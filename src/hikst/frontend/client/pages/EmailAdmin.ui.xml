@@ -1,0 +1,47 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>       
+        .eastPanel {
+            background-color: grey;
+        }
+        .westPanel {
+            background-color: grey;
+        }
+        .northPanel {
+            background-color: grey;
+        }
+        .southPanel {
+            background-color: grey;
+        }
+        .centerPanel {
+            background-color: grey;
+        }      
+    </ui:style>
+     <g:DockLayoutPanel unit='EM'>
+       <g:north size='5'>
+         <g:FlowPanel styleName="{style.northPanel}">
+
+         </g:FlowPanel>
+       </g:north>
+       <g:west size='12.0'>
+         <g:FlowPanel styleName="{style.westPanel}"/>
+       </g:west>
+       <g:center>
+         <g:FlowPanel styleName="{style.centerPanel}">
+         	<g:TextBox ui:field="mailFrom" text="From"/>
+         	<g:TextBox ui:field="mailFromPass" text="Password"/>
+         	<g:TextBox text="To" ui:field="mailTo"/>
+         	<g:TextBox text="Subject" ui:field="mailSub"/>
+         	<g:TextBox text="Message" ui:field="mailMes"/>
+         	<g:Button width="172px" ui:field="mailSend" text="SendMail"/>
+         </g:FlowPanel>
+       </g:center>
+       <g:east size='14.6'>
+         <g:FlowPanel styleName="{style.eastPanel}"/>
+       </g:east>    
+        <g:south size="3.5">
+         <g:FlowPanel styleName="{style.southPanel}"/>
+        </g:south>      
+     </g:DockLayoutPanel>
+</ui:UiBinder> 
