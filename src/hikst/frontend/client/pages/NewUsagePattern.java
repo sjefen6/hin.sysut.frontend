@@ -13,15 +13,19 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class NewUsagePattern extends HikstComposite implements HasText {
 
 	ViewObjects panel;
 
 	Composite parent;
+	private EmailAdmin mailPanel;
 	private UsagePattern u = new UsagePattern();
 
 	interface NewUsagePatternUiBinder extends UiBinder<Widget, NewUsagePattern> {
@@ -133,4 +137,9 @@ public class NewUsagePattern extends HikstComposite implements HasText {
 //			databaseService.saveObject(o, new SaveObjectCallback());
 //		}
 //	}
+	@UiHandler("emailAdmin")
+	void onEmailAdminClick(ClickEvent event) {
+		mailPanel = new EmailAdmin();
+		RootLayoutPanel.get().add(mailPanel);
+	}
 }

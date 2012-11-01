@@ -21,6 +21,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -36,7 +37,7 @@ public class EmailAdmin extends Composite implements HasText {
 	public EmailAdmin() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
+	MainPage mainPage;
 	//private static final Logger log = Logger.getLogger(SendMail.class.getName());
 
 	@UiField TextBox mailFrom;
@@ -94,14 +95,14 @@ public class EmailAdmin extends Composite implements HasText {
 	{
 	    public void onFailure(Throwable caught)
 	    {
-	        Window.alert("fail!" + caught.getMessage());
-
+	        Window.alert("fail! " + caught.getMessage());
 	    }
 	
 	    public void onSuccess(Object result)
 	    {
 	        Window.alert("success!");
-	       // sendMail("eurokro@gmail.com", "eurokro@gmail.com", "eurokro@gmail.com", "eurokro@gmail.com");
+	        mainPage = new MainPage();
+			RootLayoutPanel.get().add(mainPage);
 	    }
 	    
 	    

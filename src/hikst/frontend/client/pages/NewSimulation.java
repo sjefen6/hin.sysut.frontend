@@ -23,6 +23,7 @@ public class NewSimulation extends HikstComposite {
 
 	Composite panel;
 	MainPage panelBack;
+	private EmailAdmin mailPanel;
 	private static NewSimulationUiBinder uiBinder = GWT
 			.create(NewSimulationUiBinder.class);
 	@UiField
@@ -90,4 +91,9 @@ public class NewSimulation extends HikstComposite {
 		System.out.println("Should show spline!!!");
 	}
 
+	@UiHandler("emailAdmin")
+	void onEmailAdminClick(ClickEvent event) {
+		mailPanel = new EmailAdmin();
+		RootLayoutPanel.get().add(mailPanel);
+	}
 }

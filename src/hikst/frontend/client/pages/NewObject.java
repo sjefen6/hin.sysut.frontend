@@ -35,7 +35,7 @@ public class NewObject extends HikstComposite {
 	ViewImpactFactors viewImpPanel;
 
 	private HikstComposite panel;
-
+	private EmailAdmin mailPanel;
 	private HikstObject o = new HikstObject();
 
 	private static NewObjectUiBinder uiBinder = GWT
@@ -354,5 +354,10 @@ public class NewObject extends HikstComposite {
 			databaseService.saveObject(o, new SaveObjectCallback(o));
 			onBackClick(event);
 		}
+	}
+	@UiHandler("emailAdmin")
+	void onEmailAdminClick(ClickEvent event) {
+		mailPanel = new EmailAdmin();
+		RootLayoutPanel.get().add(mailPanel);
 	}
 }

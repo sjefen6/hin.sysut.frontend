@@ -100,22 +100,6 @@ public class MainPage extends Composite implements HasText {
 	}
 	
 
-	AsyncCallback callback = new AsyncCallback()
-	{
-	    public void onFailure(Throwable caught)
-	    {
-	        Window.alert("fail!" + caught.getMessage());
-
-	    }
 	
-	    public void onSuccess(Object result)
-	    {
-	        Window.alert("success!");
-	        mailPanel = new EmailAdmin();
-			RootLayoutPanel.get().add(mailPanel);
-	    }
-	    
-	    
-	};
 	
 }
