@@ -4,8 +4,6 @@ import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
-import hikst.frontend.shared.UsagePattern;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maps.client.MapWidget;
@@ -23,7 +21,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -110,6 +107,10 @@ public class NewObject extends HikstComposite {
 
 	/**
 	 * Main constructor
+	 * 
+	 * @hikstCompositeParent - this when going upwords,
+	 *                       hikstCompositeParent.getHikstCompositeParent() when
+	 *                       going back
 	 */
 	public NewObject(HikstComposite hikstCompositeParent) {
 		this.hikstCompositeParent = hikstCompositeParent;
@@ -123,7 +124,8 @@ public class NewObject extends HikstComposite {
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(HikstComposite hikstCompositeParent, HikstObject childObject) {
+	public NewObject(HikstComposite hikstCompositeParent,
+			HikstObject childObject) {
 		this(hikstCompositeParent.getHikstCompositeParent());
 		o = ((NewObject) hikstCompositeParent).getObject();
 		o.sons.add(childObject.getID());

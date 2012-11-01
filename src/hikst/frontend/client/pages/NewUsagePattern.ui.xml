@@ -29,8 +29,6 @@
        </g:north>
        <g:west size='13.5'>
          <g:FlowPanel styleName="{style.westPanel}">
-         	<g:Label/>
-         	<g:Label text="Create New Object" horizontalAlignment="ALIGN_CENTER"/>
          	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
          	<g:TextBox text="" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
@@ -39,7 +37,7 @@
        </g:west>
        <g:center size='25.5'>
          <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
-         	<g:TextBox ui:field="c00"/>
+         	<g:FlexTable ui:field="flexyTable" width="498px" height="179px"/>
          </g:FlowPanel>
        </g:center>
        <g:east size='13.5'>
