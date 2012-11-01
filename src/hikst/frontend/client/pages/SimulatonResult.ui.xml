@@ -1,0 +1,46 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.eastPanel {
+			background-color: grey;
+		}
+		
+		.westPanel {
+			background-color: grey;
+		}
+		
+		.northPanel {
+			background-color: grey;
+		}
+		
+		.southPanel {
+			background-color: grey;
+		}
+		
+		.centerPanel {
+			background-color: grey;
+		}
+	</ui:style>
+<g:DockLayoutPanel unit='EM' width="1024" height="768">
+		<g:north size='3.5'>
+			<g:FlowPanel styleName="{style.northPanel}">
+				<g:Button ui:field="backButton" text="Tilbake" width="97px"/>
+			</g:FlowPanel>
+		</g:north>
+		<g:west size='6.5'>
+			<g:FlowPanel styleName="{style.westPanel}" />
+		</g:west>
+		<g:south size="5.1">
+			<g:FlowPanel styleName="{style.southPanel}">
+			</g:FlowPanel>
+		</g:south>
+		<g:east size='6.9'>
+			<g:FlowPanel styleName="{style.eastPanel}" />
+		</g:east>
+		<g:center>
+			<g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel" >
+			</g:FlowPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

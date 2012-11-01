@@ -32,7 +32,7 @@ public class LoginCallback implements AsyncCallback<Boolean>
 
 		if(access_granted)
 		{
-			Window.alert("Welkommen hikst");
+			Window.alert("Velkommen HIKST");
 			System.out.println("LoginCallback / access granted");
 			login.GoToMainPage();
 		}
