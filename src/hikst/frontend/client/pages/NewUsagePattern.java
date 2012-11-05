@@ -1,14 +1,20 @@
 package hikst.frontend.client.pages;
 
-import hikst.frontend.shared.SimObject;
 import hikst.frontend.shared.UsagePattern;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
@@ -23,12 +29,18 @@ public class NewUsagePattern extends HikstComposite {
 	private static NewUsagePatternUiBinder uiBinder = GWT
 			.create(NewUsagePatternUiBinder.class);
 
-	@UiField TextBox name;
-	@UiField FlexTable flexyTable;
+	@UiField
+	TextBox name;
+	@UiField
+	RadioButton actual;
+	@UiField
+	RadioButton probability;
+	@UiField
+	FlexTable flexyTable;
 	@UiField
 	Button back;
 	@UiField
-	Button saveObject;
+	Button saveButton;
 	@UiField
 	FlowPanel eastPanel;
 	@UiField
@@ -36,7 +48,8 @@ public class NewUsagePattern extends HikstComposite {
 	@UiField
 	FlowPanel centerPanel;
 
-	TextBox[] clock = new TextBox[24];
+	TextBox[] range = new TextBox[24];
+	TextBox[] input = new TextBox[24];
 
 	/**
 	 * Main constructor
@@ -49,13 +62,15 @@ public class NewUsagePattern extends HikstComposite {
 	}
 
 	/**
-	 * Constructor used when returning from Objects list with a child object
+	 * Constructor used when editing a Usage Pattern
 	 * 
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewUsagePattern(HikstComposite parent, SimObject childObject) {
+	public NewUsagePattern(HikstComposite parent, UsagePattern u) {
 		this(parent);
+		this.u = u;
+		setValues();
 	}
 
 	/**
@@ -68,56 +83,83 @@ public class NewUsagePattern extends HikstComposite {
 		for (int i = 0; i <= 23; i++) {
 			flexyTable.setWidget(0, i, new Label(i + ":00"));
 		}
-		
+
 		for (int i = 0; i <= 23; i++) {
-			clock[i] = new TextBox();
-			clock[i].getElement().setAttribute("type", "range");
-			clock[i].getElement().setAttribute("min", "0");
-			clock[i].getElement().setAttribute("max", "100");
-			clock[i].getElement().setAttribute("step", "1");
-			clock[i].getElement().setAttribute("style", "width: 20px;height: 300px; -webkit-appearance: slider-vertical;");
-			flexyTable.setWidget(1, i, clock[i]);
+			range[i] = new TextBox();
+			range[i].getElement().setAttribute("type", "range");
+			range[i].getElement().setAttribute("min", "0");
+			range[i].getElement().setAttribute("max", "100");
+			range[i].getElement().setAttribute("step", "1");
+			range[i].getElement()
+					.setAttribute("style",
+							"width: 20px;height: 300px; -webkit-appearance: slider-vertical;");
+			range[i].addChangeHandler(rangeChanged(i));
+			flexyTable.setWidget(1, i, range[i]);
 		}
-		
+
+		for (int i = 0; i <= 23; i++) {
+			input[i] = new TextBox();
+			input[i].getElement().setAttribute("type", "number");
+			input[i].getElement().setAttribute("min", "0");
+			input[i].getElement().setAttribute("max", "100");
+			input[i].getElement().setAttribute("step", "1");
+			input[i].getElement().setAttribute("style", "width: 36px;");
+			input[i].addChangeHandler(inputChanged(i));
+			flexyTable.setWidget(2, i, input[i]);
+		}
+
 		centerPanel.add(flexyTable);
 
 	}
 
-	public UsagePattern getObject() {
-		u.name = name.getText();
-		// try {
-		// o.effect = Double.parseDouble(effect.getValue());
-		// } catch (NumberFormatException e) {
-		// o.effect = Double.NaN;
-		// }
+	private ChangeHandler rangeChanged(final int i) {
+		return new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				u.pattern[i] = Integer.parseInt(range[i].getValue());
+				input[i].setText(Integer.toString(u.pattern[i]));
+			}
+		};
+	}
 
+	private ChangeHandler inputChanged(final int i) {
+		return new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				u.pattern[i] = Integer.parseInt(input[i].getValue());
+				range[i].setText(Integer.toString(u.pattern[i]));
+			}
+		};
+	}
+
+	public UsagePattern getObject() {
+		u.name = name.getValue();
+		u.actual = actual.getValue();
 		return u;
 	}
 
 	private void setValues() {
 		name.setValue(u.name);
-		// if (o.effect == Double.NaN) {
-		// effect.setValue("");
-		// } else {
-		// effect.setValue(o.effect.toString());
-		// }
+		for (int i = 0; i <= 23; i++) {
+			String val = Integer.toString(u.pattern[i]);
+			range[i].setValue(val);
+			input[i].setValue(val);
+		}
+		actual.setValue(u.actual);
+		probability.setValue(!u.actual);
 	}
 
-	// @UiHandler("back")
-	// void onBackClick(ClickEvent event) {
-	// mapsPanel.clear();
-	// eastPanel.clear();
-	// RootLayoutPanel.get().add(new NewSimulation());
-	// panel = new ViewObjects(this);
-	// RootLayoutPanel.get().add(panel);
-	// }
-	//
-	// @UiHandler("saveObject")
-	// void onSaveObject(ClickEvent event) {
-	// if (name.getValue().equals("Name")) {
-	// Window.alert("Change Name!");
-	// } else {
-	// databaseService.saveObject(o, new SaveObjectCallback());
-	// }
-	// }
+	@UiHandler("back")
+	void onBackClick(ClickEvent event) {
+		RootLayoutPanel.get().add(
+				new ViewUsagePatterns(hikstCompositeParent
+						.getHikstCompositeParent()));
+	}
+
+	@UiHandler("saveButton")
+	void onSaveObject(ClickEvent event) {
+		if (name.getValue().equals("")) {
+			Window.alert("Change Name!");
+		} else {
+//			databaseService.saveUsagePattern(u, new SaveObjectCallback());
+		}
+	}
 }

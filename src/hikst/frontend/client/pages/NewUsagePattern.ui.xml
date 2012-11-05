@@ -30,9 +30,11 @@
        <g:west size='13.5'>
          <g:FlowPanel styleName="{style.westPanel}">
          	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
-         	<g:TextBox text="" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
-         	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
+         	<g:TextBox text="" ui:field="name" width="150px" textAlignment="ALIGN_CENTER"/>
+         	<g:RadioButton ui:field="actual" name="actual" text="Actual percentage usage"/>
+         	<g:RadioButton ui:field="probability" name="actual" text="Usage probability" checked="true"/>
+         	<g:Button width="150px" ui:field="back">Back</g:Button>
+         	<g:Button ui:field="saveButton" width="150px">Save Usage Pattern</g:Button>
          </g:FlowPanel>
        </g:west>
        <g:center size='25.5'>
@@ -40,11 +42,11 @@
          	<g:FlexTable ui:field="flexyTable" width="498px" height="179px"/>
          </g:FlowPanel>
        </g:center>
-       <g:east size='13.5'>
+       <g:east size='0'>
          <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
          </g:FlowPanel>
        </g:east>     
-        <g:south size="12.6">
+        <g:south size="0">
          <g:FlowPanel styleName="{style.southPanel}"/>
         </g:south>       
      </g:DockLayoutPanel>
