@@ -2,6 +2,7 @@ package hikst.frontend.client.pages;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.ErrorMessage;
 import hikst.frontend.client.Graph;
 import hikst.frontend.client.Simulation;
 import hikst.frontend.client.callback.LoginCallback;
@@ -69,6 +70,7 @@ public class Login extends Composite implements HasText {
 		LoginRequest request = new LoginRequest(user.getText(), pass.getText());
 
 		databaseService.authenticate(request, new LoginCallback(this));
+		
 	}
 
 	public void GoToMainPage()
