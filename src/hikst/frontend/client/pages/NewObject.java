@@ -344,7 +344,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ViewObjects(this));
+		RootLayoutPanel.get().add(new ViewObjects(hikstCompositeParent.getHikstCompositeParent()));
 	}
 
 	@UiHandler("saveObject")
