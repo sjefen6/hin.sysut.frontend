@@ -4,10 +4,10 @@ import com.google.gwt.user.client.ui.Composite;
 
 public class HikstComposite extends Composite {
 	
-	protected HikstComposite parent;
+	protected HikstComposite hikstCompositeParent;
 	
-	public HikstComposite getParent(){
-		return parent;
+	public HikstComposite getHikstCompositeParent(){
+		return hikstCompositeParent;
 	}
 
 }

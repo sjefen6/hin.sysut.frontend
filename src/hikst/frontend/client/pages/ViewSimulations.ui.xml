@@ -22,31 +22,26 @@
 			background-color: grey;
 		}
 	</ui:style>
-	<g:DockLayoutPanel unit='EM' width="1024" height="768">
-		<g:north size='3.5'>
+<g:DockLayoutPanel unit='EM' width="1024" height="768">
+		<g:north size='4.3'>
 			<g:FlowPanel styleName="{style.northPanel}">
-				<g:Button text="Legg til Impact Factor" width="154px"
-					ui:field="addImpButton" />
-				<g:Button text="Tilbake" ui:field="tilbakeButton" />
+				<g:Button ui:field="backButton" text="Tilbake" width="97px"/>
 			</g:FlowPanel>
 		</g:north>
-		<g:west size='1.5'>
+		<g:west size='6.5'>
 			<g:FlowPanel styleName="{style.westPanel}" />
 		</g:west>
-		<g:south size="2.2">
+		<g:south size="5.1">
 			<g:FlowPanel styleName="{style.southPanel}">
 			</g:FlowPanel>
 		</g:south>
-		<g:east size='2.3'>
+		<g:east size='6.9'>
 			<g:FlowPanel styleName="{style.eastPanel}" />
 		</g:east>
 		<g:center>
 			<g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel" >
-				<g:Label text="Du har valgt:" ui:field="ImpLabel"/>
-				<g:ListBox width="264px" height="50px" ui:field="impactFactorType"/>
-				<g:DoubleBox ui:field="inputBox"/>
+				<g:FlexTable width="253px" height="173px" ui:field="SimListTable"/>
 			</g:FlowPanel>
 		</g:center>
 	</g:DockLayoutPanel>
-</ui:UiBinder>  
-   
+</ui:UiBinder> 

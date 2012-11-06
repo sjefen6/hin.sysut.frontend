@@ -18,8 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ViewObjects extends HikstComposite {
 
-	private HikstComposite panel;
-
 	interface ViewObjectsUiBinder extends UiBinder<Widget, ViewObjects> {
 	}
 
@@ -37,14 +35,11 @@ public class ViewObjects extends HikstComposite {
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
 
-	public ViewObjects(HikstComposite parent) {
-		initWidget(uiBinder.createAndBindUi(this));
-		// initWidget(uiBinder.createAndBindUi(this));
-		// initWidget(panel);
-		// initButtons();
-		this.parent = parent;
-		initTable();
-	}
+	public ViewObjects(HikstComposite hikstCompositeParent) {
+			initWidget(uiBinder.createAndBindUi(this));
+			this.hikstCompositeParent = hikstCompositeParent;
+			initTable();
+		}
 
 	ClickHandler createObjectButtonClickHandler = new ClickHandler() {
 
@@ -63,20 +58,25 @@ public class ViewObjects extends HikstComposite {
 
 		centerPanel.remove(flexyTable);
 		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable,
-				parent));
+				this));
 		centerPanel.add(flexyTable);
 
 		// centerPanel.add(flexyTable);
 	}
 
 	@UiHandler("newObject")
-	void onButtonSave(ClickEvent event) {
-		panel = new NewObject(this);
-		RootLayoutPanel.get().add(panel);
+	void onButtonSave(ClickEvent event){
+		RootLayoutPanel.get().add(new NewObject(this));
 	}
 
 	@UiHandler("backButton")
 	void onBackButtonClick(ClickEvent event) {
-		this.removeFromParent();
+		if (hikstCompositeParent instanceof NewObject) {
+			RootLayoutPanel.get().add(
+					new NewObject((NewObject) hikstCompositeParent));
+		} else if (hikstCompositeParent instanceof NewSimulation) {
+			RootLayoutPanel.get().add(
+					new NewSimulation(hikstCompositeParent));
+		}
 	}
 }

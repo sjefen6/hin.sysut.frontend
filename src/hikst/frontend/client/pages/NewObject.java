@@ -4,8 +4,6 @@ import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
-import hikst.frontend.shared.UsagePattern;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maps.client.MapWidget;
@@ -23,7 +21,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -37,7 +34,9 @@ public class NewObject extends HikstComposite {
 
 	private HikstComposite panel;
 	private EmailAdmin mailPanel;
-	private HikstObject o = new HikstObject();
+
+	private HikstObject o;
+
 
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
@@ -110,15 +109,30 @@ public class NewObject extends HikstComposite {
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
+	
+	private NewObject(){
+		initWidget(uiBinder.createAndBindUi(this));
+		o = new HikstObject();
+	}
 
 	/**
 	 * Main constructor
+	 * 
+	 * @hikstCompositeParent - this when going upwords,
+	 *                       hikstCompositeParent.getHikstCompositeParent() when
+	 *                       going back
 	 */
-	public NewObject(HikstComposite parent) {
-		this.parent = parent;
-		o = new HikstObject();
-		initWidget(uiBinder.createAndBindUi(this));
+	public NewObject(ViewObjects hikstCompositeParent) {
+		this();
+		this.hikstCompositeParent = hikstCompositeParent;
 	}
+	
+	public NewObject(NewObject hikstCompositeParent) {
+		this( (ViewObjects)hikstCompositeParent.getHikstCompositeParent());
+		o = ((NewObject) hikstCompositeParent).getObject();
+		setValues();
+	}
+	
 
 	/**
 	 * Constructor used when returning from Objects list with a child object
@@ -126,9 +140,8 @@ public class NewObject extends HikstComposite {
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(HikstComposite parent, HikstObject childObject) {
-		this(parent.getParent());
-		o = ((NewObject) parent).getObject();
+	public NewObject(HikstComposite hikstCompositeParent, HikstObject childObject) {
+		this((NewObject)hikstCompositeParent);
 		o.sons.add(childObject.getID());
 		setValues();
 	}
@@ -140,9 +153,9 @@ public class NewObject extends HikstComposite {
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(HikstComposite parent, int usagePatternID) {
-		this(parent.getParent());
-		o = ((NewObject) parent).getObject();
+	public NewObject(HikstComposite hikstCompositeParent, int usagePatternID) {
+		this((NewObject)hikstCompositeParent);
+		o = ((NewObject) hikstCompositeParent).getObject();
 		o.usage_pattern_ID = usagePatternID;
 		setValues();
 	}
@@ -263,20 +276,17 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("addChildObject")
 	void onAddObjectClick(ClickEvent event) {
-		panel = new ViewObjects(this);
-		RootLayoutPanel.get().add(panel);
+		RootLayoutPanel.get().add(new ViewObjects(this));
 	}
 
 	@UiHandler("addImpactButton")
 	void onAddImpactClick(ClickEvent event) {
-		viewImpPanel = new ViewImpactFactors();
-		RootLayoutPanel.get().add(viewImpPanel);
+		RootLayoutPanel.get().add(new ViewImpactFactors(o));
 	}
 
 	@UiHandler("addUsagePattern")
 	void onNewUsagePatternClick(ClickEvent event) {
-		panel = new NewUsagePattern(this);
-		RootLayoutPanel.get().add(panel);
+		RootLayoutPanel.get().add(new NewUsagePattern(this));
 	}
 
 	@UiHandler("latitude")
@@ -341,8 +351,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		panel = new ViewObjects(this);
-		RootLayoutPanel.get().add(panel);
+		RootLayoutPanel.get().add(new ViewObjects(this));
 	}
 
 	@UiHandler("saveObject")
@@ -358,8 +367,7 @@ public class NewObject extends HikstComposite {
 	}
 	@UiHandler("emailAdmin")
 	void onEmailAdminClick(ClickEvent event) {
-		mailPanel = new EmailAdmin();
-		RootLayoutPanel.get().add(mailPanel);
+		RootLayoutPanel.get().add(new EmailAdmin());
 	}
 	@UiHandler("buttonLogout")
 	void onButtonLogoutClick(ClickEvent event) {

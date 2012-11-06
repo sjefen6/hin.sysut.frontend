@@ -7,7 +7,6 @@ import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.Graph;
 import hikst.frontend.client.Simulation;
 import hikst.frontend.client.SplineGraf;
-import hikst.frontend.client.callback.DescriptionsCallback;
 import hikst.frontend.client.callback.SimulationRequestCallback;
 import hikst.frontend.client.callback.TreeCallback;
 import hikst.frontend.shared.Description;
@@ -21,7 +20,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
@@ -31,10 +29,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class NewSimulation extends HikstComposite {
 
+
 	Login login;
-	Composite panel;
 	MainPage panelBack;
-	private EmailAdmin mailPanel;
+	private HikstObject simObject;
 	private static NewSimulationUiBinder uiBinder = GWT
 			.create(NewSimulationUiBinder.class);
 	@UiField
@@ -48,13 +46,12 @@ public class NewSimulation extends HikstComposite {
 	@UiField
 	TextBox intervall;
 	@UiField
-	Button buttonShowSpline;
-	@UiField
 	FlowPanel eastPanel;
 	@UiField
 	FlowPanel centerPanel;
 	public @UiField
 	Tree tree;
+	@UiField Button button;
 	private TreeCallback treeCallback;
 
 	private boolean updated  = false;
@@ -83,28 +80,40 @@ public class NewSimulation extends HikstComposite {
 	public NewSimulation() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-
-	private void updateTree(int id) {
-
-		databaseService.loadObject(id, treeCallback);
+	
+	public NewSimulation(HikstComposite hikstCompositeParent) {
+		this();
+//		if(((NewSimulation) hikstCompositeParent).fromDate == null)
+//		Window.alert("date is null");
+//		
+//		if(((NewSimulation) hikstCompositeParent).fromDate.getValue() == null)
+//			Window.alert("date value is null");
+		
+		fromDate.setValue(((NewSimulation) hikstCompositeParent).fromDate.getValue());
+		toDate.setValue(((NewSimulation) hikstCompositeParent).toDate.getValue());
+		intervall.setValue(((NewSimulation) hikstCompositeParent).intervall.getValue());
 	}
 
-	public NewSimulation(HikstComposite parent, HikstObject simObject) {
-		this();
-		fromDate.setValue(((NewSimulation) parent).fromDate.getValue());
-		toDate.setValue(((NewSimulation) parent).toDate.getValue());
-		intervall.setValue(((NewSimulation) parent).intervall.getValue());
+	public NewSimulation(HikstComposite hikstCompositeParent, HikstObject simObject) {
+		this(hikstCompositeParent);
+		
+		this.simObject = simObject;
 
 		treeCallback = new TreeCallback(this);
 
 		updateTree(simObject.getID());
 		
 	}
+	
+	private void updateTree(int id) {
+
+		databaseService.loadObject(id, treeCallback);
+	}
 
 	@UiHandler("addObject")
 	void onAddObjectClick(ClickEvent event) {
-		panel = new ViewObjects(this.parent);
-		RootLayoutPanel.get().add(panel);
+//		panel = new ViewObjects(this);
+		RootLayoutPanel.get().add(new ViewObjects(this));
 	}
 
 	@UiHandler("back")
@@ -113,68 +122,23 @@ public class NewSimulation extends HikstComposite {
 		RootLayoutPanel.get().add(panelBack);
 	}
 
-	@UiHandler("buttonShowSpline")
-	void onButtonShowSplineClick(ClickEvent event) {
-		fromDate1 = fromDate.getValue();
-		toDate1 = toDate.getValue();
-		//centerPanel.clear();
-		//centerPanel.add(SplineGraf.createChart());
-		//System.out.println("Should show spline!!!");
-	
-		if (updated == true){
-			if (this.objectAdded){
-				ticket = new SimulationTicket(-1, false, 0);
-				databaseService.requestSimulation(
-						new SimulationRequest(
-								objectCounter, //simManager.getId(),
-								interval,
-								fromDate1.getTime(),
-								toDate1.getTime()
-								),
-								new SimulationRequestCallback(this));
-				simulationStarted = true;
-				
-				
-				
-			}
-		}
-		while (simulationStarted){
-			checkForResoult();
-		}
-	}
-	
+	@UiHandler("button")
+	void onButtonClick(ClickEvent event) {
+		databaseService.requestSimulation(new SimulationRequest(simObject.getID(),Long.parseLong(intervall.getValue()),fromDate.getValue().getTime(),toDate.getValue().getTime()), new SimulationRequestCallback());
+}
+
 
 	@UiHandler("emailAdmin")
 	void onEmailAdminClick(ClickEvent event) {
-		mailPanel = new EmailAdmin();
-		RootLayoutPanel.get().add(mailPanel);
+		RootLayoutPanel.get().add(new EmailAdmin());
 	}
 	
-	public void setData(Description description){
-		simulation = new Simulation(description);
-		centerPanel.clear();
-		Graph powerGraph = simulation.getEffectGraph();
-		centerPanel.add(powerGraph);
-		powerGraph.update();
-		this.objectAdded = false;
-		this.simulationStarted = false;
-	}
 	
 	public void setSimulationTicket(SimulationTicket result) {
 		this.ticket = result;
 		
 	}
 	
-	public void checkForResoult(){
-		if (this.simulationFinished){
-			System.out.println("Henter ut simuleringsdata");
-			//databaseService.getSimulation(ticket.getDescriptionID(), new DescriptionsCallback(this));
-		}
-		else {
-			System.out.println("simulation not finished");
-		}
-	}
-
 	public void updateStatus(String string) {
 		System.out.println(string);
 		

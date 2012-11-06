@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ViewUsagePatterns extends HikstComposite {
 	
-	private HikstComposite panel;
 	interface ViewUsagePatternsUiBinder extends UiBinder<Widget, ViewUsagePatterns> {
 	}
 
@@ -30,41 +29,28 @@ public class ViewUsagePatterns extends HikstComposite {
 	@UiField Button backButton;
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-
-	ClickHandler createObjectButtonClickHandler = new ClickHandler()
-	{
-
-		@Override
-		public void onClick(ClickEvent event) {
-			
-		}
-		
-	};
 	
-	Button createSimObjectButton = new Button("Create object",createObjectButtonClickHandler);
-	
-	public ViewUsagePatterns(HikstComposite parent) {
+	public ViewUsagePatterns(HikstComposite hikstCompositeParent) {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.parent = parent;
-		initTable();
+		this.hikstCompositeParent = hikstCompositeParent;
+//		initTable();
 	}
 	
-	private void initTable()
-	{		
-		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, parent));
-		centerPanel.add(flexyTable);
-	}
+//	private void initTable()
+//	{		
+//		centerPanel.remove(flexyTable);
+//		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, hikstCompositeParent));
+//		centerPanel.add(flexyTable);
+//	}
 	
 	@UiHandler("newUsagePattern")
-	void onButtonSave(ClickEvent event){
-		panel = new NewObject(this);
-		RootLayoutPanel.get().add(panel);
+	void onButtonNewUsagePattern(ClickEvent event){
+		RootLayoutPanel.get().add(new NewUsagePattern(this));
 	}
 	
 	@UiHandler("backButton")
 	void onBackButtonClick(ClickEvent event) {
-		this.removeFromParent();
+		RootLayoutPanel.get().add(new NewObject((ViewObjects) hikstCompositeParent.getHikstCompositeParent()));
 	}
 }
 
