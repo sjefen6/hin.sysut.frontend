@@ -17,8 +17,6 @@ public class Description implements Serializable
 		return minimumTime;
 	}
 
-
-
 	public long getMaximumTime() {
 		return maximumTime;
 	}
