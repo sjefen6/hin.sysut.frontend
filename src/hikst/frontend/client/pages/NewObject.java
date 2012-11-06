@@ -128,28 +128,32 @@ public class NewObject extends HikstComposite {
 	
 
 	/**
-	 * Constructor used when returning from Objects list with a child object
+	 * Sets a child object
 	 * 
-	 * @param parent
 	 * @param childObject
 	 */
-	public NewObject(HikstComposite hikstCompositeParent, HikstObject childObject) {
-		this((NewObject)hikstCompositeParent);
+	public void addChildObject(HikstObject childObject) {
 		o.sons.add(childObject.getID());
+		setValues();
+	}
+	
+	/**
+	 * Sets a child object
+	 * 
+	 * @param childObject
+	 */
+	public void modifyObject(HikstObject object) {
+		o = object;
 		setValues();
 	}
 
 	/**
-	 * Constructor used when returning from NewUsagePattern with a
-	 * usagePatternID
+	 * Sets the Usage Pattern
 	 * 
-	 * @param parent
-	 * @param childObject
+	 * @param id
 	 */
-	public NewObject(HikstComposite hikstCompositeParent, int usagePatternID) {
-		this((NewObject)hikstCompositeParent);
-		o = ((NewObject) hikstCompositeParent).getObject();
-		o.usage_pattern_ID = usagePatternID;
+	public void setUsagePattern(int id) {
+		o.usage_pattern_ID = id;
 		setValues();
 	}
 

@@ -46,10 +46,8 @@ public class HikstObjectsCallback implements
 	private void updateTable(ArrayList<HikstObject> simObjects) {
 		objectTable.clear();
 
-		objectTable.setWidget(0, 0, new Label("Choose object"));
+		objectTable.setWidget(0, 2, new Label("ID"));
 		objectTable.setWidget(0, 2, new Label("Name"));
-		objectTable.setWidget(0, 9, new Label("Modify"));
-		objectTable.setWidget(0, 10, new Label("Duplicate"));
 
 		for (int i = 0; i < simObjects.size(); i++) {
 			final HikstObject simObject = simObjects.get(i);
@@ -62,8 +60,9 @@ public class HikstObjectsCallback implements
 						public void onClick(ClickEvent event) {
 
 							if (hikstCompositeParent.getHikstCompositeParent() instanceof NewObject) {
-								RootLayoutPanel.get().add(
-										new NewObject(hikstCompositeParent.getHikstCompositeParent(), simObject));
+								NewObject panel = new NewObject((NewObject) hikstCompositeParent.getHikstCompositeParent());
+								panel.addChildObject(simObject);
+								RootLayoutPanel.get().add(panel);
 							} else if (hikstCompositeParent.getHikstCompositeParent() instanceof NewSimulation) {
 								RootLayoutPanel.get().add(
 										new NewSimulation(hikstCompositeParent.getHikstCompositeParent(), simObject));
@@ -81,8 +80,9 @@ public class HikstObjectsCallback implements
 
 						@Override
 						public void onClick(ClickEvent event) {
-							// RootLayoutPanel.get().add(new
-							// NewObject(simObject));
+							NewObject panel = new NewObject((ViewObjects) hikstCompositeParent);
+							panel.modifyObject(simObject);
+							RootLayoutPanel.get().add(panel);
 
 						}
 
