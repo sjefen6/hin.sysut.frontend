@@ -25,8 +25,6 @@ import com.google.gwt.user.client.ui.DoubleBox;
 
 public class ViewImpactFactors extends HikstComposite {
 
-	HikstComposite panel;
-	NewObject NewObpanel;
 	public double impFactor;
 
 	interface ViewImpactFactorsUiBinder extends
@@ -53,10 +51,11 @@ public class ViewImpactFactors extends HikstComposite {
 
 	private HikstObject hikstObject;
 	
-	public ViewImpactFactors(HikstObject hikstObject) {
+	public ViewImpactFactors(HikstComposite parent, HikstObject hikstObject) {
 		initWidget(uiBinder.createAndBindUi(this));
 		initFactorListBox();
 		this.hikstObject = hikstObject;
+		this.hikstCompositeParent = parent;
 		centerPanel.add(impactFactorType);
 	}
 
@@ -89,8 +88,7 @@ public class ViewImpactFactors extends HikstComposite {
 	
 	private void goBack()
 	{
-		NewObpanel = new NewObject((NewObject) hikstCompositeParent);
-		RootLayoutPanel.get().add(NewObpanel);
+		RootLayoutPanel.get().add(new NewObject((NewObject) hikstCompositeParent));
 	}
 
 	@UiHandler("addImpButton")
