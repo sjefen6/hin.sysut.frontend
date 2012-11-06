@@ -901,4 +901,23 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			
 		}
 	}
+
+	@Override
+	public void addImpactDegree(double percent, int object_id, int type_id) {
+		
+		try
+		{
+			String query = "INSERT INTO IMPACT_DEGREES(Type_ID, Percent,Object_ID) VALUES(?,?,?);";
+			Connection connection = Settings.getDBC(); 
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1,type_id);
+			preparedStatement.setInt(2, object_id);
+			preparedStatement.setDouble(3, percent);
+			preparedStatement.executeUpdate();
+		}
+		catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 }

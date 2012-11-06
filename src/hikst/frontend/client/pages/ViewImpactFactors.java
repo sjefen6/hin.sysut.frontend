@@ -14,7 +14,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.callback.ImpactDegreeCallback;
 import hikst.frontend.client.callback.ImpactFactorsCallback;
+import hikst.frontend.client.callback.SaveObjectCallback;
+import hikst.frontend.shared.HikstObject;
+
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -48,10 +52,12 @@ public class ViewImpactFactors extends HikstComposite {
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
 
-	public ViewImpactFactors() {
+	private HikstObject hikstObject;
+	
+	public ViewImpactFactors(HikstObject hikstObject) {
 		initWidget(uiBinder.createAndBindUi(this));
 		initFactorListBox();
-
+		this.hikstObject = hikstObject;
 		centerPanel.add(impactFactorType);
 	}
 
@@ -72,8 +78,7 @@ public class ViewImpactFactors extends HikstComposite {
 				int itemSelected = impactFactorType.getSelectedIndex();
 				String itemStringSelected = impactFactorType
 						.getValue(itemSelected);
-
-				// if (itemSelected > 0)
+				
 
 			}
 		});
@@ -81,7 +86,12 @@ public class ViewImpactFactors extends HikstComposite {
 
 	@UiHandler("tilbakeButton")
 	void onButtontilbake(ClickEvent event) {
-		NewObpanel = new NewObject(this);
+		goBack();
+	}
+	
+	private void goBack()
+	{
+		NewObpanel = new NewObject((NewObject) hikstCompositeParent);
 		RootLayoutPanel.get().add(NewObpanel);
 	}
 
@@ -89,8 +99,18 @@ public class ViewImpactFactors extends HikstComposite {
 	void onAddClick(ClickEvent event) {
 
 		impFactor = inputBox.getValue();
-	//	RootLayotPanel.get().add()
-
+		int type_id = Integer.parseInt(impactFactorType.getValue(impactFactorType.getSelectedIndex()));
+		
+		if(hikstObject.getID() == null){
+			databaseService.saveObject(hikstObject, new SaveObjectCallback(hikstObject));
+		}
+		else{
+		databaseService.addImpactDegree(impFactor,
+				hikstObject.getID(),
+				type_id ,
+				new ImpactDegreeCallback());
+		goBack();
+		}
 	}
 
 }

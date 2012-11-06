@@ -62,4 +62,6 @@ public interface DatabaseServiceAsync {
 	void getSimObjects(AsyncCallback<ArrayList<HikstObject>> callback);
 	void saveObject(HikstObject simObject, AsyncCallback<Integer> callback);
 	void getImpactTypes(AsyncCallback<ArrayList<ImpactType>> callback);
+	void addImpactDegree(double percent, int object_id, int type_id,
+			AsyncCallback<Void> callback);
 }

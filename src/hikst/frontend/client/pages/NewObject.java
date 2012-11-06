@@ -107,15 +107,25 @@ public class NewObject extends HikstComposite {
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
+	
+	private NewObject(){
+		initWidget(uiBinder.createAndBindUi(this));
+		o = new HikstObject();
+	}
 
 	/**
 	 * Main constructor
 	 */
-	public NewObject(HikstComposite hikstCompositeParent) {
+	public NewObject(ViewObjects hikstCompositeParent) {
+		this();
 		this.hikstCompositeParent = hikstCompositeParent;
-		o = new HikstObject();
-		initWidget(uiBinder.createAndBindUi(this));
 	}
+	
+	public NewObject(NewObject hikstCompositeParent) {
+		this( (ViewObjects)hikstCompositeParent.getHikstCompositeParent());
+		o = ((NewObject) hikstCompositeParent).getObject();
+	}
+	
 
 	/**
 	 * Constructor used when returning from Objects list with a child object
@@ -124,8 +134,7 @@ public class NewObject extends HikstComposite {
 	 * @param childObject
 	 */
 	public NewObject(HikstComposite hikstCompositeParent, HikstObject childObject) {
-		this(hikstCompositeParent.getHikstCompositeParent());
-		o = ((NewObject) hikstCompositeParent).getObject();
+		this((NewObject)hikstCompositeParent);
 		o.sons.add(childObject.getID());
 		setValues();
 	}
@@ -138,7 +147,7 @@ public class NewObject extends HikstComposite {
 	 * @param childObject
 	 */
 	public NewObject(HikstComposite hikstCompositeParent, int usagePatternID) {
-		this(hikstCompositeParent.getHikstCompositeParent());
+		this((NewObject)hikstCompositeParent);
 		o = ((NewObject) hikstCompositeParent).getObject();
 		o.usage_pattern_ID = usagePatternID;
 		setValues();
@@ -265,7 +274,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("addImpactButton")
 	void onAddImpactClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ViewImpactFactors());
+		RootLayoutPanel.get().add(new ViewImpactFactors(o));
 	}
 
 	@UiHandler("addUsagePattern")
