@@ -10,6 +10,7 @@ import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
+import hikst.frontend.shared.UsagePattern;
 import hikst.frontend.shared.ViewSimulationObject;
 
 import java.util.ArrayList;
@@ -51,4 +52,5 @@ public interface DatabaseService extends RemoteService
 	public ArrayList<ImpactType> getImpactTypes();
 	public ArrayList<ViewSimulationObject> getViewSimulationObjects();
 	public void addImpactDegree(double percent, int object_id,int type_id);
+	public void saveUsagePattern(UsagePattern usagePattern);
 }

@@ -33,6 +33,7 @@ import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
+import hikst.frontend.shared.UsagePattern;
 import hikst.frontend.shared.ViewSimulationObject;
 
 import com.google.gwt.user.client.Window;
@@ -42,6 +43,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		DatabaseService {
+	
 	private static final int SALT_LENGTH = 20;
 	private static final SecureRandom randomizer = new SecureRandom();
 
@@ -321,7 +323,6 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			return false;
 		}
 	}
-
 
 	private HikstObject getHikstObject(int id) throws SQLException {
 		Connection connection = Settings.getDBC();
@@ -957,5 +958,29 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		{
 			ex.printStackTrace();
 		}
+	}
+
+	@Override
+	public void saveUsagePattern(UsagePattern usagePattern) {
+	
+		try {
+			String query = "INSERT INTO Usage_Pattern(name,actual,c00,c01,c02,c03,c04,c05,c06" +
+					",c07,c08,c09,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23)" +
+					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+			PreparedStatement statement = Settings.getDBC().prepareStatement(query);
+			System.out.println(usagePattern.name);
+			statement.setString(1, usagePattern.name);
+			statement.setBoolean(2, usagePattern.actual);
+			for(int i = 0; i<usagePattern.pattern.length; i++)
+			{
+				statement.setInt(3+i, usagePattern.pattern[i]);
+			}
+			
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
