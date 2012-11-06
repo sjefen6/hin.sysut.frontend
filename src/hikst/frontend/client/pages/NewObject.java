@@ -29,9 +29,7 @@ import com.google.gwt.user.client.ui.Label;
 
 public class NewObject extends HikstComposite {
 
-	ViewImpactFactors viewImpPanel;
-
-	private HikstObject o = new HikstObject();
+	private HikstObject o;
 
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
@@ -359,5 +357,9 @@ public class NewObject extends HikstComposite {
 			databaseService.saveObject(o, new SaveObjectCallback(o));
 			onBackClick(event);
 		}
+	}
+	@UiHandler("emailAdmin")
+	void onEmailAdminClick(ClickEvent event) {
+		RootLayoutPanel.get().add(new EmailAdmin());
 	}
 }

@@ -17,7 +17,7 @@
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='hikst.frontend.client.Frontend'/>
-
+  <servlet path="/myService" class="hikst.frontend.server.MyServiceImpl"/>
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>

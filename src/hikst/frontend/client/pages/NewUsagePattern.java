@@ -162,4 +162,9 @@ public class NewUsagePattern extends HikstComposite {
 //			databaseService.saveUsagePattern(u, new SaveObjectCallback());
 		}
 	}
+
+	@UiHandler("emailAdmin")
+	void onEmailAdminClick(ClickEvent event) {
+		RootLayoutPanel.get().add(new EmailAdmin());
+	}
 }

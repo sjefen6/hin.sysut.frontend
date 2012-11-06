@@ -16,6 +16,18 @@
     <url-pattern>/frontend/database</url-pattern>
   </servlet-mapping>
   
+<servlet>
+<servlet-name>service</servlet-name>
+<servlet-class>hikst.frontend.server.MyServiceImpl</servlet-class>
+<load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+<servlet-name>service</servlet-name>
+<url-pattern>/myService</url-pattern>
+</servlet-mapping>
+  
+
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Frontend.html</welcome-file>
