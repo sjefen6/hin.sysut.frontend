@@ -71,6 +71,12 @@ public class ViewObjects extends HikstComposite {
 
 	@UiHandler("backButton")
 	void onBackButtonClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new NewSimulation(this));
+		if (hikstCompositeParent instanceof NewObject) {
+			RootLayoutPanel.get().add(
+					new NewObject((NewObject) hikstCompositeParent));
+		} else if (hikstCompositeParent instanceof NewSimulation) {
+			RootLayoutPanel.get().add(
+					new NewSimulation(hikstCompositeParent));
+		}
 	}
 }

@@ -33,7 +33,6 @@ public class LoginCallback implements AsyncCallback<Boolean>
 
 		if(access_granted)
 		{
-			//Window.alert("Welkommen hikst");
 			ErrorMessage.show("Velkommen hikst", "The quick brown fox jumps over the lazy dog!");
 			System.out.println("LoginCallback / access granted");
 			login.GoToMainPage();
