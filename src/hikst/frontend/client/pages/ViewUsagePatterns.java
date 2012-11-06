@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ViewUsagePatterns extends HikstComposite {
 	
-	private HikstComposite panel;
 	interface ViewUsagePatternsUiBinder extends UiBinder<Widget, ViewUsagePatterns> {
 	}
 
@@ -30,18 +29,6 @@ public class ViewUsagePatterns extends HikstComposite {
 	@UiField Button backButton;
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-
-	ClickHandler createObjectButtonClickHandler = new ClickHandler()
-	{
-
-		@Override
-		public void onClick(ClickEvent event) {
-			
-		}
-		
-	};
-	
-	Button createSimObjectButton = new Button("Create object",createObjectButtonClickHandler);
 	
 	public ViewUsagePatterns(HikstComposite hikstCompositeParent) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -57,13 +44,13 @@ public class ViewUsagePatterns extends HikstComposite {
 //	}
 	
 	@UiHandler("newUsagePattern")
-	void onButtonSave(ClickEvent event){
-		RootLayoutPanel.get().add(new NewObject(this));
+	void onButtonNewUsagePattern(ClickEvent event){
+		RootLayoutPanel.get().add(new NewUsagePattern(this));
 	}
 	
 	@UiHandler("backButton")
 	void onBackButtonClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new NewObject(hikstCompositeParent));
+		RootLayoutPanel.get().add(new NewObject(hikstCompositeParent.getHikstCompositeParent()));
 	}
 }
 
