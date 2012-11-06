@@ -34,6 +34,7 @@ import org.moxieapps.gwt.highcharts.client.plotOptions.*;
 
 public class MainPage extends Composite implements HasText {
 
+	Login login;
 	NewSimulation panel;
 	MyDockLayoutPanel oldPanel;
 	EmailAdmin mailPanel;
@@ -102,4 +103,9 @@ public class MainPage extends Composite implements HasText {
 
 	
 	
+	@UiHandler("buttonLogout")
+	void onButtonLogoutClick(ClickEvent event) {
+		login = new Login();
+		RootLayoutPanel.get().add(login);
+	}
 }

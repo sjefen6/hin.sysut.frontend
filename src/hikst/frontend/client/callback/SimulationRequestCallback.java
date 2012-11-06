@@ -1,6 +1,7 @@
 package hikst.frontend.client.callback;
 
 import hikst.frontend.client.pages.MyDockLayoutPanel;
+import hikst.frontend.client.pages.NewSimulation;
 import hikst.frontend.shared.SimulationTicket;
 
 import com.google.gwt.user.client.Window;
@@ -8,11 +9,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class SimulationRequestCallback implements AsyncCallback<SimulationTicket> {
 
-	MyDockLayoutPanel panel;
+	NewSimulation panel;
 	
-	public SimulationRequestCallback(MyDockLayoutPanel panel)
+	public SimulationRequestCallback(NewSimulation newSimulation)
 	{
-		this.panel = panel;
+		this.panel = newSimulation;
 	}
 	
 	@Override

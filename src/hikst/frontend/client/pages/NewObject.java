@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.Label;
 public class NewObject extends HikstComposite {
 
 	ViewImpactFactors viewImpPanel;
+	Login login;
 
 	private HikstComposite panel;
 	private EmailAdmin mailPanel;
@@ -359,5 +360,10 @@ public class NewObject extends HikstComposite {
 	void onEmailAdminClick(ClickEvent event) {
 		mailPanel = new EmailAdmin();
 		RootLayoutPanel.get().add(mailPanel);
+	}
+	@UiHandler("buttonLogout")
+	void onButtonLogoutClick(ClickEvent event) {
+		login = new Login();
+		RootLayoutPanel.get().add(login);
 	}
 }

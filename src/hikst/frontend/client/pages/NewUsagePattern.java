@@ -23,7 +23,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 public class NewUsagePattern extends HikstComposite implements HasText {
 
 	ViewObjects panel;
-
+	Login login;
 	Composite parent;
 	private EmailAdmin mailPanel;
 	private UsagePattern u = new UsagePattern();
@@ -141,5 +141,10 @@ public class NewUsagePattern extends HikstComposite implements HasText {
 	void onEmailAdminClick(ClickEvent event) {
 		mailPanel = new EmailAdmin();
 		RootLayoutPanel.get().add(mailPanel);
+	}
+	@UiHandler("buttonLogout")
+	void onButtonLogoutClick(ClickEvent event) {
+		login = new Login();
+		RootLayoutPanel.get().add(login);
 	}
 }
