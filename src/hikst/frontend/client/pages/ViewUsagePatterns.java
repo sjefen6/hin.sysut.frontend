@@ -50,7 +50,7 @@ public class ViewUsagePatterns extends HikstComposite {
 	
 	@UiHandler("backButton")
 	void onBackButtonClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new NewObject(hikstCompositeParent.getHikstCompositeParent()));
+		RootLayoutPanel.get().add(new NewObject((ViewObjects) hikstCompositeParent.getHikstCompositeParent()));
 	}
 }
 

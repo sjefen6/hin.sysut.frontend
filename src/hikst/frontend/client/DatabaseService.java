@@ -49,4 +49,5 @@ public interface DatabaseService extends RemoteService
 	int saveObject(HikstObject simObject);
 	public ArrayList<ImpactType> getImpactTypes();
 	public ArrayList<ViewSimulationObject> getViewSimulationObjects();
+	public void addImpactDegree(double percent, int object_id,int type_id);
 }
