@@ -4,8 +4,6 @@ import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
-import hikst.frontend.shared.UsagePattern;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maps.client.MapWidget;
@@ -23,7 +21,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -32,9 +29,7 @@ import com.google.gwt.user.client.ui.Label;
 
 public class NewObject extends HikstComposite {
 
-	ViewImpactFactors viewImpPanel;
-
-	private HikstObject o = new HikstObject();
+	private HikstObject o;
 
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
@@ -107,15 +102,30 @@ public class NewObject extends HikstComposite {
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
+	
+	private NewObject(){
+		initWidget(uiBinder.createAndBindUi(this));
+		o = new HikstObject();
+	}
 
 	/**
 	 * Main constructor
+	 * 
+	 * @hikstCompositeParent - this when going upwords,
+	 *                       hikstCompositeParent.getHikstCompositeParent() when
+	 *                       going back
 	 */
-	public NewObject(HikstComposite hikstCompositeParent) {
+	public NewObject(ViewObjects hikstCompositeParent) {
+		this();
 		this.hikstCompositeParent = hikstCompositeParent;
-		o = new HikstObject();
-		initWidget(uiBinder.createAndBindUi(this));
 	}
+	
+	public NewObject(NewObject hikstCompositeParent) {
+		this( (ViewObjects)hikstCompositeParent.getHikstCompositeParent());
+		o = ((NewObject) hikstCompositeParent).getObject();
+		setValues();
+	}
+	
 
 	/**
 	 * Constructor used when returning from Objects list with a child object
@@ -124,8 +134,7 @@ public class NewObject extends HikstComposite {
 	 * @param childObject
 	 */
 	public NewObject(HikstComposite hikstCompositeParent, HikstObject childObject) {
-		this(hikstCompositeParent.getHikstCompositeParent());
-		o = ((NewObject) hikstCompositeParent).getObject();
+		this((NewObject)hikstCompositeParent);
 		o.sons.add(childObject.getID());
 		setValues();
 	}
@@ -138,7 +147,7 @@ public class NewObject extends HikstComposite {
 	 * @param childObject
 	 */
 	public NewObject(HikstComposite hikstCompositeParent, int usagePatternID) {
-		this(hikstCompositeParent.getHikstCompositeParent());
+		this((NewObject)hikstCompositeParent);
 		o = ((NewObject) hikstCompositeParent).getObject();
 		o.usage_pattern_ID = usagePatternID;
 		setValues();
@@ -265,7 +274,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("addImpactButton")
 	void onAddImpactClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ViewImpactFactors());
+		RootLayoutPanel.get().add(new ViewImpactFactors(o));
 	}
 
 	@UiHandler("addUsagePattern")
@@ -348,5 +357,9 @@ public class NewObject extends HikstComposite {
 			databaseService.saveObject(o, new SaveObjectCallback(o));
 			onBackClick(event);
 		}
+	}
+	@UiHandler("emailAdmin")
+	void onEmailAdminClick(ClickEvent event) {
+		RootLayoutPanel.get().add(new EmailAdmin());
 	}
 }

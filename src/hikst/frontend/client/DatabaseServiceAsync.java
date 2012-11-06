@@ -10,6 +10,7 @@ import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
+import hikst.frontend.shared.ViewSimulationObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public interface DatabaseServiceAsync {
 	void exists(String username, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
 	void requestSimulation(SimulationRequest request,
-			AsyncCallback<SimulationTicket> callback);
+			AsyncCallback<Integer> callback);
 	void deleteObject(int object_id, AsyncCallback<Boolean> callback)
 	throws IllegalArgumentException;
 	void deleteSimulations(int id, AsyncCallback<Boolean> callback)
@@ -62,4 +63,7 @@ public interface DatabaseServiceAsync {
 	void getSimObjects(AsyncCallback<ArrayList<HikstObject>> callback);
 	void saveObject(HikstObject simObject, AsyncCallback<Integer> callback);
 	void getImpactTypes(AsyncCallback<ArrayList<ImpactType>> callback);
+	void getViewSimulationObjects(AsyncCallback<ArrayList<ViewSimulationObject>> callback);
+	void addImpactDegree(double percent, int object_id, int type_id,
+			AsyncCallback<Void> callback);
 }

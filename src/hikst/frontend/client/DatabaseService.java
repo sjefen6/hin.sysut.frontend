@@ -10,6 +10,7 @@ import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
+import hikst.frontend.shared.ViewSimulationObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +38,17 @@ public interface DatabaseService extends RemoteService
 	boolean register(RegisterRequest request);
 	boolean exists(String username);
 	boolean changeAccessLevel(String username,String access_level);
+	
 
 	//boolean updateObject(int id,SimulatorObject object);
 	boolean deleteObject(int object_id);
-	SimulationTicket requestSimulation(SimulationRequest request);
+	Integer requestSimulation(SimulationRequest request);
 	boolean deleteSimulations(int id);
 	int getSimulationStatus(SimulationTicket ticket);
 	HikstObjectTree loadObject(int id);
 	ArrayList<HikstObject> getSimObjects();
 	int saveObject(HikstObject simObject);
 	public ArrayList<ImpactType> getImpactTypes();
+	public ArrayList<ViewSimulationObject> getViewSimulationObjects();
+	public void addImpactDegree(double percent, int object_id,int type_id);
 }
