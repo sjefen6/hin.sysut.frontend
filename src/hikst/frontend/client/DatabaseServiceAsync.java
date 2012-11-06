@@ -10,6 +10,7 @@ import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
+import hikst.frontend.shared.UsagePattern;
 import hikst.frontend.shared.ViewSimulationObject;
 
 import java.util.ArrayList;
@@ -65,5 +66,7 @@ public interface DatabaseServiceAsync {
 	void getImpactTypes(AsyncCallback<ArrayList<ImpactType>> callback);
 	void getViewSimulationObjects(AsyncCallback<ArrayList<ViewSimulationObject>> callback);
 	void addImpactDegree(double percent, int object_id, int type_id,
+			AsyncCallback<Void> callback);
+	void saveUsagePattern(UsagePattern usagePattern,
 			AsyncCallback<Void> callback);
 }

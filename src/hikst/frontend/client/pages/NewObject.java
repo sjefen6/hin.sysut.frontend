@@ -279,7 +279,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("addUsagePattern")
 	void onNewUsagePatternClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new NewUsagePattern(this));
+		RootLayoutPanel.get().add(new ViewUsagePatterns(this));
 	}
 
 	@UiHandler("latitude")
