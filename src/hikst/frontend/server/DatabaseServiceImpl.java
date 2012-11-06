@@ -33,6 +33,7 @@ import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
+import hikst.frontend.shared.ViewSimulationObject;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -378,6 +379,43 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		}
 		
 		return impactTypes;
+	}
+	
+	public ArrayList<ViewSimulationObject> getViewSimulationObjects()
+	{
+		Connection connection = Settings.getDBC();
+		ArrayList<ViewSimulationObject> viewsimobjects = new ArrayList<ViewSimulationObject>();
+		
+		try
+		{
+			String query = "SELECT Objects.Name, Simulation_Descriptions.ID, Status.Name FROM Objects, Simulation_Descriptions, Status, Simulator_Queue_Objects " +
+					"WHERE Simulation_Descriptions.ID = Objects.ID " +
+					"AND Simulation_Descriptions.ID = Simulator_Queue_Objects.Simulation_Descriptions_ID " +
+					"AND Simulator_Queue_Objects.Status_ID = Status.ID";
+			PreparedStatement statement = connection.prepareStatement(query);
+			ResultSet set = statement.executeQuery();
+			
+			while(set.next())
+			{
+				int id = set.getInt(1);
+				String obj_Name = set.getString(2);
+				String stat_name = set.getString(3);
+				
+				ViewSimulationObject object = new ViewSimulationObject();
+				
+				object.Object_Name = obj_Name;
+				object.Status_Name = stat_name;
+		
+				viewsimobjects.add(object);
+			}	
+		}
+		catch(SQLException ex)
+		{
+		ex.printStackTrace();
+		}
+		
+		return viewsimobjects;
+		
 	}
 	
 	@Override

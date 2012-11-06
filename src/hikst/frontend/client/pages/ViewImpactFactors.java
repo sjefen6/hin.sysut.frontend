@@ -73,7 +73,9 @@ public class ViewImpactFactors extends HikstComposite {
 				String itemStringSelected = impactFactorType
 						.getValue(itemSelected);
 
-				// if (itemSelected > 0)
+		//		 if (itemSelected > 0)
+					 
+					 
 
 			}
 		});

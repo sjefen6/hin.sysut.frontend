@@ -10,6 +10,7 @@ import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
+import hikst.frontend.shared.ViewSimulationObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,4 +63,5 @@ public interface DatabaseServiceAsync {
 	void getSimObjects(AsyncCallback<ArrayList<HikstObject>> callback);
 	void saveObject(HikstObject simObject, AsyncCallback<Integer> callback);
 	void getImpactTypes(AsyncCallback<ArrayList<ImpactType>> callback);
+	void getViewSimulationObjects(AsyncCallback<ArrayList<ViewSimulationObject>> callback);
 }

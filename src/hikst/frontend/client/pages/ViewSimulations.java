@@ -46,9 +46,7 @@ public class ViewSimulations extends Composite {
 	private void initSimListTable() {
 
 		centerPanel.remove(SimListTable);
-		// databaseService.getSimObjects(new
-		// SimulationsListCallback(SimListTable,
-		// this));
+		 databaseService.getViewSimulationObjects(new SimulationsListCallback(SimListTable));
 
 		centerPanel.add(SimListTable);
 	}

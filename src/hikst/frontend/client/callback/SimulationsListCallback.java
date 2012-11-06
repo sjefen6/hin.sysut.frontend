@@ -5,20 +5,27 @@ import java.util.ArrayList;
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.shared.ImpactType;
+import hikst.frontend.shared.ViewSimulationObject;
 
+import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 
-public class SimulationsListCallback implements AsyncCallback<ImpactType> {
+public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimulationObject>> {
 
 	private FlexTable SimulationsTable;
 
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
 
-	public SimulationsListCallback() {
+	public SimulationsListCallback(FlexTable table) {
+		SimulationsTable = table;
 	}
 
 	@Override
@@ -29,18 +36,33 @@ public class SimulationsListCallback implements AsyncCallback<ImpactType> {
 	}
 
 	@Override
-	public void onSuccess(ImpactType result) {
+	public void onSuccess(ArrayList<ViewSimulationObject> result) {
 		// TODO Auto-generated method stub
 		
-		// updateTable(result);
+		 updateTable(result);
 	}
 	
-	private void updateTable(ArrayList<ImpactType> types) {
+	private void updateTable(ArrayList<ViewSimulationObject> simulations) {
 		SimulationsTable.clear();
-		for (ImpactType t : types) {
+		SimulationsTable.setWidget(0, 0, new Label(""));
+		
+		SimulationsTable.setWidget(0, 1, new Label("Object Name"));
+		SimulationsTable.setWidget(0, 2, new Label("Status"));
+		
+		for (int i = 0; i < simulations.size(); i++)  {
+			ViewSimulationObject v = simulations.get(i);
+			SimulationsTable.setWidget(i+1, 0, new Button("Choose object", new ClickHandler() 
+			{
+				@Override
+				public void onClick(ClickEvent event) {
+					
 
-			//SimulationsTable.addItem(t.name, Integer.toString(t.ID));
+				}
+
+			}));
+			SimulationsTable.setWidget(i+1, 1, new Label(v.Object_Name));
+			SimulationsTable.setWidget(i+1, 2, new Label(v.Status_Name));
+		
 		}
-
-
+	}
 }

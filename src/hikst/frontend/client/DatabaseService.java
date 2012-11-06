@@ -10,6 +10,7 @@ import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
+import hikst.frontend.shared.ViewSimulationObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,4 +48,5 @@ public interface DatabaseService extends RemoteService
 	ArrayList<HikstObject> getSimObjects();
 	int saveObject(HikstObject simObject);
 	public ArrayList<ImpactType> getImpactTypes();
+	public ArrayList<ViewSimulationObject> getViewSimulationObjects();
 }
