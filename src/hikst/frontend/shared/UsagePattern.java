@@ -8,7 +8,15 @@ public class UsagePattern implements Serializable{
 	public int[] pattern = new int[24];
 	public boolean actual;
 	
-	public UsagePattern() {}
+	public UsagePattern()
+	{
+		this.id = -1;
+	}
+	
+	public UsagePattern(int id)
+	{
+		this.id = id;
+	}
 	
 	public int getID(){
 		return id;

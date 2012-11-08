@@ -23,16 +23,16 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.DoubleBox;
 
-public class ViewImpactFactors extends HikstComposite {
+public class NewImpactDegree extends HikstComposite {
 
 	public double impFactor;
 
-	interface ViewImpactFactorsUiBinder extends
-			UiBinder<Widget, ViewImpactFactors> {
+	interface NewImpactDegreeUiBinder extends
+			UiBinder<Widget, NewImpactDegree> {
 	}
 
-	private static ViewImpactFactorsUiBinder uiBinder = GWT
-			.create(ViewImpactFactorsUiBinder.class);
+	private static NewImpactDegreeUiBinder uiBinder = GWT
+			.create(NewImpactDegreeUiBinder.class);
 	@UiField
 	Button addImpButton;
 	@UiField
@@ -51,12 +51,16 @@ public class ViewImpactFactors extends HikstComposite {
 
 	private HikstObject hikstObject;
 	
-	public ViewImpactFactors(HikstComposite parent, HikstObject hikstObject) {
+	public NewImpactDegree(HikstComposite parent, HikstObject hikstObject) {
 		initWidget(uiBinder.createAndBindUi(this));
 		initFactorListBox();
 		this.hikstObject = hikstObject;
 		this.hikstCompositeParent = parent;
 		centerPanel.add(impactFactorType);
+		
+		if(hikstObject.getID() == null){
+			addImpButton.setText("Lagre Objetet!");
+		}
 	}
 
 	private void initFactorListBox() {
@@ -98,14 +102,15 @@ public class ViewImpactFactors extends HikstComposite {
 		int type_id = Integer.parseInt(impactFactorType.getValue(impactFactorType.getSelectedIndex()));
 		
 		if(hikstObject.getID() == null){
+			addImpButton.setText("Lagre Påvikrningsgraden!");
 			databaseService.saveObject(hikstObject, new SaveObjectCallback(hikstObject));
 		}
 		else{
 		databaseService.addImpactDegree(impFactor,
 				hikstObject.getID(),
 				type_id ,
-				new ImpactDegreeCallback());
-		goBack();
+				new ImpactDegreeCallback((NewObject) hikstCompositeParent));
+		
 		}
 	}
 

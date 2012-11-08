@@ -57,20 +57,14 @@ public class NewSimulation extends HikstComposite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public NewSimulation(HikstComposite hikstCompositeParent) {
+	public NewSimulation(NewSimulation hikstCompositeParent) {
 		this();
-//		if(((NewSimulation) hikstCompositeParent).fromDate == null)
-//		Window.alert("date is null");
-//		
-//		if(((NewSimulation) hikstCompositeParent).fromDate.getValue() == null)
-//			Window.alert("date value is null");
-		
-		fromDate.setValue(((NewSimulation) hikstCompositeParent).fromDate.getValue());
-		toDate.setValue(((NewSimulation) hikstCompositeParent).toDate.getValue());
-		intervall.setValue(((NewSimulation) hikstCompositeParent).intervall.getValue());
+		fromDate.setValue((hikstCompositeParent).fromDate.getValue());
+		toDate.setValue((hikstCompositeParent).toDate.getValue());
+		intervall.setValue((hikstCompositeParent).intervall.getValue());
 	}
 
-	public NewSimulation(HikstComposite hikstCompositeParent, HikstObject simObject) {
+	public NewSimulation(NewSimulation hikstCompositeParent, HikstObject simObject) {
 		this(hikstCompositeParent);
 		
 		this.simObject = simObject;

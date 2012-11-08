@@ -1,0 +1,52 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.eastPanel {
+			background-color: grey;
+		}
+		
+		.westPanel {
+			background-color: grey;
+		}
+		
+		.northPanel {
+			background-color: grey;
+		}
+		
+		.southPanel {
+			background-color: grey;
+		}
+		
+		.centerPanel {
+			background-color: grey;
+		}
+	</ui:style>
+	<g:DockLayoutPanel unit='EM' width="1024" height="768">
+		<g:north size='3.5'>
+			<g:FlowPanel styleName="{style.northPanel}">
+				<g:Button text="Legg til Impact Factor" width="154px"
+					ui:field="addImpButton" />
+				<g:Button text="Tilbake" ui:field="tilbakeButton" />
+			</g:FlowPanel>
+		</g:north>
+		<g:west size='1.5'>
+			<g:FlowPanel styleName="{style.westPanel}" />
+		</g:west>
+		<g:south size="2.2">
+			<g:FlowPanel styleName="{style.southPanel}">
+			</g:FlowPanel>
+		</g:south>
+		<g:east size='2.3'>
+			<g:FlowPanel styleName="{style.eastPanel}" />
+		</g:east>
+		<g:center>
+			<g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel" >
+				<g:Label text="Du har valgt:" ui:field="ImpLabel"/>
+				<g:ListBox width="264px" height="50px" ui:field="impactFactorType"/>
+				<g:DoubleBox ui:field="inputBox"/>
+			</g:FlowPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder>  
+   

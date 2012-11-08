@@ -7,7 +7,6 @@ import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
-import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.UsagePattern;
@@ -28,8 +27,6 @@ public interface DatabaseServiceAsync {
 
 	void getData(int sim_description_id, AsyncCallback<List<Plot>> callback)
 	throws IllegalArgumentException;
-	void getSimulatorObject(int simulation_object_id,
-			AsyncCallback<SimObjectTree> callback);
 	void getSimulationDescriptionsIDs(AsyncCallback<List<Integer>> callback)
 	throws IllegalArgumentException;
 	void getSimulation(int sim_description_id, AsyncCallback<Description> callback)
@@ -69,4 +66,5 @@ public interface DatabaseServiceAsync {
 			AsyncCallback<Void> callback);
 	void saveUsagePattern(UsagePattern usagePattern,
 			AsyncCallback<Void> callback);
+	void getUsagePatterns(AsyncCallback<ArrayList<UsagePattern>> callback);
 }

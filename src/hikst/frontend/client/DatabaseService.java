@@ -5,7 +5,6 @@ import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.HikstObjectTree;
 import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.Plot;
-import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.RegisterRequest;
 import hikst.frontend.shared.SimulationRequest;
@@ -13,6 +12,7 @@ import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.UsagePattern;
 import hikst.frontend.shared.ViewSimulationObject;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,6 @@ public interface DatabaseService extends RemoteService
 	//for getting simulation data
 	List<Integer> getSimulationDescriptionsIDs() throws IllegalArgumentException;
 	List<Plot> getData(int sim_description_id) throws IllegalArgumentException;
-	SimObjectTree getSimulatorObject(int simulation_object_id) throws IllegalArgumentException;
 	Description getSimulation(int sim_description_id) throws IllegalArgumentException;
 	List<Description> getSimulations() throws IllegalArgumentException;
 	
@@ -53,4 +52,5 @@ public interface DatabaseService extends RemoteService
 	public ArrayList<ViewSimulationObject> getViewSimulationObjects();
 	public void addImpactDegree(double percent, int object_id,int type_id);
 	public void saveUsagePattern(UsagePattern usagePattern);
+	public ArrayList<UsagePattern> getUsagePatterns();
 }

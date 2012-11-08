@@ -159,7 +159,7 @@ public class NewUsagePattern extends HikstComposite {
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
 		RootLayoutPanel.get().add(
-				new ViewUsagePatterns(hikstCompositeParent
+				new ViewUsagePatterns((NewObject) hikstCompositeParent
 						.getHikstCompositeParent()));
 	}
 

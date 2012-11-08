@@ -28,8 +28,6 @@ import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
-import hikst.frontend.shared.SimObject;
-import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 import hikst.frontend.shared.SimulatorObject;
@@ -76,33 +74,6 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		}
 
 		return plots;
-	}
-
-	@Override
-	public SimObjectTree getSimulatorObject(int simulation_object_id)
-			throws IllegalArgumentException {
-		Connection connection = Settings.getDBC();
-
-		try {
-
-			String query = "SELECT Name FROM Objects WHERE ID=?";
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, simulation_object_id);
-			ResultSet set = statement.executeQuery();
-
-			if (set.next()) {
-				String name = set.getString(1);
-				SimObjectTree simObjekt = new SimObjectTree();
-			} else {
-				throw new IllegalArgumentException();
-			}
-
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-
-		}
-
-		return null;
 	}
 
 	@Override
@@ -944,43 +915,99 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public void addImpactDegree(double percent, int object_id, int type_id) {
 		
-		try
-		{
+		try {
 			String query = "INSERT INTO IMPACT_DEGREES(Type_ID, Percent,Object_ID) VALUES(?,?,?);";
-			Connection connection = Settings.getDBC(); 
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1,type_id);
+			Connection connection = Settings.getDBC();
+			PreparedStatement preparedStatement;
+			preparedStatement = connection
+					.prepareStatement(query);
+			preparedStatement.setInt(1, type_id);
 			preparedStatement.setInt(2, object_id);
 			preparedStatement.setDouble(3, percent);
 			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
+
 	}
 
 	@Override
 	public void saveUsagePattern(UsagePattern usagePattern) {
 	
 		try {
-			String query = "INSERT INTO Usage_Pattern(name,actual,c00,c01,c02,c03,c04,c05,c06" +
-					",c07,c08,c09,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23)" +
-					" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-			PreparedStatement statement = Settings.getDBC().prepareStatement(query);
-			System.out.println(usagePattern.name);
-			statement.setString(1, usagePattern.name);
-			statement.setBoolean(2, usagePattern.actual);
-			for(int i = 0; i<usagePattern.pattern.length; i++)
+			if(usagePattern.getID() == -1)
 			{
-				statement.setInt(3+i, usagePattern.pattern[i]);
+				String query = "INSERT INTO Usage_Pattern(name,actual,c00,c01,c02,c03,c04,c05,c06" +
+				",c07,c08,c09,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23)" +
+				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				PreparedStatement statement = Settings.getDBC().prepareStatement(query);
+				System.out.println(usagePattern.name);
+				statement.setString(1, usagePattern.name);
+				statement.setBoolean(2, usagePattern.actual);
+				for(int i = 0; i<usagePattern.pattern.length; i++)
+				{
+					statement.setInt(3+i, usagePattern.pattern[i]);
+				}
+				statement.executeUpdate();	
 			}
-			
-			statement.executeUpdate();
+			else
+			{
+				String query = "UPDATE Usage_Pattern SET name=?, actual=?," +
+						" c00=?, c01=?, c02=?, c03=?, c04=?, c05=?, c06=?, c07=?, " +
+						"c08=?, c09=?,  c10=?, c11=?, c12=?, c13=?, c14=?, c15=?, c16=?"+
+						"c17=?, c18=?,  c19=?, c20=?, c21=?, c22=?, c23=? WHERE id=?";
+				PreparedStatement statement = Settings.getDBC().prepareStatement(query);
+				int index = 1;
+				statement.setString(index++, usagePattern.name);
+				statement.setBoolean(index++, usagePattern.actual);
+				
+				for(int i = 0; i<usagePattern.pattern.length; i++)
+				{
+					statement.setInt(index++, usagePattern.pattern[i]);
+				}
+				
+				statement.setInt(index++, usagePattern.getID());
+				statement.executeUpdate();
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	public ArrayList<UsagePattern> getUsagePatterns(){
+		
+		ArrayList<UsagePattern> usagePatterns = new ArrayList<UsagePattern>();
+		
+		try
+		{
+			String query = "SELECT * FROM Usage_Pattern";
+			PreparedStatement statement = Settings.getDBC().prepareStatement(query);
+			ResultSet set = statement.executeQuery();
+			
+			while(set.next())
+			{
+				UsagePattern usagePattern = new UsagePattern(set.getInt("id"));
+				usagePattern.name = set.getString("name");
+				usagePattern.actual = set.getBoolean("actual");
+				usagePattern.pattern = new int[24];
+				
+				for(int index = 0; index < usagePattern.pattern.length; index++)
+				{
+					usagePattern.pattern[index] = set.getInt(index + 3);
+					
+				}
+				usagePatterns.add(usagePattern);
+			}
+			
+		}catch(SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return usagePatterns;
 		
 	}
 }

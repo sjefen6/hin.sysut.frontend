@@ -16,15 +16,15 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 
-public class HikstObjectsCallback implements
+public class ViewObjectsCallback implements
 		AsyncCallback<ArrayList<HikstObject>> {
 
 	private FlexTable objectTable;
 //	private DatabaseServiceAsync databaseService = GWT
 //			.create(DatabaseService.class);
-	private ViewObjects hikstCompositeParent;
+	private HikstComposite hikstCompositeParent;
 
-	public HikstObjectsCallback(FlexTable objectTable, ViewObjects hikstCompositeParent) {
+	public ViewObjectsCallback(FlexTable objectTable, HikstComposite hikstCompositeParent) {
 		this.objectTable = objectTable;
 		this.hikstCompositeParent = hikstCompositeParent;
 	}
@@ -59,17 +59,15 @@ public class HikstObjectsCallback implements
 						@Override
 						public void onClick(ClickEvent event) {
 
-							if (hikstCompositeParent.getHikstCompositeParent() instanceof NewObject) {
-								NewObject panel = new NewObject((NewObject) hikstCompositeParent.getHikstCompositeParent());
+							if (hikstCompositeParent instanceof NewObject) {
+								NewObject panel = new NewObject((NewObject) hikstCompositeParent);
 								panel.addChildObject(simObject);
 								RootLayoutPanel.get().add(panel);
-							} else if (hikstCompositeParent.getHikstCompositeParent() instanceof NewSimulation) {
+							} else if (hikstCompositeParent instanceof NewSimulation) {
 								RootLayoutPanel.get().add(
-										new NewSimulation(hikstCompositeParent.getHikstCompositeParent(), simObject));
+										new NewSimulation((NewSimulation) hikstCompositeParent, simObject));
 							}
-
 						}
-
 					}));
 			objectTable.setWidget(row, 1,
 					new Label(String.valueOf(simObject.getID())));
@@ -85,7 +83,6 @@ public class HikstObjectsCallback implements
 							RootLayoutPanel.get().add(panel);
 
 						}
-
 					}));
 			objectTable.setWidget(row, 4, new Button("Duplicate",
 					new ClickHandler() {

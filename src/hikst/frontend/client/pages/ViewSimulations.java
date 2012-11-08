@@ -2,7 +2,7 @@ package hikst.frontend.client.pages;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.callback.HikstObjectsCallback;
+import hikst.frontend.client.callback.ViewObjectsCallback;
 import hikst.frontend.client.callback.SimulationsListCallback;
 
 import com.google.gwt.core.client.GWT;
