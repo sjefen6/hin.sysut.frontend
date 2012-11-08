@@ -46,16 +46,16 @@ public class HikstObjectsCallback implements
 	private void updateTable(ArrayList<HikstObject> simObjects) {
 		objectTable.clear();
 
-		objectTable.setWidget(0, 0, new Label("Choose object"));
-		objectTable.setWidget(0, 2, new Label("Name"));
-		objectTable.setWidget(0, 9, new Label("Modify"));
-		objectTable.setWidget(0, 10, new Label("Duplicate"));
+		objectTable.setWidget(0, 0, new Label("velg objekt"));
+		objectTable.setWidget(0, 2, new Label("Navn"));
+		objectTable.setWidget(0, 9, new Label(""));
+		objectTable.setWidget(0, 10, new Label(""));
 
 		for (int i = 0; i < simObjects.size(); i++) {
 			final HikstObject simObject = simObjects.get(i);
 
 			int row = i + 1;
-			objectTable.setWidget(row, 0, new Button("Choose object",
+			objectTable.setWidget(row, 0, new Button("Velg objekt",
 					new ClickHandler() {
 
 						@Override
@@ -76,7 +76,7 @@ public class HikstObjectsCallback implements
 					new Label(String.valueOf(simObject.getID())));
 			objectTable.setWidget(row, 2, new Label(simObject.name));
 
-			objectTable.setWidget(row, 3, new Button("Modify",
+			objectTable.setWidget(row, 3, new Button("Redigere",
 					new ClickHandler() {
 
 						@Override
@@ -87,7 +87,7 @@ public class HikstObjectsCallback implements
 						}
 
 					}));
-			objectTable.setWidget(row, 4, new Button("Duplicate",
+			objectTable.setWidget(row, 4, new Button("Lag duplikat",
 					new ClickHandler() {
 
 						@Override

@@ -46,12 +46,12 @@ public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimu
 		SimulationsTable.clear();
 		SimulationsTable.setWidget(0, 0, new Label(""));
 		
-		SimulationsTable.setWidget(0, 1, new Label("Object Name"));
+		SimulationsTable.setWidget(0, 1, new Label("Objektnavn"));
 		SimulationsTable.setWidget(0, 2, new Label("Status"));
 		
 		for (int i = 0; i < simulations.size(); i++)  {
 			ViewSimulationObject v = simulations.get(i);
-			SimulationsTable.setWidget(i+1, 0, new Button("Choose simulation", new ClickHandler() 
+			SimulationsTable.setWidget(i+1, 0, new Button("Velg simulering", new ClickHandler() 
 			{
 				@Override
 				public void onClick(ClickEvent event) {

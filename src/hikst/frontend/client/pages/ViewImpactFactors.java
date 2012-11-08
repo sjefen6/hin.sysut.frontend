@@ -41,8 +41,6 @@ public class ViewImpactFactors extends HikstComposite {
 	FlowPanel centerPanel;
 	@UiField
 	ListBox impactFactorType;
-	@UiField
-	Label ImpLabel;
 	@UiField DoubleBox inputBox;
 
 	private Composite parent;
@@ -65,7 +63,6 @@ public class ViewImpactFactors extends HikstComposite {
 				impactFactorType, parent));
 
 		centerPanel.add(impactFactorType);
-		inputBox.getElement().setAttribute("placeHolder", "ImpactFactor % ");
 
 		impactFactorType.addChangeHandler(new ChangeHandler() {
 
