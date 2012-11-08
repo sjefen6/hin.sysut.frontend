@@ -278,7 +278,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("addImpactButton")
 	void onAddImpactClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ViewImpactFactors(o));
+		RootLayoutPanel.get().add(new ViewImpactFactors(this, o));
 	}
 
 	@UiHandler("addUsagePattern")
