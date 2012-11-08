@@ -66,6 +66,8 @@ public class NewUsagePattern extends HikstComposite {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		generateFlexyTable();
+		
+		setValues();
 	}
 
 	/**
