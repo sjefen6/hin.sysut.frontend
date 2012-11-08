@@ -3,6 +3,7 @@ package hikst.frontend.client;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.HikstObjectTree;
+import hikst.frontend.shared.ImpactDegree;
 import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.LoginRequest;
@@ -47,7 +48,7 @@ public interface DatabaseService extends RemoteService
 	int getSimulationStatus(SimulationTicket ticket);
 	HikstObjectTree loadObject(int id);
 	ArrayList<HikstObject> getSimObjects();
-	int saveObject(HikstObject simObject);
+	int saveObject(HikstObject simObject, ArrayList<ImpactDegree> impactDegrees);
 	public ArrayList<ImpactType> getImpactTypes();
 	public ArrayList<ViewSimulationObject> getViewSimulationObjects();
 	public void addImpactDegree(double percent, int object_id,int type_id);

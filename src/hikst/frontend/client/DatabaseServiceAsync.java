@@ -3,6 +3,7 @@ package hikst.frontend.client;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.HikstObjectTree;
+import hikst.frontend.shared.ImpactDegree;
 import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
@@ -59,7 +60,7 @@ public interface DatabaseServiceAsync {
 	void settingsLoadable(AsyncCallback<Boolean> callback);
 	void loadObject(int id, AsyncCallback<HikstObjectTree> callback);
 	void getSimObjects(AsyncCallback<ArrayList<HikstObject>> callback);
-	void saveObject(HikstObject simObject, AsyncCallback<Integer> callback);
+	void saveObject(HikstObject simObject, ArrayList<ImpactDegree> impactDegrees, AsyncCallback<Integer> callback);
 	void getImpactTypes(AsyncCallback<ArrayList<ImpactType>> callback);
 	void getViewSimulationObjects(AsyncCallback<ArrayList<ViewSimulationObject>> callback);
 	void addImpactDegree(double percent, int object_id, int type_id,

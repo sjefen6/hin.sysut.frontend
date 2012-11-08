@@ -17,6 +17,7 @@ import hikst.frontend.client.callback.ImpactDegreeCallback;
 import hikst.frontend.client.callback.ImpactFactorsCallback;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
+import hikst.frontend.shared.ImpactDegree;
 
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -25,7 +26,9 @@ import com.google.gwt.user.client.ui.DoubleBox;
 
 public class NewImpactDegree extends HikstComposite {
 
-	public double impFactor;
+	private ImpactDegree impactDegree;
+	
+//	public double impFactor;
 
 	interface NewImpactDegreeUiBinder extends
 			UiBinder<Widget, NewImpactDegree> {
@@ -57,61 +60,53 @@ public class NewImpactDegree extends HikstComposite {
 		this.hikstObject = hikstObject;
 		this.hikstCompositeParent = parent;
 		centerPanel.add(impactFactorType);
+		impactDegree = new ImpactDegree();
 		
-		if(hikstObject.getID() == null){
-			addImpButton.setText("Lagre Objetet!");
-		}
+//		if(hikstObject.getID() == null){
+//			addImpButton.setText("Lagre Objetet!");
+//		}
 	}
 
 	private void initFactorListBox() {
-		centerPanel.remove(impactFactorType);
+//		centerPanel.remove(impactFactorType);
 		databaseService.getImpactTypes(new ImpactFactorsCallback(
 				impactFactorType, parent));
 
-		centerPanel.add(impactFactorType);
-		inputBox.getElement().setAttribute("placeHolder", "ImpactFactor % ");
-
-		impactFactorType.addChangeHandler(new ChangeHandler() {
-
-			@Override
-			public void onChange(ChangeEvent event) {
-				// TODO Auto-generated method stub
-
-				int itemSelected = impactFactorType.getSelectedIndex();
-				String itemStringSelected = impactFactorType
-						.getValue(itemSelected);
-
-			}
-		});
+//		centerPanel.add(impactFactorType);
+//		inputBox.getElement().setAttribute("placeHolder", "ImpactFactor % ");
+	}
+	
+	public ImpactDegree getImpactDegree(){
+		impactDegree.percent = inputBox.getValue();
+		impactDegree.type_id = Integer.parseInt(impactFactorType.getValue(impactFactorType.getSelectedIndex()));
+		return impactDegree;
 	}
 
 	@UiHandler("tilbakeButton")
 	void onButtontilbake(ClickEvent event) {
-		goBack();
-	}
-	
-	private void goBack()
-	{
 		RootLayoutPanel.get().add(new NewObject((NewObject) hikstCompositeParent));
 	}
 
 	@UiHandler("addImpButton")
 	void onAddClick(ClickEvent event) {
+		
+		NewObject panel = new NewObject((NewObject) hikstCompositeParent);
+		panel.addImpactDegree(getImpactDegree());
+		RootLayoutPanel.get().add(panel);
 
-		impFactor = inputBox.getValue();
-		int type_id = Integer.parseInt(impactFactorType.getValue(impactFactorType.getSelectedIndex()));
-		
-		if(hikstObject.getID() == null){
-			addImpButton.setText("Lagre Påvikrningsgraden!");
-			databaseService.saveObject(hikstObject, new SaveObjectCallback(hikstObject));
-		}
-		else{
-		databaseService.addImpactDegree(impFactor,
-				hikstObject.getID(),
-				type_id ,
-				new ImpactDegreeCallback((NewObject) hikstCompositeParent));
-		
-		}
+//		impFactor = inputBox.getValue();
+//		int type_id = Integer.parseInt(impactFactorType.getValue(impactFactorType.getSelectedIndex()));
+//		
+//		if(hikstObject.getID() == null){
+//			addImpButton.setText("Lagre P&aring;vikrningsgraden!");
+//			databaseService.saveObject(hikstObject, new SaveObjectCallback(hikstObject));
+//		}
+//		else{
+//		databaseService.addImpactDegree(impFactor,
+//				hikstObject.getID(),
+//				type_id ,
+//				new ImpactDegreeCallback((NewObject) hikstCompositeParent));
+//		
+//		}
 	}
-
 }

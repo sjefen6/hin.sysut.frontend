@@ -24,6 +24,7 @@ import hikst.frontend.client.DatabaseService;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.HikstObjectTree;
+import hikst.frontend.shared.ImpactDegree;
 import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
@@ -683,7 +684,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public int saveObject(HikstObject simObject) {
+	public int saveObject(HikstObject simObject, ArrayList<ImpactDegree> impactDegrees) {
 
 		try {
 			if (simObject.getID() != null) {

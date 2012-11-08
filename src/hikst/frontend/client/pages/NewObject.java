@@ -1,9 +1,13 @@
 package hikst.frontend.client.pages;
 
+import java.util.ArrayList;
+
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.callback.SaveObjectCallback;
 import hikst.frontend.shared.HikstObject;
+import hikst.frontend.shared.ImpactDegree;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.maps.client.MapWidget;
@@ -30,6 +34,7 @@ import com.google.gwt.user.client.ui.Label;
 public class NewObject extends HikstComposite {
 
 	private HikstObject o;
+	private ArrayList<ImpactDegree> impactDegrees; 
 
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
@@ -106,6 +111,7 @@ public class NewObject extends HikstComposite {
 	private NewObject(){
 		initWidget(uiBinder.createAndBindUi(this));
 		o = new HikstObject();
+		impactDegrees = new ArrayList<ImpactDegree>();
 	}
 
 	/**
@@ -128,12 +134,22 @@ public class NewObject extends HikstComposite {
 	
 
 	/**
-	 * Sets a child object
+	 * Adds a child object
 	 * 
 	 * @param childObject
 	 */
 	public void addChildObject(HikstObject childObject) {
 		o.sons.add(childObject.getID());
+		setValues();
+	}
+	
+	/**
+	 * Adds an ImpactDegree
+	 * 
+	 * @param childObject
+	 */
+	public void addImpactDegree(ImpactDegree impactDegree) {
+		impactDegrees.add(impactDegree);
 		setValues();
 	}
 	
@@ -358,7 +374,7 @@ public class NewObject extends HikstComposite {
 		} else {
 			getObject();
 			o.effect.isNaN();
-			databaseService.saveObject(o, new SaveObjectCallback(o));
+			databaseService.saveObject(o, impactDegrees, new SaveObjectCallback(o));
 			onBackClick(event);
 		}
 	}
