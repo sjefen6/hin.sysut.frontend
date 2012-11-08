@@ -1,13 +1,12 @@
 package hikst.frontend.client.callback;
 
-import java.util.ArrayList;
-
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.shared.ImpactType;
+import hikst.frontend.client.pages.SimulatonResult;
 import hikst.frontend.shared.ViewSimulationObject;
 
-import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,10 +15,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimulationObject>> {
 
 	private FlexTable SimulationsTable;
+	private SimulatonResult simResultPanel;
 
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
@@ -55,8 +56,8 @@ public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimu
 			{
 				@Override
 				public void onClick(ClickEvent event) {
-					
-
+					simResultPanel = new SimulatonResult();
+					RootLayoutPanel.get().add(simResultPanel);
 				}
 
 			}));
