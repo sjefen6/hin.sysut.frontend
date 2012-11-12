@@ -46,7 +46,7 @@ public class HikstObjectsCallback implements
 	private void updateTable(ArrayList<HikstObject> simObjects) {
 		objectTable.clear();
 
-		objectTable.setWidget(0, 0, new Label("velg objekt"));
+		objectTable.setWidget(0, 0, new Label("Velg objekt"));
 		objectTable.setWidget(0, 2, new Label("Navn"));
 		objectTable.setWidget(0, 9, new Label(""));
 		objectTable.setWidget(0, 10, new Label(""));

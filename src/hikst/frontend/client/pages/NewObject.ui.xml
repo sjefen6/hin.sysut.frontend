@@ -51,7 +51,7 @@
          	<g:TextBox text="" ui:field="base_area" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Label text="Høyde" height="14px" ui:field="baseheightLabel"/>
          	<g:TextBox text="" ui:field="base_height" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="varmetapskoeffisient" ui:field="heatlossLabel" height="14px"/>
+         	<g:Label text="Varmetapskoeffisient" ui:field="heatlossLabel" height="14px"/>
          	<g:TextBox text="" ui:field="heat_loss_rate" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
          	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
@@ -67,7 +67,7 @@
          	<g:Button width="185px" ui:field="addUsagePattern">Legg til forbruksmønster</g:Button>
          	<g:Button width="185px" text="Legg til påvirkningsfaktor" height="30px" ui:field="addImpactButton"/>
          	<g:Button width="185px" text="Vis Kart" ui:field="showMap"/>
-         	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="328px"/>
+         	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="275px"/>
          </g:FlowPanel>
        </g:east>     
         <g:south size="12.6">
