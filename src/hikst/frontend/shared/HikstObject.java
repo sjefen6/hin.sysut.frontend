@@ -25,6 +25,7 @@ public class HikstObject implements Serializable
 	public Double base_height;
 	public Double heat_loss_rate;
 	public ArrayList<Integer> sons = new ArrayList<Integer>();
+	public ArrayList<ImpactDegree> impactDegrees = new ArrayList<ImpactDegree>();
 	
 	public Integer getID(){
 		return ID;

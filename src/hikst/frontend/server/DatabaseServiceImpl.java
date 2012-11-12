@@ -641,6 +641,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 				hikstObject.base_height = set.getDouble(12);
 				hikstObject.heat_loss_rate = set.getDouble(13);
 				hikstObject.sons = getHikstObjectChildren(hikstObject.getID());
+				hikstObject.impactDegrees = getImpactDegrees(hikstObject.getID());
 				hikstObjects.add(hikstObject);
 			}
 		} catch (SQLException ex) {
@@ -648,6 +649,29 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		}
 
 		return hikstObjects;
+	}
+
+	private ArrayList<ImpactDegree> getImpactDegrees(int ObjectID)
+			throws SQLException {
+		ArrayList<ImpactDegree> impactDegrees = new ArrayList<ImpactDegree>();
+
+		Connection connection = Settings.getDBC();
+
+		String query = "SELECT * FROM IMPACT_DEGREES WHERE Object_ID=?";
+
+		PreparedStatement preparedStatement = connection
+				.prepareStatement(query);
+		preparedStatement.setInt(1, ObjectID);
+		ResultSet set = preparedStatement.executeQuery();
+
+		while (set.next()) {
+			ImpactDegree impactDegree = new ImpactDegree(set.getInt("object_id"));
+			impactDegree.percent = set.getDouble("percent");
+			impactDegree.type_id = set.getInt("type_id");
+			impactDegrees.add(impactDegree);
+		}
+
+		return impactDegrees;
 	}
 
 	private ArrayList<Integer> getHikstObjectChildren(int ObjectID)
@@ -671,18 +695,17 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public int saveObject(HikstObject simObject,
-			ArrayList<ImpactDegree> impactDegrees) {
+	public int saveObject(HikstObject simObject) {
 
 		try {
 			String query;
 			if (simObject.getID() != null) {
 				query = "UPDATE Objects set Name=?, Effect=?, Voltage=?, Current=?,"
-					+ " Usage_Pattern_ID=?, Latitude=?, Longitude=?, Self_Temperature=?"
-					+ ", Target_Temperature=?, Base_Area=?, Base_Heat=?,Heat_Loss_Rate=? where ID=?";
+						+ " Usage_Pattern_ID=?, Latitude=?, Longitude=?, Self_Temperature=?"
+						+ ", Target_Temperature=?, Base_Area=?, Base_Height=?,Heat_Loss_Rate=? where ID=?";
 			} else {
 				query = "INSERT INTO Objects (Name,Effect,Voltage,Current,Usage_Pattern_ID,Latitude,Longitude"
-					+ ",Self_Temperature,Target_Temperature,Base_Area,Base_Height,Heat_Loss_Rate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) Returning *";
+						+ ",Self_Temperature,Target_Temperature,Base_Area,Base_Height,Heat_Loss_Rate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) Returning *";
 			}
 			PreparedStatement preparedStatement = Settings.getDBC()
 					.prepareStatement(query);
@@ -771,9 +794,9 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			for (int childIndex = 0; childIndex < simObject.sons.size(); childIndex++) {
 				saveChild(simObject.getID(), simObject.sons.get(childIndex));
 			}
-			
+
 			// Store all the Impact degrees
-			for (ImpactDegree id : impactDegrees) {
+			for (ImpactDegree id : simObject.impactDegrees) {
 				addImpactDegree(id, simObject.getID());
 			}
 
@@ -804,8 +827,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 
-	@Override
-	public void addImpactDegree(ImpactDegree impactDegree, int object_id) {
+	private void addImpactDegree(ImpactDegree impactDegree, int object_id) {
 
 		try {
 			String query = "INSERT INTO IMPACT_DEGREES(Type_ID, Percent,Object_ID) VALUES(?,?,?);";
@@ -813,8 +835,8 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			PreparedStatement preparedStatement;
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, impactDegree.type_id);
-			preparedStatement.setInt(2, object_id);
-			preparedStatement.setDouble(3, impactDegree.percent);
+			preparedStatement.setDouble(2, impactDegree.percent);
+			preparedStatement.setInt(3, object_id);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

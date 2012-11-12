@@ -9,19 +9,19 @@ public class ImpactDegree implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int id;
+	private int object_id;
 	public double percent;
 	public int type_id;
 	
 	public ImpactDegree(){
-		this.id = -1;
+		this.object_id = -1;
 	}
 	
-	public ImpactDegree(int id){
-		this.id = id;
+	public ImpactDegree(int object_id){
+		this.object_id = object_id;
 	}
 	
 	public int getId(){
-		return id;
+		return object_id;
 	}
 }
