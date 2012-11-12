@@ -44,36 +44,26 @@ public class NewImpactDegree extends HikstComposite {
 	FlowPanel centerPanel;
 	@UiField
 	ListBox impactFactorType;
-	@UiField
-	Label ImpLabel;
 	@UiField DoubleBox inputBox;
 
-	private Composite parent;
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
-
-	private HikstObject hikstObject;
 	
-	public NewImpactDegree(HikstComposite parent, HikstObject hikstObject) {
+	public NewImpactDegree(HikstComposite hikstCompositeParent) {
 		initWidget(uiBinder.createAndBindUi(this));
 		initFactorListBox();
-		this.hikstObject = hikstObject;
-		this.hikstCompositeParent = parent;
+		this.hikstCompositeParent = hikstCompositeParent;
 		centerPanel.add(impactFactorType);
 		impactDegree = new ImpactDegree();
 		
-//		if(hikstObject.getID() == null){
-//			addImpButton.setText("Lagre Objetet!");
-//		}
 	}
 
 	private void initFactorListBox() {
 //		centerPanel.remove(impactFactorType);
 		databaseService.getImpactTypes(new ImpactFactorsCallback(
-				impactFactorType, parent));
+				impactFactorType, hikstCompositeParent));
 
-//		centerPanel.add(impactFactorType);
-//		inputBox.getElement().setAttribute("placeHolder", "ImpactFactor % ");
+		centerPanel.add(impactFactorType);
 	}
 	
 	public ImpactDegree getImpactDegree(){
@@ -89,24 +79,8 @@ public class NewImpactDegree extends HikstComposite {
 
 	@UiHandler("addImpButton")
 	void onAddClick(ClickEvent event) {
-		
 		NewObject panel = new NewObject((NewObject) hikstCompositeParent);
 		panel.addImpactDegree(getImpactDegree());
 		RootLayoutPanel.get().add(panel);
-
-//		impFactor = inputBox.getValue();
-//		int type_id = Integer.parseInt(impactFactorType.getValue(impactFactorType.getSelectedIndex()));
-//		
-//		if(hikstObject.getID() == null){
-//			addImpButton.setText("Lagre P&aring;vikrningsgraden!");
-//			databaseService.saveObject(hikstObject, new SaveObjectCallback(hikstObject));
-//		}
-//		else{
-//		databaseService.addImpactDegree(impFactor,
-//				hikstObject.getID(),
-//				type_id ,
-//				new ImpactDegreeCallback((NewObject) hikstCompositeParent));
-//		
-//		}
 	}
 }

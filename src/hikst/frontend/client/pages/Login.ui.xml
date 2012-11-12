@@ -40,7 +40,7 @@
 		<g:east size='4.0'>
 			<g:FlowPanel styleName="{style.eastPanel}" />
 		</g:east>
-		<g:south size="5">
+		<g:south size="7.8">
 			<g:FlowPanel styleName="{style.southPanel}">
 			</g:FlowPanel>
 		</g:south>

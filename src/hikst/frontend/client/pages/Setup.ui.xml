@@ -39,7 +39,7 @@
          	<g:TextBox name="db_user" text="user" ui:field="db_user"/>
          	<g:InlineLabel text="Password"/>
          	<g:TextBox name="db_pw" text="****" ui:field="db_password"/>
-         	<g:Button ui:field="install">Install</g:Button>
+         	<g:Button ui:field="install">Installere</g:Button>
          </g:FlowPanel>
        </g:center>
        <g:east size='9.3'>
