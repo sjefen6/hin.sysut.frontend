@@ -59,13 +59,13 @@ public class ViewObjectsCallback implements
 						@Override
 						public void onClick(ClickEvent event) {
 
-							if (hikstCompositeParent instanceof NewObject) {
-								NewObject panel = new NewObject((NewObject) hikstCompositeParent);
+							if (hikstCompositeParent.getHikstCompositeParent() instanceof NewObject) {
+								NewObject panel = new NewObject((NewObject) hikstCompositeParent.getHikstCompositeParent());
 								panel.addChildObject(simObject);
 								RootLayoutPanel.get().add(panel);
-							} else if (hikstCompositeParent instanceof NewSimulation) {
+							} else if (hikstCompositeParent.getHikstCompositeParent() instanceof NewSimulation) {
 								RootLayoutPanel.get().add(
-										new NewSimulation((NewSimulation) hikstCompositeParent, simObject));
+										new NewSimulation((NewSimulation) hikstCompositeParent.getHikstCompositeParent(), simObject));
 							}
 						}
 					}));

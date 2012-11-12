@@ -34,7 +34,7 @@ import com.google.gwt.user.client.ui.Label;
 public class NewObject extends HikstComposite {
 
 	private HikstObject o;
-	private ArrayList<ImpactDegree> impactDegrees; 
+	private ArrayList<ImpactDegree> impactDegrees;
 
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
@@ -107,8 +107,8 @@ public class NewObject extends HikstComposite {
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
-	
-	private NewObject(){
+
+	private NewObject() {
 		initWidget(uiBinder.createAndBindUi(this));
 		o = new HikstObject();
 		impactDegrees = new ArrayList<ImpactDegree>();
@@ -125,13 +125,12 @@ public class NewObject extends HikstComposite {
 		this();
 		this.hikstCompositeParent = hikstCompositeParent;
 	}
-	
+
 	public NewObject(NewObject hikstCompositeParent) {
-		this( (ViewObjects)hikstCompositeParent.getHikstCompositeParent());
+		this((ViewObjects) hikstCompositeParent.getHikstCompositeParent());
 		o = ((NewObject) hikstCompositeParent).getObject();
 		setValues();
 	}
-	
 
 	/**
 	 * Adds a child object
@@ -142,7 +141,7 @@ public class NewObject extends HikstComposite {
 		o.sons.add(childObject.getID());
 		setValues();
 	}
-	
+
 	/**
 	 * Adds an ImpactDegree
 	 * 
@@ -152,7 +151,7 @@ public class NewObject extends HikstComposite {
 		impactDegrees.add(impactDegree);
 		setValues();
 	}
-	
+
 	/**
 	 * Sets a child object
 	 * 
@@ -238,7 +237,7 @@ public class NewObject extends HikstComposite {
 		if (o.effect.equals(Double.NaN)) {
 			effect.setValue("");
 		} else {
-			// effect.setValue(o.effect.toString());
+			effect.setValue(o.effect.toString());
 		}
 		if (o.voltage.equals(Double.NaN)) {
 			voltage.setValue("");
@@ -364,7 +363,9 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ViewObjects(hikstCompositeParent.getHikstCompositeParent()));
+		RootLayoutPanel.get()
+				.add(new ViewObjects(hikstCompositeParent
+						.getHikstCompositeParent()));
 	}
 
 	@UiHandler("saveObject")
@@ -374,10 +375,12 @@ public class NewObject extends HikstComposite {
 		} else {
 			getObject();
 			o.effect.isNaN();
-			databaseService.saveObject(o, impactDegrees, new SaveObjectCallback(o));
+			databaseService.saveObject(o, impactDegrees,
+					new SaveObjectCallback(o));
 			onBackClick(event);
 		}
 	}
+
 	@UiHandler("emailAdmin")
 	void onEmailAdminClick(ClickEvent event) {
 		RootLayoutPanel.get().add(new EmailAdmin());

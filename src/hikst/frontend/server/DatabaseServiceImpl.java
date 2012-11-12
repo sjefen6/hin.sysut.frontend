@@ -42,7 +42,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		DatabaseService {
-	
+
 	private static final int SALT_LENGTH = 20;
 	private static final SecureRandom randomizer = new SecureRandom();
 
@@ -322,75 +322,65 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			return null;
 		}
 	}
-	
-	public ArrayList<ImpactType> getImpactTypes() 
-	{
+
+	public ArrayList<ImpactType> getImpactTypes() {
 		Connection connection = Settings.getDBC();
 		ArrayList<ImpactType> impactTypes = new ArrayList<ImpactType>();
-		
-		try
-		{
+
+		try {
 			String query = "SELECT ID, Name FROM Type";
 			PreparedStatement statement = connection.prepareStatement(query);
 			ResultSet set = statement.executeQuery();
-	
-			while(set.next())
-			{
+
+			while (set.next()) {
 				int id = set.getInt(1);
 				String key = set.getString(2);
-		
+
 				ImpactType type = new ImpactType();
 				type.ID = id;
 				type.name = key;
-		
+
 				impactTypes.add(type);
-			}	
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 		}
-		catch(SQLException ex)
-		{
-		ex.printStackTrace();
-		}
-		
+
 		return impactTypes;
 	}
-	
-	public ArrayList<ViewSimulationObject> getViewSimulationObjects()
-	{
+
+	public ArrayList<ViewSimulationObject> getViewSimulationObjects() {
 		Connection connection = Settings.getDBC();
 		ArrayList<ViewSimulationObject> viewsimobjects = new ArrayList<ViewSimulationObject>();
-		
-		try
-		{
-			String query = "SELECT Objects.Name, Simulation_Descriptions.ID, Status.Name FROM Objects, Simulation_Descriptions, Status, Simulator_Queue_Objects " +
-					"WHERE Simulation_Descriptions.ID = Objects.ID " +
-					"AND Simulation_Descriptions.ID = Simulator_Queue_Objects.Simulation_Descriptions_ID " +
-					"AND Simulator_Queue_Objects.Status_ID = Status.ID";
+
+		try {
+			String query = "SELECT Objects.Name, Simulation_Descriptions.ID, Status.Name FROM Objects, Simulation_Descriptions, Status, Simulator_Queue_Objects "
+					+ "WHERE Simulation_Descriptions.ID = Objects.ID "
+					+ "AND Simulation_Descriptions.ID = Simulator_Queue_Objects.Simulation_Descriptions_ID "
+					+ "AND Simulator_Queue_Objects.Status_ID = Status.ID";
 			PreparedStatement statement = connection.prepareStatement(query);
 			ResultSet set = statement.executeQuery();
-			
-			while(set.next())
-			{
+
+			while (set.next()) {
 				int id = set.getInt(1);
 				String obj_Name = set.getString(2);
 				String stat_name = set.getString(3);
-				
+
 				ViewSimulationObject object = new ViewSimulationObject();
-				
+
 				object.Object_Name = obj_Name;
 				object.Status_Name = stat_name;
-		
+
 				viewsimobjects.add(object);
-			}	
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 		}
-		catch(SQLException ex)
-		{
-		ex.printStackTrace();
-		}
-		
+
 		return viewsimobjects;
-		
+
 	}
-	
+
 	@Override
 	public boolean deleteObject(int object_id) {
 
@@ -443,12 +433,12 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			} else {
 				description_id = Integer.MAX_VALUE;
 			}
-			
+
 			String anotherQuery = "INSERT INTO Simulator_Queue_Objects(Simulator_ID,Status_ID,Simulation_Descriptions_ID) VALUES(?,?,?) RETURNING ID";
 			PreparedStatement anotherStatement = connection
 					.prepareStatement(anotherQuery);
 			anotherStatement.setNull(1, java.sql.Types.INTEGER);
-			//5 er id`en til "Pending" i Status-tabellen
+			// 5 er id`en til "Pending" i Status-tabellen
 			anotherStatement.setInt(2, 5);
 			anotherStatement.setInt(3, description_id);
 			ResultSet anotherSet = anotherStatement.executeQuery();
@@ -561,7 +551,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 	public HikstObjectTree loadObject(int id) {
 
 		try {
-			
+
 			return getTree(id);
 
 		} catch (SQLException e) {
@@ -570,36 +560,34 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 
 		return null;
 	}
-	
-	private HikstObjectTree getTree(int id) throws SQLException
-	{
-			HikstObjectTree treeItem = new HikstObjectTree();
-			HikstObject hikstObject = getObject(id);
-			
-			treeItem.setItem(hikstObject);
-			
-			ArrayList<Integer> sons = hikstObject.sons;
-			
-			for(int index = 0; index<sons.size(); index++)
-			{
-				treeItem.addSon(getTree(sons.get(index)));
-			}
-			
-			return treeItem;
+
+	private HikstObjectTree getTree(int id) throws SQLException {
+		HikstObjectTree treeItem = new HikstObjectTree();
+		HikstObject hikstObject = getObject(id);
+
+		treeItem.setItem(hikstObject);
+
+		ArrayList<Integer> sons = hikstObject.sons;
+
+		for (int index = 0; index < sons.size(); index++) {
+			treeItem.addSon(getTree(sons.get(index)));
+		}
+
+		return treeItem;
 	}
-	
-	private HikstObject getObject(int id){
+
+	private HikstObject getObject(int id) {
 		Connection connection = Settings.getDBC();
-		
-		String query = "SELECT name, effect, voltage, current, usage_pattern_id,latitude, longitude," +
-		"self_temperature, target_temperature, base_area, base_height, heat_loss_rate from objects where id=?";
-		
-		try{
+
+		String query = "SELECT name, effect, voltage, current, usage_pattern_id,latitude, longitude,"
+				+ "self_temperature, target_temperature, base_area, base_height, heat_loss_rate from objects where id=?";
+
+		try {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, id);
 			ResultSet set = statement.executeQuery();
-			
-			if(set.next()){
+
+			if (set.next()) {
 				HikstObject hikstObject = new HikstObject();
 				hikstObject.setID(id);
 				hikstObject.name = set.getString(1);
@@ -614,14 +602,13 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 				hikstObject.base_area = set.getDouble(10);
 				hikstObject.base_height = set.getDouble(11);
 				hikstObject.heat_loss_rate = set.getDouble(12);
-				hikstObject.sons = getHikstObjectChildren(hikstObject.getID());	
+				hikstObject.sons = getHikstObjectChildren(hikstObject.getID());
 				return hikstObject;
 			}
-		}
-		catch(SQLException ex){
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -632,8 +619,8 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 
 		try {
 			Connection connection = Settings.getDBC();
-			String query = "SELECT id, name, effect, voltage, current, usage_pattern_id,latitude, longitude," +
-					"self_temperature, target_temperature, base_area, base_height, heat_loss_rate from objects";
+			String query = "SELECT id, name, effect, voltage, current, usage_pattern_id,latitude, longitude,"
+					+ "self_temperature, target_temperature, base_area, base_height, heat_loss_rate from objects";
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(query);
 			ResultSet set = preparedStatement.executeQuery();
@@ -655,7 +642,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 				hikstObject.heat_loss_rate = set.getDouble(13);
 				hikstObject.sons = getHikstObjectChildren(hikstObject.getID());
 				hikstObjects.add(hikstObject);
-			}		
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -663,228 +650,135 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		return hikstObjects;
 	}
 
-	private ArrayList<Integer> getHikstObjectChildren(int ObjectID) throws SQLException
-	{
+	private ArrayList<Integer> getHikstObjectChildren(int ObjectID)
+			throws SQLException {
 		ArrayList<Integer> children = new ArrayList<Integer>();
-		
+
 		Connection connection = Settings.getDBC();
-		
+
 		String query = "select son_id from part_objects where father_id=?";
-		
-		PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+		PreparedStatement preparedStatement = connection
+				.prepareStatement(query);
 		preparedStatement.setInt(1, ObjectID);
 		ResultSet set = preparedStatement.executeQuery();
-		
-		while(set.next())
-		{
+
+		while (set.next()) {
 			children.add(set.getInt(1));
 		}
-		
+
 		return children;
 	}
-	
+
 	@Override
-	public int saveObject(HikstObject simObject, ArrayList<ImpactDegree> impactDegrees) {
+	public int saveObject(HikstObject simObject,
+			ArrayList<ImpactDegree> impactDegrees) {
 
 		try {
+			String query;
 			if (simObject.getID() != null) {
-				String query = "UPDATE Objects set Name=?, Effect=?, Voltage=?, Current=?,"
-						+ " Usage_Pattern_ID=?, Latitude=?, Longitude=?, Self_Temperature=?"
-						+ ", Target_Temperature=?, Base_Area=?, Base_Heat=?,Heat_Loss_Rate=? where ID=?";
-				PreparedStatement preparedStatement = Settings.getDBC()
-						.prepareStatement(query);
-				
-				preparedStatement.setString(1, simObject.name);
-				
-				if(simObject.effect != null){
-					preparedStatement.setDouble(2, simObject.effect);
-					}
-					else{
-						preparedStatement.setNull(2, java.sql.Types.DOUBLE);
-					}
-					
-					if(simObject.voltage != null){
-						preparedStatement.setDouble(3, simObject.voltage);
-					}
-					else{
-						preparedStatement.setNull(3, java.sql.Types.DOUBLE);
-					}
-					
-					if(simObject.current != null){
-						preparedStatement.setDouble(4, simObject.current);
-					}
-					else{
-						preparedStatement.setNull(4, java.sql.Types.DOUBLE);
-					}
-					
-					if(simObject.usage_pattern_ID != null){
-						preparedStatement.setDouble(5, simObject.usage_pattern_ID);
-					}
-					else{
-						preparedStatement.setNull(5, java.sql.Types.INTEGER);
-					}
-					
-					if(simObject.latitude != null){
-						preparedStatement.setDouble(6, simObject.latitude);
-					}
-					else{
-						preparedStatement.setNull(6, java.sql.Types.DOUBLE);
-					}
-					
-					if(simObject.longitude != null){
-						preparedStatement.setDouble(7, simObject.longitude);
-					}
-					else{
-						preparedStatement.setNull(7, java.sql.Types.DOUBLE);
-					}
-					
-					if(simObject.self_temperature != null){
-						preparedStatement.setDouble(8, simObject.self_temperature);
-					}
-					else{
-						preparedStatement.setNull(8, java.sql.Types.DOUBLE);
-					}
-
-					if(simObject.target_temperature != null){
-						preparedStatement.setDouble(9, simObject.target_temperature);
-					}
-					else{
-						preparedStatement.setNull(9, java.sql.Types.DOUBLE);
-					}
-					
-					if(simObject.base_area != null){
-						preparedStatement.setDouble(10, simObject.base_area);
-					}
-					else{
-						preparedStatement.setNull(10, java.sql.Types.DOUBLE);
-					}
-					
-					if(simObject.base_height != null){
-						preparedStatement.setDouble(11, simObject.base_height);
-					}
-					else{
-						preparedStatement.setNull(11, java.sql.Types.DOUBLE);
-					}
-
-					if(simObject.heat_loss_rate != null){
-						preparedStatement.setDouble(12, simObject.heat_loss_rate);
-					}
-					else{
-						preparedStatement.setNull(12, java.sql.Types.DOUBLE);
-					}
-				
-				preparedStatement.setInt(13, simObject.getID());
-
-				preparedStatement.executeUpdate();
-				
-				for(int childIndex = 0; childIndex < simObject.sons.size(); childIndex++){
-					
-					saveChild(simObject.getID(),simObject.sons.get(childIndex));
-					
-				}
-				// returning the existing object-id
-				return simObject.getID();
+				query = "UPDATE Objects set Name=?, Effect=?, Voltage=?, Current=?,"
+					+ " Usage_Pattern_ID=?, Latitude=?, Longitude=?, Self_Temperature=?"
+					+ ", Target_Temperature=?, Base_Area=?, Base_Heat=?,Heat_Loss_Rate=? where ID=?";
 			} else {
-				String query = "INSERT INTO Objects (Name,Effect,Voltage,Current,Usage_Pattern_ID,Latitude,Longitude" +
-						",Self_Temperature,Target_Temperature,Base_Area,Base_Height,Heat_Loss_Rate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) Returning *";
-				PreparedStatement preparedStatement = Settings.getDBC()
-						.prepareStatement(query);
-				preparedStatement.setString(1, simObject.name);
+				query = "INSERT INTO Objects (Name,Effect,Voltage,Current,Usage_Pattern_ID,Latitude,Longitude"
+					+ ",Self_Temperature,Target_Temperature,Base_Area,Base_Height,Heat_Loss_Rate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) Returning *";
+			}
+			PreparedStatement preparedStatement = Settings.getDBC()
+					.prepareStatement(query);
 
-				if(simObject.effect != null){
+			preparedStatement.setString(1, simObject.name);
+
+			if (simObject.effect != null) {
 				preparedStatement.setDouble(2, simObject.effect);
-				}
-				else{
-					preparedStatement.setNull(2, java.sql.Types.DOUBLE);
-				}
-				
-				if(simObject.voltage != null){
-					preparedStatement.setDouble(3, simObject.voltage);
-				}
-				else{
-					preparedStatement.setNull(3, java.sql.Types.DOUBLE);
-				}
-				
-				if(simObject.current != null){
-					preparedStatement.setDouble(4, simObject.current);
-				}
-				else{
-					preparedStatement.setNull(4, java.sql.Types.DOUBLE);
-				}
-				
-				if(simObject.usage_pattern_ID != null){
-					preparedStatement.setDouble(5, simObject.usage_pattern_ID);
-				}
-				else{
-					preparedStatement.setNull(5, java.sql.Types.INTEGER);
-				}
-				
-				if(simObject.latitude != null){
-					preparedStatement.setDouble(6, simObject.latitude);
-				}
-				else{
-					preparedStatement.setNull(6, java.sql.Types.DOUBLE);
-				}
-				
-				if(simObject.longitude != null){
-					preparedStatement.setDouble(7, simObject.longitude);
-				}
-				else{
-					preparedStatement.setNull(7, java.sql.Types.DOUBLE);
-				}
-				
-				if(simObject.self_temperature != null){
-					preparedStatement.setDouble(8, simObject.self_temperature);
-				}
-				else{
-					preparedStatement.setNull(8, java.sql.Types.DOUBLE);
-				}
+			} else {
+				preparedStatement.setNull(2, java.sql.Types.DOUBLE);
+			}
 
-				if(simObject.target_temperature != null){
-					preparedStatement.setDouble(9, simObject.target_temperature);
-				}
-				else{
-					preparedStatement.setNull(9, java.sql.Types.DOUBLE);
-				}
-				
-				if(simObject.base_area != null){
-					preparedStatement.setDouble(10, simObject.base_area);
-				}
-				else{
-					preparedStatement.setNull(10, java.sql.Types.DOUBLE);
-				}
-				
-				if(simObject.base_height != null){
-					preparedStatement.setDouble(11, simObject.base_height);
-				}
-				else{
-					preparedStatement.setNull(11, java.sql.Types.DOUBLE);
-				}
+			if (simObject.voltage != null) {
+				preparedStatement.setDouble(3, simObject.voltage);
+			} else {
+				preparedStatement.setNull(3, java.sql.Types.DOUBLE);
+			}
 
-				if(simObject.heat_loss_rate != null){
-					preparedStatement.setDouble(12, simObject.heat_loss_rate);
-				}
-				else{
-					preparedStatement.setNull(12, java.sql.Types.DOUBLE);
-				}
+			if (simObject.current != null) {
+				preparedStatement.setDouble(4, simObject.current);
+			} else {
+				preparedStatement.setNull(4, java.sql.Types.DOUBLE);
+			}
 
+			if (simObject.usage_pattern_ID != null) {
+				preparedStatement.setDouble(5, simObject.usage_pattern_ID);
+			} else {
+				preparedStatement.setNull(5, java.sql.Types.INTEGER);
+			}
 
+			if (simObject.latitude != null) {
+				preparedStatement.setDouble(6, simObject.latitude);
+			} else {
+				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
+			}
+
+			if (simObject.longitude != null) {
+				preparedStatement.setDouble(7, simObject.longitude);
+			} else {
+				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+			}
+
+			if (simObject.self_temperature != null) {
+				preparedStatement.setDouble(8, simObject.self_temperature);
+			} else {
+				preparedStatement.setNull(8, java.sql.Types.DOUBLE);
+			}
+
+			if (simObject.target_temperature != null) {
+				preparedStatement.setDouble(9, simObject.target_temperature);
+			} else {
+				preparedStatement.setNull(9, java.sql.Types.DOUBLE);
+			}
+
+			if (simObject.base_area != null) {
+				preparedStatement.setDouble(10, simObject.base_area);
+			} else {
+				preparedStatement.setNull(10, java.sql.Types.DOUBLE);
+			}
+
+			if (simObject.base_height != null) {
+				preparedStatement.setDouble(11, simObject.base_height);
+			} else {
+				preparedStatement.setNull(11, java.sql.Types.DOUBLE);
+			}
+
+			if (simObject.heat_loss_rate != null) {
+				preparedStatement.setDouble(12, simObject.heat_loss_rate);
+			} else {
+				preparedStatement.setNull(12, java.sql.Types.DOUBLE);
+			}
+
+			if (simObject.getID() != null) {
+				preparedStatement.setInt(13, simObject.getID());
+				preparedStatement.executeUpdate();
+			} else {
 				ResultSet set = preparedStatement.executeQuery();
 
 				if (set.next()) {
-
 					// returning the new id of the object
-					int simObjectId = set.getInt(1);
-					
-					for(int childIndex = 0; childIndex < simObject.sons.size(); childIndex++){
-						
-						saveChild(simObjectId,simObject.sons.get(childIndex));
-						
-					}
-					
-					return simObjectId;
+					simObject.setID(set.getInt(1));
 				}
 			}
+
+			// Store all the Child objects
+			for (int childIndex = 0; childIndex < simObject.sons.size(); childIndex++) {
+				saveChild(simObject.getID(), simObject.sons.get(childIndex));
+			}
+			
+			// Store all the Impact degrees
+			for (ImpactDegree id : impactDegrees) {
+				addImpactDegree(id, simObject.getID());
+			}
+
+			// returning the existing object-id
+			return simObject.getID();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -895,36 +789,32 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 		// something must then be wrong with the code
 		return -1;
 	}
-	
-	public void saveChild(int fatherID,int childID)
-	{
-		try
-		{
+
+	public void saveChild(int fatherID, int childID) {
+		try {
 			String query = "INSERT INTO Part_Objects(father_id,son_id) VALUES(?,?);";
-			Connection connection = Settings.getDBC(); 
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1,fatherID);
+			Connection connection = Settings.getDBC();
+			PreparedStatement preparedStatement = connection
+					.prepareStatement(query);
+			preparedStatement.setInt(1, fatherID);
 			preparedStatement.setInt(2, childID);
 			preparedStatement.executeUpdate();
-		}
-		catch(SQLException ex)
-		{
-			
+		} catch (SQLException ex) {
+
 		}
 	}
 
 	@Override
-	public void addImpactDegree(double percent, int object_id, int type_id) {
-		
+	public void addImpactDegree(ImpactDegree impactDegree, int object_id) {
+
 		try {
 			String query = "INSERT INTO IMPACT_DEGREES(Type_ID, Percent,Object_ID) VALUES(?,?,?);";
 			Connection connection = Settings.getDBC();
 			PreparedStatement preparedStatement;
-			preparedStatement = connection
-					.prepareStatement(query);
-			preparedStatement.setInt(1, type_id);
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, impactDegree.type_id);
 			preparedStatement.setInt(2, object_id);
-			preparedStatement.setDouble(3, percent);
+			preparedStatement.setDouble(3, impactDegree.percent);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -935,39 +825,36 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public void saveUsagePattern(UsagePattern usagePattern) {
-	
+
 		try {
-			if(usagePattern.getID() == -1)
-			{
-				String query = "INSERT INTO Usage_Pattern(name,actual,c00,c01,c02,c03,c04,c05,c06" +
-				",c07,c08,c09,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23)" +
-				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-				PreparedStatement statement = Settings.getDBC().prepareStatement(query);
+			if (usagePattern.getID() == -1) {
+				String query = "INSERT INTO Usage_Pattern(name,actual,c00,c01,c02,c03,c04,c05,c06"
+						+ ",c07,c08,c09,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23)"
+						+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+				PreparedStatement statement = Settings.getDBC()
+						.prepareStatement(query);
 				System.out.println(usagePattern.name);
 				statement.setString(1, usagePattern.name);
 				statement.setBoolean(2, usagePattern.actual);
-				for(int i = 0; i<usagePattern.pattern.length; i++)
-				{
-					statement.setInt(3+i, usagePattern.pattern[i]);
+				for (int i = 0; i < usagePattern.pattern.length; i++) {
+					statement.setInt(3 + i, usagePattern.pattern[i]);
 				}
-				statement.executeUpdate();	
-			}
-			else
-			{
-				String query = "UPDATE Usage_Pattern SET name=?, actual=?," +
-						" c00=?, c01=?, c02=?, c03=?, c04=?, c05=?, c06=?, c07=?, " +
-						"c08=?, c09=?,  c10=?, c11=?, c12=?, c13=?, c14=?, c15=?, c16=?"+
-						"c17=?, c18=?,  c19=?, c20=?, c21=?, c22=?, c23=? WHERE id=?";
-				PreparedStatement statement = Settings.getDBC().prepareStatement(query);
+				statement.executeUpdate();
+			} else {
+				String query = "UPDATE Usage_Pattern SET name=?, actual=?,"
+						+ " c00=?, c01=?, c02=?, c03=?, c04=?, c05=?, c06=?, c07=?, "
+						+ "c08=?, c09=?,  c10=?, c11=?, c12=?, c13=?, c14=?, c15=?, c16=?"
+						+ "c17=?, c18=?,  c19=?, c20=?, c21=?, c22=?, c23=? WHERE id=?";
+				PreparedStatement statement = Settings.getDBC()
+						.prepareStatement(query);
 				int index = 1;
 				statement.setString(index++, usagePattern.name);
 				statement.setBoolean(index++, usagePattern.actual);
-				
-				for(int i = 0; i<usagePattern.pattern.length; i++)
-				{
+
+				for (int i = 0; i < usagePattern.pattern.length; i++) {
 					statement.setInt(index++, usagePattern.pattern[i]);
 				}
-				
+
 				statement.setInt(index++, usagePattern.getID());
 				statement.executeUpdate();
 			}
@@ -975,40 +862,37 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	public ArrayList<UsagePattern> getUsagePatterns(){
-		
+	public ArrayList<UsagePattern> getUsagePatterns() {
+
 		ArrayList<UsagePattern> usagePatterns = new ArrayList<UsagePattern>();
-		
-		try
-		{
+
+		try {
 			String query = "SELECT * FROM Usage_Pattern";
-			PreparedStatement statement = Settings.getDBC().prepareStatement(query);
+			PreparedStatement statement = Settings.getDBC().prepareStatement(
+					query);
 			ResultSet set = statement.executeQuery();
-			
-			while(set.next())
-			{
+
+			while (set.next()) {
 				UsagePattern usagePattern = new UsagePattern(set.getInt("id"));
 				usagePattern.name = set.getString("name");
 				usagePattern.actual = set.getBoolean("actual");
 				usagePattern.pattern = new int[24];
-				
-				for(int index = 0; index < usagePattern.pattern.length; index++)
-				{
+
+				for (int index = 0; index < usagePattern.pattern.length; index++) {
 					usagePattern.pattern[index] = set.getInt(index + 3);
-					
+
 				}
 				usagePatterns.add(usagePattern);
 			}
-			
-		}catch(SQLException ex)
-		{
+
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		
+
 		return usagePatterns;
-		
+
 	}
 }
