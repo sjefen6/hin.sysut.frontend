@@ -51,7 +51,7 @@ public class Simulation
 	
 	public Simulation(Description description)
 	{
-		simulatorObject = description.getSimulatorObject();
+		//simulatorObject = description.getSimulatorObject();
 		
 		Date[] times = description.getTimes();
 		double[] effects = description.getEffects();

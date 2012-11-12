@@ -101,7 +101,8 @@ public class NewSimulation extends HikstComposite {
 	@UiHandler("buttonShowSpline")
 	void onButtonShowSplineClick(ClickEvent event) {
 		centerPanel.clear();
-		centerPanel.add(SplineGraf.createChart());
+		//måtte kommentere ut denne etter at jeg endret spline klassen.
+		//centerPanel.add(SplineGraf.createChart());
 		System.out.println("Should show spline!!!");
 	}
 	@UiHandler("button")

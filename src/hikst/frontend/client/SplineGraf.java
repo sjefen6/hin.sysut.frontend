@@ -11,16 +11,16 @@ import org.moxieapps.gwt.highcharts.client.labels.*;
 import org.moxieapps.gwt.highcharts.client.plotOptions.*; 
 
 public class SplineGraf {
-
+	Chart chart = new Chart();
+	final Series series = chart.createSeries();;
 	
 	public void onModuleLoad() {  
 	        RootPanel.get().add(createChart());  
 	    }  
 	
-	public static Chart createChart() {  
+	public Chart createChart() {  
 		  
-        final Chart chart = new Chart()  
-            .setType(Series.Type.SPLINE)  
+       chart.setType(Series.Type.SPLINE)  
             .setMarginRight(10)  
             .setChartTitleText("Strømforbruk")  
             .setBarPlotOptions(new BarPlotOptions()  
@@ -57,30 +57,44 @@ public class SplineGraf {
                     .setWidth(1)  
                     .setColor("#808080")  
             );  
-  
-        final Series series = chart.createSeries();  
+   
         chart.addSeries(series  
             .setName("Strømforbruk-data")  
         );  
   
-        // Generate an array of random data  
-        long time = new Date().getTime();  
-        for(int i = -19; i <= 0; i++) {  
-            series.addPoint(time + i * 1000, com.google.gwt.user.client.Random.nextDouble());  
-        }  
+        //Generate an array of random data  
+        //long time = new Date().getTime();  
+        //for(int i = -19; i <= 0; i++) {  
+        //    series.addPoint(time + i * 1000, com.google.gwt.user.client.Random.nextDouble());  
+        //}  
   
-        Timer tempTimer = new Timer() {  
-            @Override  
-            public void run() {  
-                series.addPoint(  
-                    new Date().getTime(),  
-                    com.google.gwt.user.client.Random.nextDouble(),  
-                    true, true, true  
-                );  
-            }  
-        };  
-        tempTimer.scheduleRepeating(1000);  
+//        Timer tempTimer = new Timer() {  
+//            @Override  
+//            public void run() {  
+//                series.addPoint(  
+//                    new Date().getTime(),  
+//                    com.google.gwt.user.client.Random.nextDouble(),  
+//                    true, true, true  
+//                );  
+//            }  
+//        };  
+//        tempTimer.scheduleRepeating(1000);  
   
         return chart;  
     }  
+	
+	public int size()
+	{
+		return series.getPoints().length;
+	}
+	
+	//vi må kanskje telle punktene og sette den andre booleanen til false 
+	//sånn at grafen shifter til venstre når det lir fullt! true,true,true liksom 
+	//dette bør vi diskutere innad i gruppa. går det ant å scrolle grafen?
+	public void addPoint(Double d, long l){
+		series.addPoint(  
+                l,  
+                d,  
+                true, false, true);  		
+	}
 }

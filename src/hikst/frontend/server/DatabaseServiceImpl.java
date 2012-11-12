@@ -132,37 +132,50 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public Description getSimulation(int sim_description_id) {
 		try {
+			
 			Connection connection = Settings.getDBC();
 
 			String query = "SELECT Object_ID, minimumTime, maximumTime FROM Simulation_Descriptions WHERE ID=?";
 			PreparedStatement statement = connection.prepareStatement(query);
+			
 			statement.setInt(1, sim_description_id);
+			
+			
 			ResultSet set = statement.executeQuery();
 
-			if (set.next()) {
+			if (set.next())
+			{
 				int object_id = set.getInt(1);
-				long minimumTime = set.getLong(2);
-				long maximumTime = set.getLong(3);
+				long startTime = set.getLong(2);
+				long endTime = set.getLong(3);
+				List<Plot> plots = new ArrayList<Plot>();
+				
+				String anotherQuery = "SELECT Time, Effect, Power_Consumption, Voltage, Current FROM Simulations WHERE Sim_Description_ID=?";
+				PreparedStatement anotherStatement = connection.prepareStatement(anotherQuery);
+				anotherStatement.setInt(1, sim_description_id);
+				ResultSet anotherSet = anotherStatement.executeQuery();
 
-				// SimulatorObject simulator_object =
-				// getSimulatorObject(object_id);
-				// List<Plot> plots = getData(sim_description_id);
+				while (anotherSet.next()){
+					Date time = new Date(anotherSet.getLong(1));
+					float effect = anotherSet.getFloat(2);
+					float power_consumption = anotherSet.getFloat(3);
+					float voltage = anotherSet.getFloat(4);
+					float current = anotherSet.getFloat(5);
 
-				// return new
-				// Description(simulator_object,plots,minimumTime,maximumTime);
-			} else {
-				throw new IllegalArgumentException();
+					plots.add(new Plot(time, effect, power_consumption, voltage,
+							current));
+				}
+				
+				return new Description(sim_description_id, plots, startTime, endTime);
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-		} catch (SQLException ex) {
-			// send message back to server that the request failed
-			ex.printStackTrace();
-			throw new IllegalArgumentException();
-
-		}
-
-		return null;
+			return null;
 	}
+	
 
 	@Override
 	public List<Description> getSimulations() throws IllegalArgumentException {
@@ -397,12 +410,13 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 			
 			while(set.next())
 			{
-				int id = set.getInt(1);
-				String obj_Name = set.getString(2);
+				int id = set.getInt(2);
+				String obj_Name = set.getString(1);
 				String stat_name = set.getString(3);
 				
 				ViewSimulationObject object = new ViewSimulationObject();
 				
+				object.setID(id);
 				object.Object_Name = obj_Name;
 				object.Status_Name = stat_name;
 		

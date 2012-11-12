@@ -43,7 +43,7 @@ public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimu
 		 updateTable(result);
 	}
 	
-	private void updateTable(ArrayList<ViewSimulationObject> simulations) {
+	private void updateTable(final ArrayList<ViewSimulationObject> simulations) {
 		SimulationsTable.clear();
 		SimulationsTable.setWidget(0, 0, new Label(""));
 		
@@ -52,11 +52,13 @@ public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimu
 		
 		for (int i = 0; i < simulations.size(); i++)  {
 			ViewSimulationObject v = simulations.get(i);
+			final int final_i = i;
 			SimulationsTable.setWidget(i+1, 0, new Button("Choose object", new ClickHandler() 
 			{
+				
 				@Override
 				public void onClick(ClickEvent event) {
-					simResultPanel = new SimulatonResult();
+					simResultPanel = new SimulatonResult(simulations.get(final_i).getID());
 					RootLayoutPanel.get().add(simResultPanel);
 				}
 

@@ -1,6 +1,12 @@
 package hikst.frontend.shared;
 
+import hikst.frontend.server.Settings;
+
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,37 +14,39 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class Description implements Serializable
 {
-	long minimumTime;
-	long maximumTime;
-	SimulatorObject simulatorObject;
+	long startTime;
+	long endTime;
+	int object_id;
+	int simulation_description_id;
 	List<Plot> plots = new ArrayList<Plot>();
 	
-	public long getMinimumTime() {
-		return minimumTime;
+	public long getStartTime() {
+		return startTime;
 	}
 
-
+	public int getObject_id() {
+		return object_id;
+	}
 
 	public long getMaximumTime() {
-		return maximumTime;
-	}
-
-	public SimulatorObject getSimulatorObject() {
-		return simulatorObject;
+		return endTime;
 	}
 
 	public List<Plot> getPlots() {
 		return plots;
 	}
 	
-	public Description(){}
-	
-	public Description(SimulatorObject simulatorObject, List<Plot> plots, long minimum, long maximum)
+	public Description()
 	{
-		this.simulatorObject = simulatorObject;
+		
+	}
+	
+	public Description(int simulation_description_id,List<Plot> plots, long startTime, long maximum)
+	{
+		this.simulation_description_id = simulation_description_id;
 		this.plots = plots;
-		this.minimumTime = minimum;
-		this.maximumTime = maximum;
+		this.startTime = startTime;
+		this.endTime = maximum;
 	}
 	
 	public double[] getEffects()
