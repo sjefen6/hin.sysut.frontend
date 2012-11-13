@@ -29,12 +29,12 @@
        </g:west>
        <g:center>
          <g:FlowPanel styleName="{style.centerPanel}">
-         	<g:TextBox ui:field="mailFrom" text="From"/>
-         	<g:TextBox ui:field="mailFromPass" text="Password"/>
-         	<g:TextBox text="To" ui:field="mailTo"/>
-         	<g:TextBox text="Subject" ui:field="mailSub"/>
-         	<g:TextBox text="Message" ui:field="mailMes"/>
-         	<g:Button width="172px" ui:field="mailSend" text="SendMail"/>
+         	<g:TextBox ui:field="mailFrom" text="Fra"/>
+         	<g:TextBox ui:field="mailFromPass" text="GMAIL-Passord"/>
+         	<g:TextBox text="Til" ui:field="mailTo"/>
+         	<g:TextBox text="Tema" ui:field="mailSub"/>
+         	<g:TextBox text="Melding" ui:field="mailMes"/>
+         	<g:Button width="172px" ui:field="mailSend" text="Send Mail"/>
          </g:FlowPanel>
        </g:center>
        <g:east size='14.6'>

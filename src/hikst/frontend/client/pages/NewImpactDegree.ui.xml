@@ -25,8 +25,8 @@
 	<g:DockLayoutPanel unit='EM' width="1024" height="768">
 		<g:north size='3.5'>
 			<g:FlowPanel styleName="{style.northPanel}">
-				<g:Button text="Legg til Impact Factor" width="154px"
-					ui:field="addImpButton" />
+				<g:Button text="Legg til påvirkningsfaktor" width="174px"
+					ui:field="addImpButton" height="30px" />
 				<g:Button text="Tilbake" ui:field="tilbakeButton" />
 			</g:FlowPanel>
 		</g:north>
@@ -42,11 +42,11 @@
 		</g:east>
 		<g:center>
 			<g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel" >
-				<g:Label text="Du har valgt:" ui:field="ImpLabel"/>
+				<g:Label text="Påvirkningsgrad i %" width="646px" height="23px"/>
 				<g:ListBox width="264px" height="50px" ui:field="impactFactorType"/>
 				<g:DoubleBox ui:field="inputBox"/>
 			</g:FlowPanel>
 		</g:center>
 	</g:DockLayoutPanel>
-</ui:UiBinder>  
+</ui:UiBinder>
    

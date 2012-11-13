@@ -29,12 +29,12 @@
        </g:north>
        <g:west size='13.5'>
          <g:FlowPanel styleName="{style.westPanel}">
-         	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
+         	<g:Label text="Navn" height="12px" ui:field="nameLabel"/>
          	<g:TextBox text="" ui:field="name" width="150px" textAlignment="ALIGN_CENTER"/>
-         	<g:RadioButton ui:field="actual" name="actual" text="Actual percentage usage"/>
-         	<g:RadioButton ui:field="probability" name="actual" text="Usage probability" checked="true"/>
-         	<g:Button width="150px" ui:field="back">Back</g:Button>
-         	<g:Button ui:field="saveButton" width="150px">Save Usage Pattern</g:Button>
+         	<g:RadioButton ui:field="actual" name="actual" text="Faktisk forbruk (prosent)"/>
+         	<g:RadioButton ui:field="probability" name="actual" text="Brukssannsynlighet" checked="true"/>
+         	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
+         	<g:Button ui:field="saveButton" width="150px">Lagre forbruksmønster</g:Button>
          </g:FlowPanel>
        </g:west>
        <g:center size='25.5'>

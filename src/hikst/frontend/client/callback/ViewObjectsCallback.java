@@ -46,14 +46,14 @@ public class ViewObjectsCallback implements
 	private void updateTable(ArrayList<HikstObject> simObjects) {
 		objectTable.clear();
 
-		objectTable.setWidget(0, 2, new Label("ID"));
-		objectTable.setWidget(0, 2, new Label("Name"));
+		objectTable.setWidget(0, 1, new Label("ID"));
+		objectTable.setWidget(0, 2, new Label("Navn"));
 
 		for (int i = 0; i < simObjects.size(); i++) {
 			final HikstObject simObject = simObjects.get(i);
 
 			int row = i + 1;
-			objectTable.setWidget(row, 0, new Button("Choose object",
+			objectTable.setWidget(row, 0, new Button("Velg objekt",
 					new ClickHandler() {
 
 						@Override
@@ -73,7 +73,7 @@ public class ViewObjectsCallback implements
 					new Label(String.valueOf(simObject.getID())));
 			objectTable.setWidget(row, 2, new Label(simObject.name));
 
-			objectTable.setWidget(row, 3, new Button("Modify",
+			objectTable.setWidget(row, 3, new Button("Redigere",
 					new ClickHandler() {
 
 						@Override
@@ -84,7 +84,7 @@ public class ViewObjectsCallback implements
 
 						}
 					}));
-			objectTable.setWidget(row, 4, new Button("Duplicate",
+			objectTable.setWidget(row, 4, new Button("Lag duplikat",
 					new ClickHandler() {
 
 						@Override

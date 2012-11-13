@@ -14,7 +14,7 @@ public class ErrorMessage {
 		final DialogBox dialogBox = new DialogBox(false);
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
-		final Button closeButton = new Button("Close");
+		final Button closeButton = new Button("Lukk");
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
 //		final Label textToServerLabel = new Label();

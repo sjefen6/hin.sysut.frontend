@@ -44,8 +44,6 @@ public class NewImpactDegree extends HikstComposite {
 	FlowPanel centerPanel;
 	@UiField
 	ListBox impactFactorType;
-	@UiField
-	Label ImpLabel;
 	@UiField DoubleBox inputBox;
 
 	private Composite parent;
@@ -71,9 +69,7 @@ public class NewImpactDegree extends HikstComposite {
 //		centerPanel.remove(impactFactorType);
 		databaseService.getImpactTypes(new ImpactFactorsCallback(
 				impactFactorType, parent));
-
-//		centerPanel.add(impactFactorType);
-//		inputBox.getElement().setAttribute("placeHolder", "ImpactFactor % ");
+		centerPanel.add(impactFactorType);
 	}
 	
 	public ImpactDegree getImpactDegree(){
