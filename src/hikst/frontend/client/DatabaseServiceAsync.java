@@ -3,13 +3,14 @@ package hikst.frontend.client;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.HikstObjectTree;
+import hikst.frontend.shared.ImpactDegree;
 import hikst.frontend.shared.ImpactType;
 import hikst.frontend.shared.LoginRequest;
 import hikst.frontend.shared.Plot;
 import hikst.frontend.shared.RegisterRequest;
-import hikst.frontend.shared.SimObjectTree;
 import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
+import hikst.frontend.shared.UsagePattern;
 import hikst.frontend.shared.ViewSimulationObject;
 
 import java.util.ArrayList;
@@ -27,8 +28,6 @@ public interface DatabaseServiceAsync {
 
 	void getData(int sim_description_id, AsyncCallback<List<Plot>> callback)
 	throws IllegalArgumentException;
-	void getSimulatorObject(int simulation_object_id,
-			AsyncCallback<SimObjectTree> callback);
 	void getSimulationDescriptionsIDs(AsyncCallback<List<Integer>> callback)
 	throws IllegalArgumentException;
 	void getSimulation(int sim_description_id, AsyncCallback<Description> callback)
@@ -64,6 +63,7 @@ public interface DatabaseServiceAsync {
 	void saveObject(HikstObject simObject, AsyncCallback<Integer> callback);
 	void getImpactTypes(AsyncCallback<ArrayList<ImpactType>> callback);
 	void getViewSimulationObjects(AsyncCallback<ArrayList<ViewSimulationObject>> callback);
-	void addImpactDegree(double percent, int object_id, int type_id,
+	void saveUsagePattern(UsagePattern usagePattern,
 			AsyncCallback<Void> callback);
+	void getUsagePatterns(AsyncCallback<ArrayList<UsagePattern>> callback);
 }

@@ -21,7 +21,7 @@
      <g:DockLayoutPanel unit='EM'>
        <g:north size='3.2' >
          <g:FlowPanel styleName="{style.northPanel}">
-         <g:Button width="200px" text="Lag Ett Nytt Objekt" ui:field="newObject"/>
+         <g:Button width="200px" text="Lag nytt objekt" ui:field="newObject"/>
          <g:Button text="Gå tilbake" ui:field="backButton"/>
 		 </g:FlowPanel>       
        </g:north>

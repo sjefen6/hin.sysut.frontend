@@ -2,27 +2,26 @@ package hikst.frontend.shared;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
 public class ImpactDegree implements Serializable
 {
-	private double percent;
-	private int type_id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	public double getPercent()
-	{
-		return percent;
+	private int object_id;
+	public double percent;
+	public int type_id;
+	
+	public ImpactDegree(){
+		this.object_id = -1;
 	}
 	
-	public int getTypeID()
-	{
-		return type_id;
+	public ImpactDegree(int object_id){
+		this.object_id = object_id;
 	}
 	
-	public ImpactDegree(){}
-	
-	public ImpactDegree(double percent, int type_id)
-	{
-		this.percent = percent;
-		this.type_id = type_id;
+	public int getId(){
+		return object_id;
 	}
 }

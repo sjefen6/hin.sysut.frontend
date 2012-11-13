@@ -30,28 +30,28 @@
        <g:west size='13.5'>
          <g:FlowPanel styleName="{style.westPanel}">
          	<g:Label/>
-         	<g:Label text="Create New Object" horizontalAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Name" height="12px" ui:field="nameLabel"/>
+         	<g:Label text="Lag nytt objekt" horizontalAlignment="ALIGN_CENTER" height="38px"/>
+         	<g:Label text="Navn på objekt" height="14px" ui:field="nameLabel"/>
          	<g:TextBox text="" ui:field="name" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Effect" height="12px" ui:field="effectLabel"/>
+         	<g:Label text="Effekt" height="14px" ui:field="effectLabel"/>
          	<g:TextBox text="" ui:field="effect" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Voltage" height="12px" ui:field="voltageLabel"/>
+         	<g:Label text="Volt" height="14px" ui:field="voltageLabel"/>
          	<g:TextBox text="" ui:field="voltage" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Current" height="12px" ui:field="currentLabel"/>
+         	<g:Label text="Spenning" height="14px" ui:field="currentLabel"/>
          	<g:TextBox text="" ui:field="current" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Latitude" ui:field="latLabel" height="12px"/>
+         	<g:Label text="Breddegrad" ui:field="latLabel" height="14px"/>
          	<g:TextBox text="" ui:field="latitude" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Longitude" ui:field="longLabel" height="12px"/>
+         	<g:Label text="Lengdegrad" ui:field="longLabel" height="14px"/>
          	<g:TextBox text="" ui:field="longitude" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Start temperature" ui:field="starttempLabel" height="12px"/>
+         	<g:Label text="Start temperatur" ui:field="starttempLabel" height="14px"/>
          	<g:TextBox text="" ui:field="self_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Target temperature" height="12px" ui:field="targettempLabel"/>
+         	<g:Label text="Ønsket temperatur" height="14px" ui:field="targettempLabel"/>
          	<g:TextBox text="" ui:field="target_temperature" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Base area" height="12px" ui:field="baseareaLabel"/>
+         	<g:Label text="Grunnflate (Areal)" height="14px" ui:field="baseareaLabel"/>
          	<g:TextBox text="" ui:field="base_area" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Base height" height="12px" ui:field="baseheightLabel"/>
+         	<g:Label text="Høyde" height="14px" ui:field="baseheightLabel"/>
          	<g:TextBox text="" ui:field="base_height" width="156px" textAlignment="ALIGN_CENTER"/>
-         	<g:Label text="Heat-loss rate" ui:field="heatlossLabel" height="12px"/>
+         	<g:Label text="Varmetapskoeffisient" ui:field="heatlossLabel" height="14px"/>
          	<g:TextBox text="" ui:field="heat_loss_rate" width="156px" textAlignment="ALIGN_CENTER"/>
          	<g:Button width="150px" ui:field="back">Tilbake</g:Button>
          	<g:Button ui:field="saveObject" width="140px">Lagre Objekt</g:Button>
@@ -59,15 +59,19 @@
        </g:west>
        <g:center size='25.5'>
          <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
+         	<g:HorizontalPanel>
+         		<g:VerticalPanel ui:field="childObjList"/>
+         		<g:VerticalPanel ui:field="impactDegList"/>
+         	</g:HorizontalPanel>
          </g:FlowPanel>
        </g:center>
-       <g:east size='18.3'>
+       <g:east size='21.3'>
          <g:FlowPanel styleName="{style.eastPanel}" ui:field="eastPanel">
-         	<g:Button width="150px" ui:field="addChildObject">Add Child Object</g:Button>
-         	<g:Button width="150px" ui:field="addUsagePattern">Add Usage Pattern</g:Button>
-         	<g:Button width="150px" text="Add ImpactFactor" height="30px" ui:field="addImpactButton"/>
-         	<g:Button width="149px" text="Vis Kart" ui:field="showMap"/>
-         	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="328px"/>
+         	<g:Button width="185px" ui:field="addChildObject">Legg til barn-objekt</g:Button>
+         	<g:Button width="185px" ui:field="addUsagePattern">Legg til forbruksmønster</g:Button>
+         	<g:Button width="185px" text="Legg til påvirkningsfaktor" height="30px" ui:field="addImpactButton"/>
+         	<g:Button width="185px" text="Vis Kart" ui:field="showMap"/>
+         	<g:AbsolutePanel height="280px" ui:field="mapsPanel" width="275px"/>
          </g:FlowPanel>
        </g:east>     
         <g:south size="12.6">

@@ -1,5 +1,9 @@
 package hikst.frontend.client.pages;
 
+import hikst.frontend.client.DatabaseService;
+import hikst.frontend.client.DatabaseServiceAsync;
+import hikst.frontend.client.callback.SaveObjectCallback;
+import hikst.frontend.client.callback.SaveUsagePatternCallback;
 import hikst.frontend.shared.UsagePattern;
 
 import com.google.gwt.core.client.GWT;
@@ -51,14 +55,19 @@ public class NewUsagePattern extends HikstComposite {
 	TextBox[] range = new TextBox[24];
 	TextBox[] input = new TextBox[24];
 
+	DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
+	
 	/**
 	 * Main constructor
 	 */
 	public NewUsagePattern(HikstComposite hikstCompositeParent) {
 		this.hikstCompositeParent = hikstCompositeParent;
 		u = new UsagePattern();
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		generateFlexyTable();
+		
+		setValues();
 	}
 
 	/**
@@ -130,7 +139,7 @@ public class NewUsagePattern extends HikstComposite {
 		};
 	}
 
-	public UsagePattern getObject() {
+	public UsagePattern getUsagePattern() {
 		u.name = name.getValue();
 		u.actual = actual.getValue();
 		return u;
@@ -150,7 +159,7 @@ public class NewUsagePattern extends HikstComposite {
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
 		RootLayoutPanel.get().add(
-				new ViewUsagePatterns(hikstCompositeParent
+				new ViewUsagePatterns((NewObject) hikstCompositeParent
 						.getHikstCompositeParent()));
 	}
 
@@ -159,7 +168,8 @@ public class NewUsagePattern extends HikstComposite {
 		if (name.getValue().equals("")) {
 			Window.alert("Change Name!");
 		} else {
-//			databaseService.saveUsagePattern(u, new SaveObjectCallback());
+			
+ 			databaseService.saveUsagePattern(getUsagePattern(), new SaveUsagePatternCallback());
 		}
 	}
 
