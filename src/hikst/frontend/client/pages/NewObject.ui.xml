@@ -59,6 +59,10 @@
        </g:west>
        <g:center size='25.5'>
          <g:FlowPanel styleName="{style.centerPanel}" ui:field="centerPanel">
+         	<g:HorizontalPanel>
+         		<g:VerticalPanel ui:field="childObjList"/>
+         		<g:VerticalPanel ui:field="impactDegList"/>
+         	</g:HorizontalPanel>
          </g:FlowPanel>
        </g:center>
        <g:east size='21.3'>

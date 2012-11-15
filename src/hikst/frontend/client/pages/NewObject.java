@@ -30,11 +30,12 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.StackPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NewObject extends HikstComposite {
 
 	private HikstObject o;
-	private ArrayList<ImpactDegree> impactDegrees; 
 
 	private static NewObjectUiBinder uiBinder = GWT
 			.create(NewObjectUiBinder.class);
@@ -99,6 +100,8 @@ public class NewObject extends HikstComposite {
 	Label baseheightLabel;
 	@UiField
 	Label heatlossLabel;
+	@UiField VerticalPanel childObjList;
+	@UiField VerticalPanel impactDegList;
 
 	MapWidget map;
 
@@ -107,11 +110,10 @@ public class NewObject extends HikstComposite {
 
 	interface NewObjectUiBinder extends UiBinder<Widget, NewObject> {
 	}
-	
-	private NewObject(){
+
+	private NewObject() {
 		initWidget(uiBinder.createAndBindUi(this));
 		o = new HikstObject();
-		impactDegrees = new ArrayList<ImpactDegree>();
 	}
 
 	/**
@@ -125,13 +127,12 @@ public class NewObject extends HikstComposite {
 		this();
 		this.hikstCompositeParent = hikstCompositeParent;
 	}
-	
+
 	public NewObject(NewObject hikstCompositeParent) {
-		this( (ViewObjects)hikstCompositeParent.getHikstCompositeParent());
+		this((ViewObjects) hikstCompositeParent.getHikstCompositeParent());
 		o = ((NewObject) hikstCompositeParent).getObject();
 		setValues();
 	}
-	
 
 	/**
 	 * Adds a child object
@@ -142,17 +143,17 @@ public class NewObject extends HikstComposite {
 		o.sons.add(childObject.getID());
 		setValues();
 	}
-	
+
 	/**
 	 * Adds an ImpactDegree
 	 * 
 	 * @param childObject
 	 */
 	public void addImpactDegree(ImpactDegree impactDegree) {
-		impactDegrees.add(impactDegree);
+		o.impactDegrees.add(impactDegree);
 		setValues();
 	}
-	
+
 	/**
 	 * Sets a child object
 	 * 
@@ -238,7 +239,7 @@ public class NewObject extends HikstComposite {
 		if (o.effect.equals(Double.NaN)) {
 			effect.setValue("");
 		} else {
-			// effect.setValue(o.effect.toString());
+			effect.setValue(o.effect.toString());
 		}
 		if (o.voltage.equals(Double.NaN)) {
 			voltage.setValue("");
@@ -285,6 +286,19 @@ public class NewObject extends HikstComposite {
 		} else {
 			heat_loss_rate.setValue(o.heat_loss_rate.toString());
 		}
+		
+		childObjList.clear();
+		impactDegList.clear();
+		childObjList.add(new Label("Barneobjekter"));
+		impactDegList.add(new Label("Pavirkningsfaktorer"));
+		
+		for(int childObject : o.sons){
+			childObjList.add(new Label(Integer.toString(childObject)));
+		}
+		
+		for(ImpactDegree id : o.impactDegrees){
+			impactDegList.add(new Label(Integer.toString(id.type_id)));
+		}
 	}
 
 	@UiHandler("addChildObject")
@@ -294,7 +308,7 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("addImpactButton")
 	void onAddImpactClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new NewImpactDegree(this, o));
+		RootLayoutPanel.get().add(new NewImpactDegree(this));
 	}
 
 	@UiHandler("addUsagePattern")
@@ -364,7 +378,9 @@ public class NewObject extends HikstComposite {
 
 	@UiHandler("back")
 	void onBackClick(ClickEvent event) {
-		RootLayoutPanel.get().add(new ViewObjects(hikstCompositeParent.getHikstCompositeParent()));
+		RootLayoutPanel.get()
+				.add(new ViewObjects(hikstCompositeParent
+						.getHikstCompositeParent()));
 	}
 
 	@UiHandler("saveObject")
@@ -374,10 +390,12 @@ public class NewObject extends HikstComposite {
 		} else {
 			getObject();
 			o.effect.isNaN();
-			databaseService.saveObject(o, impactDegrees, new SaveObjectCallback(o));
+			databaseService.saveObject(o,
+					new SaveObjectCallback(o));
 			onBackClick(event);
 		}
 	}
+
 	@UiHandler("emailAdmin")
 	void onEmailAdminClick(ClickEvent event) {
 		RootLayoutPanel.get().add(new EmailAdmin());

@@ -1,13 +1,12 @@
 package hikst.frontend.client.callback;
 
-import java.util.ArrayList;
-
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.shared.ImpactType;
+import hikst.frontend.client.pages.SimulatonResult;
 import hikst.frontend.shared.ViewSimulationObject;
 
-import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,10 +15,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimulationObject>> {
 
 	private FlexTable SimulationsTable;
+	private SimulatonResult simResultPanel;
 
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
@@ -42,7 +43,7 @@ public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimu
 		 updateTable(result);
 	}
 	
-	private void updateTable(ArrayList<ViewSimulationObject> simulations) {
+	private void updateTable(final ArrayList<ViewSimulationObject> simulations) {
 		SimulationsTable.clear();
 		SimulationsTable.setWidget(0, 0, new Label(""));
 		
@@ -51,12 +52,14 @@ public class SimulationsListCallback implements AsyncCallback<ArrayList<ViewSimu
 		
 		for (int i = 0; i < simulations.size(); i++)  {
 			ViewSimulationObject v = simulations.get(i);
-			SimulationsTable.setWidget(i+1, 0, new Button("Velg simulering", new ClickHandler() 
+			final int final_i = i;
+			SimulationsTable.setWidget(i+1, 0, new Button("Velg simulering", new ClickHandler()
 			{
+				
 				@Override
 				public void onClick(ClickEvent event) {
-					
-
+					simResultPanel = new SimulatonResult(simulations.get(final_i).getID());
+					RootLayoutPanel.get().add(simResultPanel);
 				}
 
 			}));

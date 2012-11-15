@@ -27,8 +27,6 @@ import com.google.gwt.user.client.ui.DoubleBox;
 public class NewImpactDegree extends HikstComposite {
 
 	private ImpactDegree impactDegree;
-	
-//	public double impFactor;
 
 	interface NewImpactDegreeUiBinder extends
 			UiBinder<Widget, NewImpactDegree> {
@@ -46,29 +44,22 @@ public class NewImpactDegree extends HikstComposite {
 	ListBox impactFactorType;
 	@UiField DoubleBox inputBox;
 
-	private Composite parent;
 	private DatabaseServiceAsync databaseService = GWT
 			.create(DatabaseService.class);
-
-	private HikstObject hikstObject;
 	
-	public NewImpactDegree(HikstComposite parent, HikstObject hikstObject) {
+	public NewImpactDegree(HikstComposite hikstCompositeParent) {
 		initWidget(uiBinder.createAndBindUi(this));
 		initFactorListBox();
-		this.hikstObject = hikstObject;
-		this.hikstCompositeParent = parent;
+		this.hikstCompositeParent = hikstCompositeParent;
 		centerPanel.add(impactFactorType);
 		impactDegree = new ImpactDegree();
 		
-//		if(hikstObject.getID() == null){
-//			addImpButton.setText("Lagre Objetet!");
-//		}
 	}
 
 	private void initFactorListBox() {
 //		centerPanel.remove(impactFactorType);
 		databaseService.getImpactTypes(new ImpactFactorsCallback(
-				impactFactorType, parent));
+				impactFactorType, hikstCompositeParent));
 		centerPanel.add(impactFactorType);
 	}
 	
@@ -85,24 +76,8 @@ public class NewImpactDegree extends HikstComposite {
 
 	@UiHandler("addImpButton")
 	void onAddClick(ClickEvent event) {
-		
 		NewObject panel = new NewObject((NewObject) hikstCompositeParent);
 		panel.addImpactDegree(getImpactDegree());
 		RootLayoutPanel.get().add(panel);
-
-//		impFactor = inputBox.getValue();
-//		int type_id = Integer.parseInt(impactFactorType.getValue(impactFactorType.getSelectedIndex()));
-//		
-//		if(hikstObject.getID() == null){
-//			addImpButton.setText("Lagre P&aring;vikrningsgraden!");
-//			databaseService.saveObject(hikstObject, new SaveObjectCallback(hikstObject));
-//		}
-//		else{
-//		databaseService.addImpactDegree(impFactor,
-//				hikstObject.getID(),
-//				type_id ,
-//				new ImpactDegreeCallback((NewObject) hikstCompositeParent));
-//		
-//		}
 	}
 }

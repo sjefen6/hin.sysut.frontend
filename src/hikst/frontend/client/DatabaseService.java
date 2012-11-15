@@ -48,10 +48,9 @@ public interface DatabaseService extends RemoteService
 	int getSimulationStatus(SimulationTicket ticket);
 	HikstObjectTree loadObject(int id);
 	ArrayList<HikstObject> getSimObjects();
-	int saveObject(HikstObject simObject, ArrayList<ImpactDegree> impactDegrees);
+	int saveObject(HikstObject simObject);
 	public ArrayList<ImpactType> getImpactTypes();
 	public ArrayList<ViewSimulationObject> getViewSimulationObjects();
-	public void addImpactDegree(double percent, int object_id,int type_id);
 	public void saveUsagePattern(UsagePattern usagePattern);
 	public ArrayList<UsagePattern> getUsagePatterns();
 }
