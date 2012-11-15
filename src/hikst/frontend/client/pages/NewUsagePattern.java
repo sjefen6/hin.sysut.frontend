@@ -174,7 +174,7 @@ public class NewUsagePattern extends HikstComposite {
 			Window.alert("Change Name!");
 		} else {
 			
- 			databaseService.saveUsagePattern(getUsagePattern(), new SaveUsagePatternCallback());
+ 			databaseService.saveUsagePattern(getUsagePattern(), new SaveUsagePatternCallback(hikstCompositeParent));
 		}
 	}
 
