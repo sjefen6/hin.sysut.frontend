@@ -27,6 +27,8 @@ import com.google.gwt.user.client.ui.DoubleBox;
 public class NewImpactDegree extends HikstComposite {
 
 	private ImpactDegree impactDegree;
+	
+//	public double impFactor;
 
 	interface NewImpactDegreeUiBinder extends
 			UiBinder<Widget, NewImpactDegree> {
@@ -60,6 +62,7 @@ public class NewImpactDegree extends HikstComposite {
 //		centerPanel.remove(impactFactorType);
 		databaseService.getImpactTypes(new ImpactFactorsCallback(
 				impactFactorType, hikstCompositeParent));
+
 		centerPanel.add(impactFactorType);
 	}
 	
