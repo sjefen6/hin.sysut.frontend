@@ -81,8 +81,8 @@ public class NewUsagePattern extends HikstComposite {
 	 * @param parent
 	 * @param childObject
 	 */
-	public NewUsagePattern(HikstComposite parent, UsagePattern u) {
-		this(parent);
+	public NewUsagePattern(HikstComposite hikstCompositeParent, UsagePattern u) {
+		this(hikstCompositeParent);
 		this.u = u;
 		setValues();
 	}
