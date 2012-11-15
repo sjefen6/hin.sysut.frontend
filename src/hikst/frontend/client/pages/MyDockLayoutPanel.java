@@ -255,7 +255,7 @@ public class MyDockLayoutPanel extends Composite {
 		{
 			System.out.println("Henter ut simuleringsdata fra database...");
 			this.statusField.setText("Retrieving simulation data from database..");
-			databaseService.getSimulation(ticket.getDescriptionID(), new DescriptionsCallback(this));
+		//	databaseService.getSimulation(ticket.getDescriptionID(), new DescriptionsCallback(this));
 		}
 		else
 		{
