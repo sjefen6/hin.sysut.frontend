@@ -1,79 +1,68 @@
 package hikst.frontend.client.pages;
 
+
+import java.util.Date;
+
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.Graph;
 import hikst.frontend.client.Simulation;
-import hikst.frontend.client.SplineGraph;
-import hikst.frontend.client.callback.DescriptionsCallback;
+import hikst.frontend.client.SplineGraf;
+import hikst.frontend.client.callback.SimulationResultCallback;
 import hikst.frontend.shared.Description;
-import hikst.frontend.shared.SimulationTicket;
+
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SimulatonResult extends Composite {
+	MainPage panelBack;
+	public SplineGraf graf = new SplineGraf();
+	@UiField
+	FlowPanel centerPanel;
+	private DatabaseServiceAsync databaseService = GWT
+	.create(DatabaseService.class);
+	private SimulationResultCallback callback1;
+	private final int id;
+	private static SimulatonResultUiBinder uiBinder = GWT.create(SimulatonResultUiBinder.class);
 
-	Simulation simulation;
-	Description description;
-	SplineGraph spline;
-	@UiField FlowPanel centerPanel;
-	public SimulationTicket ticket;
-	boolean done = false;
-	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
-	
-	private static SimulatonResultUiBinder uiBinder = GWT
-			.create(SimulatonResultUiBinder.class);
 
 	interface SimulatonResultUiBinder extends UiBinder<Widget, SimulatonResult> {
 	}
 
-	public SimulatonResult() {
+	public SimulatonResult(int id) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.id = id;
+		centerPanel.add(graf.createChart());
+		callback1 = new SimulationResultCallback(this);
+		this.start();
 	}
 	
-
-	public SimulatonResult(String name) {
-		initWidget(uiBinder.createAndBindUi(this));
+	public void start()
+	{
+		Timer timer = new Timer(){
+			@Override
+			public void run() {
+				databaseService.getSimulation(id, callback1);
+			}			
+		};
+		timer.scheduleRepeating(1000);
 	}
 
 	@UiField
 	Button backButton;
 	private AsyncCallback<Integer> callback ;
 
-
-	@UiHandler("backButton")
-	void onClick(ClickEvent e) {
-
-	}
-	
-	public void setData(Description description){
-		simulation = new Simulation(description);
-		centerPanel.clear();
-		Graph powerGraph = simulation.getEffectGraph();
-		centerPanel.add(powerGraph);
-		powerGraph.update();
-		done = true;
-	}
-	
-	public void setSimulationTicket(SimulationTicket ticket){
-		this.ticket = ticket;
-	}
-	
-	private void doStuff(){
-		if (done == true){
-			databaseService.getSimulation(ticket.getDescriptionID(), new DescriptionsCallback(this));
-		}
-		else {
-			//TODO: 
-		}
-	}
 }
+

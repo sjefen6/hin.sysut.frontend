@@ -24,7 +24,6 @@ public class SaveObjectCallback implements AsyncCallback<Integer> {
 	
 		if(result != -1){
 			this.simObject.setID(result);
-			System.out.println("The object id is: "+result);
 			Window.alert("Amazing. The object was successfully stored in the database");
 		}
 		else{

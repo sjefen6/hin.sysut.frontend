@@ -2,11 +2,10 @@ package hikst.frontend.client.pages;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.callback.HikstObjectsCallback;
+import hikst.frontend.client.callback.ViewUsagePatternsCallback;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -30,18 +29,18 @@ public class ViewUsagePatterns extends HikstComposite {
 	
 	private DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 	
-	public ViewUsagePatterns(HikstComposite hikstCompositeParent) {
+	public ViewUsagePatterns(NewObject hikstCompositeParent) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.hikstCompositeParent = hikstCompositeParent;
-//		initTable();
+		initTable();
 	}
 	
-//	private void initTable()
-//	{		
-//		centerPanel.remove(flexyTable);
-//		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable, hikstCompositeParent));
-//		centerPanel.add(flexyTable);
-//	}
+	private void initTable()
+	{		
+		centerPanel.remove(flexyTable);
+		databaseService.getUsagePatterns(new ViewUsagePatternsCallback(flexyTable, (NewObject) hikstCompositeParent));
+		centerPanel.add(flexyTable);
+	}
 	
 	@UiHandler("newUsagePattern")
 	void onButtonNewUsagePattern(ClickEvent event){

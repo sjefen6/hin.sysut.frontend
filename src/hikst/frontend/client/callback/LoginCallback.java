@@ -23,7 +23,7 @@ public class LoginCallback implements AsyncCallback<Boolean>
 
 		RootLayoutPanel.get().add(new Login());
 		login = new Login();
-		Window.alert("status code 403"+ "Something wrong happend on the serverside, try again later");
+		ErrorMessage.show("Kunne ikke logge inn","Something wrong happend on the serverside, try again later</br>status code 403");
 
 	}
 
@@ -41,7 +41,7 @@ public class LoginCallback implements AsyncCallback<Boolean>
 		{
 			RootLayoutPanel.get().add(new Login());
 			login = new Login();
-			Window.alert("Feil brukernavn eller passord");
+			ErrorMessage.show("Kunne ikke logge inn","Feil brukernavn eller passord");
 		}
 	}
 

@@ -4,7 +4,7 @@ import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
 import hikst.frontend.client.Graph;
 import hikst.frontend.client.Simulation;
-import hikst.frontend.client.callback.DescriptionsCallback;
+import hikst.frontend.client.callback.SimulationResultCallback;
 import hikst.frontend.client.callback.StatusCallback;
 import hikst.frontend.shared.Description;
 import hikst.frontend.shared.SimulationTicket;
@@ -255,7 +255,9 @@ public class MyDockLayoutPanel extends Composite {
 		{
 			System.out.println("Henter ut simuleringsdata fra database...");
 			this.statusField.setText("Retrieving simulation data from database..");
-		//	databaseService.getSimulation(ticket.getDescriptionID(), new DescriptionsCallback(this));
+
+			//databaseService.getSimulation(ticket.getDescriptionID(), new SimulationResultCallback(this));
+
 		}
 		else
 		{

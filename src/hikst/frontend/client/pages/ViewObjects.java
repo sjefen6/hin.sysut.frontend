@@ -2,7 +2,7 @@ package hikst.frontend.client.pages;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.callback.HikstObjectsCallback;
+import hikst.frontend.client.callback.ViewObjectsCallback;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -57,8 +57,7 @@ public class ViewObjects extends HikstComposite {
 		// flexyTable = new FlexTable();
 
 		centerPanel.remove(flexyTable);
-		databaseService.getSimObjects(new HikstObjectsCallback(flexyTable,
-				this));
+		databaseService.getSimObjects(new ViewObjectsCallback(flexyTable, this));
 		centerPanel.add(flexyTable);
 
 		// centerPanel.add(flexyTable);
@@ -76,7 +75,7 @@ public class ViewObjects extends HikstComposite {
 					new NewObject((NewObject) hikstCompositeParent));
 		} else if (hikstCompositeParent instanceof NewSimulation) {
 			RootLayoutPanel.get().add(
-					new NewSimulation(hikstCompositeParent));
+					new NewSimulation((NewSimulation) hikstCompositeParent));
 		}
 	}
 }

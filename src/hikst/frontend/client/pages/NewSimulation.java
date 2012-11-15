@@ -4,9 +4,7 @@ import java.util.Date;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.Graph;
 import hikst.frontend.client.Simulation;
-import hikst.frontend.client.SplineGraf;
 import hikst.frontend.client.callback.SimulationRequestCallback;
 import hikst.frontend.client.callback.TreeCallback;
 import hikst.frontend.shared.Description;
@@ -15,6 +13,8 @@ import hikst.frontend.shared.SimulationRequest;
 import hikst.frontend.shared.SimulationTicket;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -51,8 +51,18 @@ public class NewSimulation extends HikstComposite {
 	FlowPanel centerPanel;
 	public @UiField
 	Tree tree;
-	@UiField Button button;
+	@UiField 
+	Button save;
+	@UiField 
+	FlowPanel westPanel;
+	
 	private TreeCallback treeCallback;
+	
+	TextBox range = new TextBox();
+	TextBox input = new TextBox();
+	
+	private String rangeValue, inputValue;
+	
 
 	private boolean updated  = false;
 	private long interval;
@@ -79,22 +89,70 @@ public class NewSimulation extends HikstComposite {
 
 	public NewSimulation() {
 		initWidget(uiBinder.createAndBindUi(this));
+		initRangeField();
+		westPanel.add(back);
+		westPanel.add(save);
+		
 	}
 	
-	public NewSimulation(HikstComposite hikstCompositeParent) {
+	public NewSimulation(NewSimulation hikstCompositeParent) {
 		this();
-//		if(((NewSimulation) hikstCompositeParent).fromDate == null)
-//		Window.alert("date is null");
-//		
-//		if(((NewSimulation) hikstCompositeParent).fromDate.getValue() == null)
-//			Window.alert("date value is null");
+		fromDate.setValue((hikstCompositeParent).fromDate.getValue());
+		toDate.setValue((hikstCompositeParent).toDate.getValue());
+		intervall.setValue((hikstCompositeParent).intervall.getValue());
 		
-		fromDate.setValue(((NewSimulation) hikstCompositeParent).fromDate.getValue());
-		toDate.setValue(((NewSimulation) hikstCompositeParent).toDate.getValue());
-		intervall.setValue(((NewSimulation) hikstCompositeParent).intervall.getValue());
+	}
+	
+	private void initRangeField(){
+		
+		range = new TextBox();
+		
+		range.getElement().setAttribute("type", "range");
+		range.getElement().setAttribute("min", "1000");
+		range.getElement().setAttribute("max", "86400000");
+		range.getElement().setAttribute("step", "100000");
+		range.getElement().setAttribute("style" ,"width: 400px; height: 20px;");
+	//	range.getElement().setAttribute(name, value)
+		range.addChangeHandler(rangeChanged());
+		westPanel.add(range);
+		
+		input = new TextBox();
+		
+		input.getElement().setAttribute("type", "number");
+		input.getElement().setAttribute("min", "1000");
+		input.getElement().setAttribute("max", "86400000");
+		input.getElement().setAttribute("step", "100000");
+		input.getElement().setAttribute("style", "width: 100px;");
+		input.addChangeHandler(inputChanged());
+		westPanel.add(input);
+	}
+	
+	private ChangeHandler rangeChanged(){
+		return new ChangeHandler() {
+			
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				
+				rangeValue = range.getValue();
+				input.setText(rangeValue);
+				
+			}
+		};
+	}
+	
+	private ChangeHandler inputChanged() {
+		return new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				
+				inputValue = input.getValue();
+				range.setText(inputValue);
+				
+			}
+		};
 	}
 
-	public NewSimulation(HikstComposite hikstCompositeParent, HikstObject simObject) {
+	public NewSimulation(NewSimulation hikstCompositeParent, HikstObject simObject) {
 		this(hikstCompositeParent);
 		
 		this.simObject = simObject;
@@ -122,7 +180,7 @@ public class NewSimulation extends HikstComposite {
 		RootLayoutPanel.get().add(panelBack);
 	}
 
-	@UiHandler("button")
+	@UiHandler("save")
 	void onButtonClick(ClickEvent event) {
 		databaseService.requestSimulation(new SimulationRequest(simObject.getID(),Long.parseLong(intervall.getValue()),fromDate.getValue().getTime(),toDate.getValue().getTime()), new SimulationRequestCallback());
 }
