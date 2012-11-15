@@ -27,15 +27,15 @@
          	<g:Button ui:field="buttonLogout" width="150px">Logg Ut</g:Button>
          </g:FlowPanel>
        </g:north>
-       <g:west size='10.8'>
-         <g:FlowPanel styleName="{style.westPanel}">
+       <g:west size='33.6'>
+         <g:FlowPanel styleName="{style.westPanel}" ui:field="westPanel">
          	<g:Button ui:field="addObject" width="140px">Legg Til Objekt</g:Button>
          	<g:Label text="Fra Dato:"/>
          	<p1:DateBox ui:field="fromDate"/>
          	<g:Label text="Til Dato:"/>
          	<p1:DateBox ui:field="toDate"/>
-         	<g:TextBox text="Intervall" ui:field="intervall"/>
-         	<g:Button width="139px" ui:field="button">Lagre simulering</g:Button>
+         	<g:TextBox text="Intervall" ui:field="intervall" width="140px"/>
+         	<g:Button width="140px" ui:field="save" height="34px">Lagre simulering</g:Button>
          	<g:Button width="140px" ui:field="back">Tilbake</g:Button>
          </g:FlowPanel>
        </g:west>

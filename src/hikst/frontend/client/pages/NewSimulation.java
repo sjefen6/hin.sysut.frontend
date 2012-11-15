@@ -2,13 +2,14 @@ package hikst.frontend.client.pages;
 
 import hikst.frontend.client.DatabaseService;
 import hikst.frontend.client.DatabaseServiceAsync;
-import hikst.frontend.client.SplineGraf;
 import hikst.frontend.client.callback.SimulationRequestCallback;
 import hikst.frontend.client.callback.TreeCallback;
 import hikst.frontend.shared.HikstObject;
 import hikst.frontend.shared.SimulationRequest;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -38,15 +39,23 @@ public class NewSimulation extends HikstComposite {
 	@UiField
 	TextBox intervall;
 	@UiField
-	Button buttonShowSpline;
-	@UiField
 	FlowPanel eastPanel;
 	@UiField
 	FlowPanel centerPanel;
 	public @UiField
 	Tree tree;
-	@UiField Button button;
+	@UiField 
+	Button save;
+	@UiField 
+	FlowPanel westPanel;
+	
 	private TreeCallback treeCallback;
+	
+	TextBox range = new TextBox();
+	TextBox input = new TextBox();
+	
+	private String rangeValue, inputValue;
+	
 
 	DatabaseServiceAsync databaseService = GWT.create(DatabaseService.class);
 
@@ -55,6 +64,10 @@ public class NewSimulation extends HikstComposite {
 
 	public NewSimulation() {
 		initWidget(uiBinder.createAndBindUi(this));
+		initRangeField();
+		westPanel.add(back);
+		westPanel.add(save);
+		
 	}
 	
 	public NewSimulation(NewSimulation hikstCompositeParent) {
@@ -62,6 +75,56 @@ public class NewSimulation extends HikstComposite {
 		fromDate.setValue((hikstCompositeParent).fromDate.getValue());
 		toDate.setValue((hikstCompositeParent).toDate.getValue());
 		intervall.setValue((hikstCompositeParent).intervall.getValue());
+		
+	}
+	
+	private void initRangeField(){
+		
+		range = new TextBox();
+		
+		range.getElement().setAttribute("type", "range");
+		range.getElement().setAttribute("min", "1000");
+		range.getElement().setAttribute("max", "86400000");
+		range.getElement().setAttribute("step", "100000");
+		range.getElement().setAttribute("style" ,"width: 400px; height: 20px;");
+	//	range.getElement().setAttribute(name, value)
+		range.addChangeHandler(rangeChanged());
+		westPanel.add(range);
+		
+		input = new TextBox();
+		
+		input.getElement().setAttribute("type", "number");
+		input.getElement().setAttribute("min", "1000");
+		input.getElement().setAttribute("max", "86400000");
+		input.getElement().setAttribute("step", "100000");
+		input.getElement().setAttribute("style", "width: 100px;");
+		input.addChangeHandler(inputChanged());
+		westPanel.add(input);
+	}
+	
+	private ChangeHandler rangeChanged(){
+		return new ChangeHandler() {
+			
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				
+				rangeValue = range.getValue();
+				input.setText(rangeValue);
+				
+			}
+		};
+	}
+	
+	private ChangeHandler inputChanged() {
+		return new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				
+				inputValue = input.getValue();
+				range.setText(inputValue);
+				
+			}
+		};
 	}
 
 	public NewSimulation(NewSimulation hikstCompositeParent, HikstObject simObject) {
@@ -92,14 +155,7 @@ public class NewSimulation extends HikstComposite {
 		RootLayoutPanel.get().add(panelBack);
 	}
 
-	@UiHandler("buttonShowSpline")
-	void onButtonShowSplineClick(ClickEvent event) {
-		centerPanel.clear();
-		//måtte kommentere ut denne etter at jeg endret spline klassen.
-		//centerPanel.add(SplineGraf.createChart());
-		System.out.println("Should show spline!!!");
-	}
-	@UiHandler("button")
+	@UiHandler("save")
 	void onButtonClick(ClickEvent event) {
 		databaseService.requestSimulation(new SimulationRequest(simObject.getID(),Long.parseLong(intervall.getValue()),fromDate.getValue().getTime(),toDate.getValue().getTime()), new SimulationRequestCallback());
 }

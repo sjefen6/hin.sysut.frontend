@@ -367,7 +367,7 @@ public class DatabaseServiceImpl extends RemoteServiceServlet implements
 
 		try {
 			String query = "SELECT Objects.Name, Simulation_Descriptions.ID, Status.Name FROM Objects, Simulation_Descriptions, Status, Simulator_Queue_Objects "
-					+ "WHERE Simulation_Descriptions.ID = Objects.ID "
+					+ "WHERE Simulation_Descriptions.Object_ID = Objects.ID "
 					+ "AND Simulation_Descriptions.ID = Simulator_Queue_Objects.Simulation_Descriptions_ID "
 					+ "AND Simulator_Queue_Objects.Status_ID = Status.ID";
 			PreparedStatement statement = connection.prepareStatement(query);

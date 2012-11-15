@@ -22,7 +22,7 @@ public class SplineGraf {
 		  
        chart.setType(Series.Type.SPLINE)  
             .setMarginRight(10)  
-            .setChartTitleText("Strømforbruk")  
+            .setChartTitleText("Stroemforbruk")  
             .setBarPlotOptions(new BarPlotOptions()  
                 .setDataLabels(new DataLabels()  
                     .setEnabled(true)  
